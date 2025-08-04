@@ -2,7 +2,7 @@
 **ESP**
 Un simulador de wargame basado en texto, de codigo abierto.
 *Descargo de responsabilidad*
-    Yo ni ninguno de los desarrolladores de este programa tenemos ningún derecho sobre el uso o distribución de material licenciado u original, ni nos hacemos responsables por el mismo.
+    Ninguno de los desarrolladores de este programa tiene ningún derecho sobre el uso o distribución de material licenciado u original, ni nos hacemos responsables por el mismo, todo el material utilizado es          original.
 
 Descripción:
     Este es un programa que creamos como una herramienta para hacer que el modo de patrulla de combate en la décima edición de Warhammer 40,000 sea más fácil de jugar para los recién llegados al juego.
