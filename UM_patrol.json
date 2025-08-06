@@ -1,0 +1,57 @@
+{
+    "u1": {
+        "Nombre": "Capitan en armadura exterminador",
+        "Lider": "Lider",
+        "Numero Miniaturas": 1,
+        "Habilidades": [
+            "Valor imparable",
+            "Ritos de batalla"
+            ],
+        "Claves": [
+            "Personaje",
+            "Infanteria",
+            "Capitan",
+            "Imperio",
+            "Exterminador"
+            ],
+        "m1": {
+            "Nombre": "Capitan en armadura exterminador",
+            "Stats": [
+                5, 5, 2, 6, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Bolter tormenta",
+                "stats": [
+                    24, 2, 2, 4, 0, 1
+                    ],
+                "Claves": [
+                    "FR"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Arma reliquia",
+                "stats": [
+                    
+                    ],
+                "Claves": [
+                    ""                
+                    ]
+                },
+            "Mele2": {
+                "Nombre": "Arma reliquia",
+                "stats": [
+                    
+                    ],
+                "Claves": [
+                    ""                
+                    ]
+                }
+            }
+        },
+    "Faccion": "Adeptus Astartes",
+    "Numero Unidades": 4
+}

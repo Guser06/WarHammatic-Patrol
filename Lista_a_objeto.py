@@ -7,7 +7,7 @@ Ejercitos_objetos =[]#Lista donde se guardaran los ejercitos convertidos en obje
 StatsTx = ["Movimiento", "Resistencia", "Salvación",
            "Heridas", "Liderazgo", "Control de objetivo"]#Nombre de las stats de las miniaturas
 
-ArmaTx = ["Alcance", "No. de Ataques",
+ArmaTx = ["Nombre", "Alcance", "No. de Ataques",
           "Habilidad", "Fuerza", "Perforación", "Daño"]#Nombre de las stats de las armas
     
 class Individuo:
@@ -44,6 +44,7 @@ class Unidad:
         self.lider = lista[1]
         self.habilidades = lista[2]
         self.claves = lista[3]
+        self.nm = lista[-1]
 
     def eliminar_muertos(self):
         self.miembros = [
@@ -56,8 +57,8 @@ class Ejercito:
     def __init__(self, lista):
         self.pc = 0
         self.pv = 0
-        self.faccion = lista[0]
-        self.nu = lista[1]
+        self.faccion = lista[-1]
+        self.nu = lista[-2]
         self.unidades = []
 
     def __repr__(self):
@@ -66,12 +67,8 @@ class Ejercito:
 m = 0
 for e in Ejercitos_listas:
     Ejercitos_objetos[m] = Ejercito(e)
-    n = 0
-    for u in e[1]:
-        Ejercitos_objetos[m].unidades[n] = Unidad(u)
-        o = 0
-        for i in u[1]:
-            Ejercitos_objetos[m].unidades[n].miembros[o] = Individuo(i)
-            o+1
-        n+1
+    for u in range(e[m][-1]):
+        Ejercitos_objetos[m].unidades[u] = Unidad(e[m][u])
+        for i in range(e[m][u][-1]):
+            Ejercitos_objetos[m].unidades[u].miembros[i] = Individuo(e[m][u][i])
     m+1
