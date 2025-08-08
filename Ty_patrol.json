@@ -1,0 +1,1061 @@
+{
+    "u1": {
+        "Nombre": "Tyranido Alado Primus",
+        "Lider": null,
+        "Numero Miniaturas": 1,
+        "Habilidades": [
+            "Guerrero Alpha",
+            "Golpe mortal"
+            ],
+        "Claves": [
+            "Tyranido alado primus",
+            "Personaje",
+            "Infanteria",
+            "Volador",
+            "Gran devorador",
+            "Sinapsis",
+            "Invasor de vanguardia"
+            ],
+        "m1": {
+            "Nombre": "Tyranido Alado Primus",
+            "Stats": [
+                12, 5, 4, 6, 7, 1
+                ],
+            "Rango1": null,
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes primus",
+                "stats": [
+                    0, 6, 2, 6, 1, 2
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+
+    "u2": {
+        "Nombre": "Psicofago",
+        "Lider": null,
+        "Numero Miniaturas": 1,
+        "Habilidades": [
+            "Bio-estimulo",
+            "Frenesi Alimenticio",
+            "No hay dolor 5"
+            ],
+        "Claves": [
+            "Monstruo",
+            "Gran devorador",
+            "Psicofago",
+            "Cosechador",
+            "Humo"
+            ],
+        "m1": {
+            "Nombre": "Psicofago",
+            "Stats": [
+                12, 9, 3, 10, 8, 3
+                ],
+            "Rango1": {
+                "Nombre": "Torrente psicoclastico",
+                "stats": [
+                    12, "D6", 0, 6,	1, 1
+                    ],
+                "Claves": [
+                    "Ignora cobertura",
+                    "Torrente"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y mandibula tentacular",
+                "stats": [
+                    0, 6, 3, 6, 2, 2
+                    ],
+                "Claves": [
+                    "Anti Psiquico 4",
+                    "Heridas devastadoras" 
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+
+    "u3": {
+        "Nombre": "Termagantes",
+        "Lider": null,
+        "Numero Miniaturas": 10,
+        "Habilidades": [
+            "Horrores acechantes"
+            ],
+        "Claves": [
+            "Linea de batalla",
+            "Infanteria",
+            "Gran devorador",
+            "Multitud interminable",
+            "Termagantes"
+            ],
+
+        "m1": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m2": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m3": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m4": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m5": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m6": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+        
+        "m7": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+        
+        "m8": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+        
+        "m9": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+        
+        "m10": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+
+    "u4": {
+        "Nombre": "Termagantes",
+        "Lider": null,
+        "Numero Miniaturas": 10,
+        "Habilidades": [
+            "Horrores acechantes"
+            ],
+        "Claves": [
+            "Linea de batalla",
+            "Infanteria",
+            "Gran devorador",
+            "Multitud interminable",
+            "Termagantes"
+            ],
+
+        "m1": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m2": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m3": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m4": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m5": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m6": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+        
+        "m7": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+        
+        "m8": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+        
+        "m9": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+        
+        "m10": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Asalto"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+
+    "u5": {
+        "Nombre": "Espinogantes",
+        "Lider": null,
+        "Numero Miniaturas": 5,
+        "Habilidades": [
+            "Bombardeo disruptor"
+            ],
+        "Claves": [
+            "Espinogantes",
+            "Infanteria",
+            "Gran devorador"
+            ],
+        "m1": {
+            "Nombre": "Espinogante",
+            "Stats": [
+                6, 4, 4, 2, 8, 1
+                ],
+            "Rango1": {
+                "Nombre": "Lanzaespinas",
+                "stats": [
+                    24,	"D6", 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Explosivo",
+                    "Pesado"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m2": {
+            "Nombre": "Espinogante",
+            "Stats": [
+                6, 4, 4, 2, 8, 1
+                ],
+            "Rango1": {
+                "Nombre": "Lanzaespinas",
+                "stats": [
+                    24,	"D6", 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Explosivo",
+                    "Pesado"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m3": {
+            "Nombre": "Espinogante",
+            "Stats": [
+                6, 4, 4, 2, 8, 1
+                ],
+            "Rango1": {
+                "Nombre": "Lanzaespinas",
+                "stats": [
+                    24,	"D6", 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Explosivo",
+                    "Pesado"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m4": {
+            "Nombre": "Espinogante",
+            "Stats": [
+                6, 4, 4, 2, 8, 1
+                ],
+            "Rango1": {
+                "Nombre": "Lanzaespinas",
+                "stats": [
+                    24,	"D6", 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Explosivo",
+                    "Pesado"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m5": {
+            "Nombre": "Espinogante",
+            "Stats": [
+                6, 4, 4, 2, 8, 1
+                ],
+            "Rango1": {
+                "Nombre": "Lanzaespinas",
+                "stats": [
+                    24,	"D6", 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Explosivo",
+                    "Pesado"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+    "u6": {
+        "Nombre": "Saltadores de Von Ryan",
+        "Lider": null,
+        "Numero Miniaturas": 3,
+        "Habilidades": [
+            "Salto de ataque",
+            "Sa"
+            ],
+        "Claves": [
+            "Espinogantes",
+            "Infanteria",
+            "Gran devorador"
+            ],
+        "m1": {
+            "Nombre": "Espinogante",
+            "Stats": [
+                6, 4, 4, 2, 8, 1
+                ],
+            "Rango1": {
+                "Nombre": "Lanzaespinas",
+                "stats": [
+                    24,	"D6", 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Explosivo",
+                    "Pesado"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m2": {
+            "Nombre": "Espinogante",
+            "Stats": [
+                6, 4, 4, 2, 8, 1
+                ],
+            "Rango1": {
+                "Nombre": "Lanzaespinas",
+                "stats": [
+                    24,	"D6", 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Explosivo",
+                    "Pesado"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m3": {
+            "Nombre": "Espinogante",
+            "Stats": [
+                6, 4, 4, 2, 8, 1
+                ],
+            "Rango1": {
+                "Nombre": "Lanzaespinas",
+                "stats": [
+                    24,	"D6", 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Explosivo",
+                    "Pesado"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m4": {
+            "Nombre": "Espinogante",
+            "Stats": [
+                6, 4, 4, 2, 8, 1
+                ],
+            "Rango1": {
+                "Nombre": "Lanzaespinas",
+                "stats": [
+                    24,	"D6", 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Explosivo",
+                    "Pesado"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m5": {
+            "Nombre": "Espinogante",
+            "Stats": [
+                6, 4, 4, 2, 8, 1
+                ],
+            "Rango1": {
+                "Nombre": "Lanzaespinas",
+                "stats": [
+                    24,	"D6", 4, 5, 0, 1
+                    ],
+                "Claves": [
+                    "Explosivo",
+                    "Pesado"                
+                    ]
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "stats": [
+                    0, 1, 4, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+
+    "Faccion": "Tyranidos",
+    "Numero Unidades": 7
+}

@@ -1,11 +1,15 @@
 import json
 
-with open('UM_patrol.json', 'r') as file:
-    diccionario1 = json.load(file)
+Ejercitos_diccionarios = [] #Diccionarios provenientes de los JSON
 
-diccionario2 = [] #Aqui va el diccionario sacada del JSON no 2
-Ejercitos_diccionarios = [diccionario1, diccionario2] #Diccionarios provenientes de los JSON
-Ejercitos_objetos =[]   #Lista donde se guardaran los ejercitos convertidos en objetos de Python
+##Aqui se puede construir una función
+with open('UM_patrol.json', 'r') as file:
+    Ejercitos_diccionarios.append(json.load(file))
+
+##Aqui sería la función para guardar el segundo json
+with open('Ty_patrol.json', 'r') as file:
+    Ejercitos_diccionarios.append(json.load(file))  #Aqui va el diccionario sacado del JSON no 2
+
 
 StatsTx = ["Movimiento", "Resistencia", "Salvación",
            "Heridas", "Liderazgo", "Control de objetivo"]   #Nombre de las stats de las miniaturas
@@ -66,19 +70,36 @@ class Ejercito:
     def __repr__(self):
         return f"{self.faccion}:\n" + "\n".join(str(unidad) for unidad in self.unidades)
 
+Ejercitos_objetos =[]   #Lista donde se guardaran los ejercitos convertidos en objetos de Python
 
 i = 0
-j = 0
-for d in Ejercitos_diccionarios:
-    if isinstance(d, dict):
-        Ejercitos_objetos.append(Ejercito(d))
-        for cu, vu in d.items():
-            if isinstance(vu, dict):
-                Ejercitos_objetos[i].unidades.append(Unidad(vu))
-                for cm, vm in vu.items():
-                    if isinstance(vm, dict):
-                        Ejercitos_objetos[i].unidades[j].miembros.append(Individuo(vm))
-                j + 1
-        i + 1
+for d in Ejercitos_diccionarios:    #iterar por lista de diccionarios
+    j = 0
+    if isinstance(d, dict):     #Determinar si el objeto es un diccionario
+        Ejercitos_objetos.append(Ejercito(d))   #Crear el objeto ejercito
+        for cu, vu in d.items():    #iterar por diccionario
+            if isinstance(vu, dict):    #Determinar si el objeto es un subdiccionario
+                Ejercitos_objetos[i].unidades.append(Unidad(vu))    #Crear el objeto unidad y añadirlo a un ejercito
+                for cm, vm in vu.items():   #Iterar por el subdiccionario
+                    if isinstance(vm, dict):    #Determinar si el objeto es un subsubdiccionario 
+                        Ejercitos_objetos[i].unidades[j].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad
+                j += 1
+        i += 1
         
 print(Ejercitos_objetos[0])
+print()
+
+print(Ejercitos_objetos[0].unidades)
+print()
+
+print(Ejercitos_objetos[0].unidades[1].miembros)
+print()
+
+print(Ejercitos_objetos[0].unidades[2].miembros[0])
+print()
+
+print(Ejercitos_objetos[0].unidades[2].miembros[0].stats_base)
+print()
+
+print(Ejercitos_objetos[0].unidades[2].miembros[0].stats_base["Resistencia"])
+print()
