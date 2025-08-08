@@ -893,36 +893,28 @@
         "Numero Miniaturas": 3,
         "Habilidades": [
             "Salto de ataque",
-            "Sa"
+            "Invulnerable 6"
             ],
         "Claves": [
-            "Espinogantes",
             "Infanteria",
-            "Gran devorador"
+            "Gran devorador",
+            "Saltadores de Von Ryan",
+            "Invasor de vanguardia"
             ],
         "m1": {
-            "Nombre": "Espinogante",
+            "Nombre": "Saltador de Von Ryan",
             "Stats": [
-                6, 4, 4, 2, 8, 1
+                10, 5, 4, 3, 8, 1
                 ],
-            "Rango1": {
-                "Nombre": "Lanzaespinas",
-                "stats": [
-                    24,	"D6", 4, 5, 0, 1
-                    ],
-                "Claves": [
-                    "Explosivo",
-                    "Pesado"                
-                    ]
-                },
+            "Rango1": null,
             "Rango2": null,
             "Rango3": null,
             "Rango4": null,
 
             "Mele1": {
-                "Nombre": "Garras y dientes quintinosos",
+                "Nombre": "Espolones de saltador",
                 "stats": [
-                    0, 1, 4, 4, 0, 1
+                    0, 6, 3, 5, 1, 1
                     ],
                 "Claves": [
                     null         
@@ -932,28 +924,19 @@
             },
 
         "m2": {
-            "Nombre": "Espinogante",
+            "Nombre": "Saltador de Von Ryan",
             "Stats": [
-                6, 4, 4, 2, 8, 1
+                10, 5, 4, 3, 8, 1
                 ],
-            "Rango1": {
-                "Nombre": "Lanzaespinas",
-                "stats": [
-                    24,	"D6", 4, 5, 0, 1
-                    ],
-                "Claves": [
-                    "Explosivo",
-                    "Pesado"                
-                    ]
-                },
+            "Rango1": null,
             "Rango2": null,
             "Rango3": null,
             "Rango4": null,
 
             "Mele1": {
-                "Nombre": "Garras y dientes quintinosos",
+                "Nombre": "Espolones de saltador",
                 "stats": [
-                    0, 1, 4, 4, 0, 1
+                    0, 6, 3, 5, 1, 1
                     ],
                 "Claves": [
                     null         
@@ -963,18 +946,53 @@
             },
 
         "m3": {
-            "Nombre": "Espinogante",
+            "Nombre": "Saltador de Von Ryan",
             "Stats": [
-                6, 4, 4, 2, 8, 1
+                10, 5, 4, 3, 8, 1
                 ],
-            "Rango1": {
-                "Nombre": "Lanzaespinas",
+            "Rango1": null,
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Espolones de saltador",
                 "stats": [
-                    24,	"D6", 4, 5, 0, 1
+                    0, 6, 3, 5, 1, 1
                     ],
                 "Claves": [
-                    "Explosivo",
-                    "Pesado"                
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+    
+    "u7": {
+        "Nombre": "Enjambres devoradores",
+        "Lider": null,
+        "Numero Miniaturas": 2,
+        "Habilidades": [
+            "Horrores quintinosos"
+            ],
+        "Claves": [
+            "Enjambre devorador",
+            "Enjambre",
+            "Gran devorador",
+            "Cosechador"
+            ],
+        "m1": {
+            "Nombre": "Enjambre devorador",
+            "Stats": [
+                6, 2, 6, 4, 8, 0
+                ],
+            "Rango1": {
+                "Nombre": "Mandibula espinoza",
+                "stats": [
+                    6, 4, 5, 3, 0, 1
+                    ],
+                "Claves": [
+                    "Pistola"                
                     ]
                 },
             "Rango2": null,
@@ -984,7 +1002,7 @@
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
                 "stats": [
-                    0, 1, 4, 4, 0, 1
+                    0, 6, 5, 2,	0, 1
                     ],
                 "Claves": [
                     null         
@@ -993,19 +1011,18 @@
             "Mele2": null
             },
 
-        "m4": {
-            "Nombre": "Espinogante",
+        "m2": {
+            "Nombre": "Enjambre devorador",
             "Stats": [
-                6, 4, 4, 2, 8, 1
+                6, 2, 6, 4, 8, 0
                 ],
             "Rango1": {
-                "Nombre": "Lanzaespinas",
+                "Nombre": "Mandibula espinoza",
                 "stats": [
-                    24,	"D6", 4, 5, 0, 1
+                    6, 4, 5, 3, 0, 1
                     ],
                 "Claves": [
-                    "Explosivo",
-                    "Pesado"                
+                    "Pistola"                
                     ]
                 },
             "Rango2": null,
@@ -1015,38 +1032,7 @@
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
                 "stats": [
-                    0, 1, 4, 4, 0, 1
-                    ],
-                "Claves": [
-                    null         
-                    ]
-                },
-            "Mele2": null
-            },
-
-        "m5": {
-            "Nombre": "Espinogante",
-            "Stats": [
-                6, 4, 4, 2, 8, 1
-                ],
-            "Rango1": {
-                "Nombre": "Lanzaespinas",
-                "stats": [
-                    24,	"D6", 4, 5, 0, 1
-                    ],
-                "Claves": [
-                    "Explosivo",
-                    "Pesado"                
-                    ]
-                },
-            "Rango2": null,
-            "Rango3": null,
-            "Rango4": null,
-
-            "Mele1": {
-                "Nombre": "Garras y dientes quintinosos",
-                "stats": [
-                    0, 1, 4, 4, 0, 1
+                    0, 6, 5, 2,	0, 1
                     ],
                 "Claves": [
                     null         
