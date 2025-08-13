@@ -3,10 +3,10 @@
         "Nombre": "Tyranido Alado Primus",
         "Lider": null,
         "Numero Miniaturas": 1,
-        "Habilidades": [
-            "Guerrero Alpha",
-            "Golpe mortal"
-            ],
+        "Habilidades": {
+            "Guerrero Alpha": null,
+            "Golpe mortal": null
+            },
         "Claves": [
             "Tyranido alado primus",
             "Personaje",
@@ -43,11 +43,11 @@
         "Nombre": "Psicofago",
         "Lider": null,
         "Numero Miniaturas": 1,
-        "Habilidades": [
-            "Bio-estimulo",
-            "Frenesi Alimenticio",
-            "No hay dolor 5"
-            ],
+        "Habilidades": {
+            "Bio-estimulo": null,
+            "Frenesi Alimenticio": null,
+            "No hay dolor": 5
+            },
         "Claves": [
             "Monstruo",
             "Gran devorador",
@@ -65,10 +65,10 @@
                 "stats": [
                     12, "D6", 0, 6,	1, 1
                     ],
-                "Claves": [
-                    "Ignora cobertura",
-                    "Torrente"                
-                    ]
+                "Claves": {
+                    "Ignora cobertura": null,
+                    "Torrente": null               
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -79,10 +79,10 @@
                 "stats": [
                     0, 6, 3, 6, 2, 2
                     ],
-                "Claves": [
-                    "Anti Psiquico 4",
-                    "Heridas devastadoras" 
-                    ]
+                "Claves": {
+                    "Anti": ["Psiquico", 4],
+                    "Heridas devastadoras": null 
+                    }
                 },
             "Mele2": null
             }
@@ -92,9 +92,9 @@
         "Nombre": "Termagantes",
         "Lider": null,
         "Numero Miniaturas": 10,
-        "Habilidades": [
-            "Horrores acechantes"
-            ],
+        "Habilidades": {
+            "Horrores acechantes": null
+            },
         "Claves": [
             "Linea de batalla",
             "Infanteria",
@@ -113,9 +113,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null              
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -143,9 +143,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -173,9 +173,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -203,9 +203,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -233,9 +233,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -263,9 +263,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -293,9 +293,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -323,9 +323,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -353,9 +353,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -383,9 +383,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -408,9 +408,9 @@
         "Nombre": "Termagantes",
         "Lider": null,
         "Numero Miniaturas": 10,
-        "Habilidades": [
-            "Horrores acechantes"
-            ],
+        "Habilidades": {
+            "Horrores acechantes": null
+            },
         "Claves": [
             "Linea de batalla",
             "Infanteria",
@@ -429,9 +429,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -459,9 +459,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -489,9 +489,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -519,9 +519,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -549,9 +549,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -579,9 +579,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -609,9 +609,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -639,9 +639,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -669,9 +669,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -699,9 +699,9 @@
                 "stats": [
                     18,	1, 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Asalto"                
-                    ]
+                "Claves": {
+                    "Asalto": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -724,9 +724,9 @@
         "Nombre": "Espinogantes",
         "Lider": null,
         "Numero Miniaturas": 5,
-        "Habilidades": [
-            "Bombardeo disruptor"
-            ],
+        "Habilidades": {
+            "Bombardeo disruptor": null
+            },
         "Claves": [
             "Espinogantes",
             "Infanteria",
@@ -742,10 +742,10 @@
                 "stats": [
                     24,	"D6", 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Explosivo",
-                    "Pesado"                
-                    ]
+                "Claves": {
+                    "Explosivo": null,
+                    "Pesado": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -773,10 +773,10 @@
                 "stats": [
                     24,	"D6", 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Explosivo",
-                    "Pesado"                
-                    ]
+                "Claves": {
+                    "Explosivo": null,
+                    "Pesado": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -804,10 +804,10 @@
                 "stats": [
                     24,	"D6", 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Explosivo",
-                    "Pesado"                
-                    ]
+                "Claves": {
+                    "Explosivo": null,
+                    "Pesado": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -835,10 +835,10 @@
                 "stats": [
                     24,	"D6", 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Explosivo",
-                    "Pesado"                
-                    ]
+                "Claves": {
+                    "Explosivo": null,
+                    "Pesado": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -866,10 +866,10 @@
                 "stats": [
                     24,	"D6", 4, 5, 0, 1
                     ],
-                "Claves": [
-                    "Explosivo",
-                    "Pesado"                
-                    ]
+                "Claves": {
+                    "Explosivo": null,
+                    "Pesado": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -891,10 +891,10 @@
         "Nombre": "Saltadores de Von Ryan",
         "Lider": null,
         "Numero Miniaturas": 3,
-        "Habilidades": [
-            "Salto de ataque",
-            "Invulnerable 6"
-            ],
+        "Habilidades": {
+            "Salto de ataque": null,
+            "Invulnerable": 6
+            },
         "Claves": [
             "Infanteria",
             "Gran devorador",
@@ -972,9 +972,9 @@
         "Nombre": "Enjambres devoradores",
         "Lider": null,
         "Numero Miniaturas": 2,
-        "Habilidades": [
-            "Horrores quintinosos"
-            ],
+        "Habilidades": {
+            "Horrores quintinosos": null
+            },
         "Claves": [
             "Enjambre devorador",
             "Enjambre",

@@ -3,11 +3,11 @@
         "Nombre": "Capitan en armadura exterminador",
         "Lider": null,
         "Numero Miniaturas": 1,
-        "Habilidades": [
-            "Valor imparable",
-            "Ritos de batalla",
-            "Invulnerable 4"
-            ],
+        "Habilidades": {
+            "Valor imparable": null,
+            "Ritos de batalla": null,
+            "Invulnerable": 4
+            },
         "Claves": [
             "Personaje",
             "Infanteria",
@@ -25,9 +25,9 @@
                 "stats": [
                     24, 2, 2, 4, 0, 1
                     ],
-                "Claves": [
-                    "Fuego Rapido 2"                
-                    ]
+                "Claves": {
+                    "Fuego Rapido": 2                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -50,11 +50,11 @@
         "Nombre": "Bibliotecario en armadura exterminador",
         "Lider": null,
         "Numero Miniaturas": 1,
-        "Habilidades": [
-            "Velo de tiempo",
-            "Capucha psiquica",
-            "Invulnerable 4"
-            ],
+        "Habilidades": {
+            "Velo de tiempo": null,
+            "Capucha psiquica": null,
+            "Invulnerable": 4
+            },
         "Claves": [
             "Personaje",
             "Infanteria",
@@ -73,21 +73,21 @@
                 "stats": [
                     24, "D6", 3, 5, 1, "D3"
                     ],
-                "Claves": [
-                    "Psiquico",
-                    "Eleccion"                
-                    ]
+                "Claves": {
+                    "Psiquico": null,
+                    "Eleccion": null                
+                    }
                 },
             "Rango2": {
                 "Nombre": "Castigo-Fuego brujo enfocado",
                 "stats": [
                     24, "D6", 3, 6, 2, "D3"
                     ],
-                "Claves": [
-                    "Heridas devastadoras",
-                    "Riesgoso",
-                    "Psiquico"
-                    ]
+                "Claves": {
+                    "Heridas devastadoras": null,
+                    "Riesgoso": null,
+                    "Psiquico": null
+                    }
                 },
             "Rango3": null,
             "Rango4": null,
@@ -97,9 +97,9 @@
                 "stats": [
                     0, 4, 3, 6, -1, "D3"
                     ],
-                "Claves": [
-                    "Psiquico" 
-                    ]
+                "Claves": {
+                    "Psiquico": null 
+                    }
                 },
             "Mele2": null
             }
@@ -117,9 +117,9 @@
             "Teniente"
             ],
         "Numero Miniaturas": 5,
-        "Habilidades": [
-            "Terror incendiario"
-            ],
+        "Habilidades": {
+            "Terror incendiario": null
+            },
         "Claves": [
             "Infanteria",
             "Granadas",
@@ -138,18 +138,18 @@
                 "stats": [
                     12, "D6", 0, 5, 1, 1
                     ],
-                "Claves": [
-                    "Ignora cobertura"                
-                    ]
+                "Claves": {
+                    "Ignora cobertura": null                
+                    }
                 },
             "Rango2": {
                 "Nombre": "Pistola bolter",
                 "stats": [
                     12, 1, 3, 4, 0, 1
                     ],
-                "Claves": [
-                    "Pistola"                
-                    ]
+                "Claves": {
+                    "Pistola": null                
+                    }
                 },
             "Rango3": null,
             "Rango4": null,
@@ -176,18 +176,18 @@
                 "stats": [
                     12, "D6", 0, 5, 1, 1
                     ],
-                "Claves": [
-                    "Ignora cobertura"                
-                    ]
+                "Claves": {
+                    "Ignora cobertura": null                
+                    }
                 },
             "Rango2": {
                 "Nombre": "Pistola bolter",
                 "stats": [
                     12, 1, 3, 4, 0, 1
                     ],
-                "Claves": [
-                    "Pistola"                
-                    ]
+                "Claves": {
+                    "Pistola": null                
+                    }
                 },
             "Rango3": null,
             "Rango4": null,
@@ -214,18 +214,18 @@
                 "stats": [
                     12, "D6", 0, 5, 1, 1
                     ],
-                "Claves": [
-                    "Ignora cobertura"                
-                    ]
+                "Claves": {
+                    "Ignora cobertura": null                
+                    }
                 },
             "Rango2": {
                 "Nombre": "Pistola bolter",
                 "stats": [
                     12, 1, 3, 4, 0, 1
                     ],
-                "Claves": [
-                    "Pistola"                
-                    ]
+                "Claves": {
+                    "Pistola": null                
+                    }
                 },
             "Rango3": null,
             "Rango4": null,
@@ -252,18 +252,18 @@
                 "stats": [
                     12, "D6", 0, 5, 1, 1
                     ],
-                "Claves": [
-                    "Ignora cobertura"                
-                    ]
+                "Claves": {
+                    "Ignora cobertura": null                
+                    }
                 },
             "Rango2": {
                 "Nombre": "Pistola bolter",
                 "stats": [
                     12, 1, 3, 4, 0, 1
                     ],
-                "Claves": [
-                    "Pistola"                
-                    ]
+                "Claves": {
+                    "Pistola": null                
+                    }
                 },
             "Rango3": null,
             "Rango4": null,
@@ -290,18 +290,18 @@
                 "stats": [
                     12, "D6", 0, 5, 1, 1
                     ],
-                "Claves": [
-                    "Ignora cobertura"                
-                    ]
+                "Claves": {
+                    "Ignora cobertura": null                
+                    }
                 },
             "Rango2": {
                 "Nombre": "Pistola bolter",
                 "stats": [
                     12, 1, 3, 4, 0, 1
                     ],
-                "Claves": [
-                    "Pistola"                
-                    ]
+                "Claves": {
+                    "Pistola": null               
+                    }
                 },
             "Rango3": null,
             "Rango4": null,
@@ -328,11 +328,11 @@
             "Bibliotecario en armadura de exterminador"
             ],
         "Numero Miniaturas": 5,
-        "Habilidades": [
-            "Baliza de teletransporte",
-            "Furia de los primeros",
-            "Invulnerable 4"
-            ],
+        "Habilidades": {
+            "Baliza de teletransporte": null,
+            "Furia de los primeros": null,
+            "Invulnerable": 4
+            },
         "Claves": [
             "Infanteria",
             "Imperio",
@@ -349,9 +349,9 @@
                 "stats": [
                     24, 2, 3, 4, 0, 1
                     ],
-                "Claves": [
-                    "Fuego Rapido 2"                
-                    ]
+                "Claves": {
+                    "Fuego Rapido": 2             
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -379,9 +379,9 @@
                 "stats": [
                     24, 6, 3, 6, 0, 1
                     ],
-                "Claves": [
-                    "Heridas devastadoras"                
-                    ]
+                "Claves": {
+                    "Heridas devastadoras": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -409,9 +409,9 @@
                 "stats": [
                     24, 2, 3, 4, 0, 1
                     ],
-                "Claves": [
-                    "Fuego Rapido 2"                
-                    ]
+                "Claves": {
+                    "Fuego Rapido": 2                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -439,9 +439,9 @@
                 "stats": [
                     24, 2, 3, 4, 0, 1
                     ],
-                "Claves": [
-                    "Fuego Rapido 2"                
-                    ]
+                "Claves": {
+                    "Fuego Rapido": 2                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -469,9 +469,9 @@
                 "stats": [
                     24, 2, 3, 4, 0, 1
                     ],
-                "Claves": [
-                    "Fuego Rapido 2"                
-                    ]
+                "Claves": {
+                    "Fuego Rapido": 2                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,

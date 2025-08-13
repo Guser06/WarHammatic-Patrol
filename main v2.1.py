@@ -1,64 +1,72 @@
 import random as rand
 import json
-import curses
+import blessed
 import sys
 
 #Inicializar ventana
-ventana = curses.initscr()
-ventana.keypad(True)
-curses.cbreak()
-curses.noecho()
-
-curses.start_color()
-curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
-curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK)
-negro = curses.color_pair(1)    #Colores utilizados
-blanco = curses.color_pair(2)   #Colores utilizados
+term = blessed.Terminal()
 
 #Menú
-disponible = [
-    'Salir',
+DISPONIBLE = [
     'Tyranidos v1',
-    'Space Marines v1'
+    'Space Marines v1',
+    'salir'
 ]
+
+Ejercitos_diccionarios = [] #Diccionarios provenientes de los JSON
+
 limite = 0 
 ##Solicitar al usuario limite de rondas
-def menu_inicio(ventana):
-    Indice_ejercito = 0
+Indice_ejercito = 0
+with term.fullscreen(), term.cbreak(), term.hidden_cursor():
     while True:
-        ventana.clear()
-        ventana.addstr('Elige un ejercito: \n', curses.A_UNDERLINE)
+        print(term.home + term.clear)
+        print(term.underline('Elige un ejercito: \n'))
+    
+        for i, opcion in enumerate(DISPONIBLE):    #Crear lista de opciones
+            if i == Indice_ejercito:
+                print(term.black_on_white(f"{i+1}.- {opcion}"))
+            else:
+                print(term.white_on_black(f"{i+1}.- {opcion}"))
+    
+        tecla = term.inkey()
+    
+        if tecla.name in ("KEY_UP", "KEY_LEFT"):
+            Indice_ejercito = (Indice_ejercito - 1 + len(DISPONIBLE)) % len(DISPONIBLE)
         
-        for i in range(len(disponible)):    #Crear lista de opciones
-            ventana.addstr('{}.- '.format(i+1))
-            ventana.addstr(disponible[i] + '\n', negro if i == Indice_ejercito else blanco)
-        
-        c = ventana.getch()
-        
-        if c == curses.KEY_UP or c == curses.KEY_LEFT:
-            Indice_ejercito = (Indice_ejercito -1 + len(disponible)) % len(disponible)
-        
-        elif c == curses.KEY_DOWN or c == curses.KEY_RIGHT:
+        elif tecla.name in ("KEY_DOWN", "KEY_RIGHT"):
+            Indice_ejercito = (Indice_ejercito + 1 + len(DISPONIBLE)) % len(DISPONIBLE)
             
+        elif tecla.name == "KEY_ENTER" or tecla == '\n':
+            if Indice_ejercito == len(DISPONIBLE) - 1:
+                sys.exit()
+            else:
+                print(f"\nElegiste {DISPONIBLE[Indice_ejercito]}")
+                #Constructor de unidades 
+                match (Indice_ejercito%len(DISPONIBLE)):
+                    case 0:
+                        with open('Ty_patrol.json', 'r') as file:
+                            Ejercitos_diccionarios.append(json.load(file))
+                        if len(Ejercitos_diccionarios) == 2:
+                            break
+                        else: term.inkey()
+                    
+                    case 1:
+                        with open('UM_patrol.json', 'r') as file:
+                            Ejercitos_diccionarios.append(json.load(file))
+                        if len(Ejercitos_diccionarios)  == 2:
+                            break
+                        else: term.inkey()
+                    
+        else:
+            print(f"\nLa tecla presionada '{tecla}' es invalida")
+            term.inkey()
 
 #Función de dados
 def Dados(n_dados):
     res_dados=[]
     res_dados = [rand.randint(1, 6) for _ in range(1, (n_dados+1))]
     return res_dados
-
-#Constructor de unidades 
-
-Ejercitos_diccionarios = [] #Diccionarios provenientes de los JSON
-
-##Aqui se puede construir una función
-with open('UM_patrol.json', 'r') as file:
-    Ejercitos_diccionarios.append(json.load(file))
-
-##Aqui sería la función para guardar el segundo json
-with open('Ty_patrol.json', 'r') as file:
-    Ejercitos_diccionarios.append(json.load(file))  #Aqui va el diccionario sacado del JSON no 2
-
 
 StatsTx = ["Movimiento", "Resistencia", "Salvación",
            "Heridas", "Liderazgo", "Control de objetivo"]   #Nombre de las stats de las miniaturas
@@ -137,21 +145,26 @@ for d in Ejercitos_diccionarios:    #iterar por lista de diccionarios
 
 #Determinar turno
 turno = 0
+with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+    while True:
+        
+        while turno == 0:
+            print(term.home + term.clear)
+            print(term.underline('Determinando los turnos'))
+        
+            comenzar = Dados(2)
+            print(term.white_on_black(f"Dado Jugador 1 ({Ejercitos_objetos[0].faccion}): {comenzar[0]}"))
+            print(term.white_on_black(f"Dado Jugador 2 ({Ejercitos_objetos[1].faccion}): {comenzar[1]}"))
+            if comenzar[0] > comenzar[1]:
+                print(term.underline('Comienza el jugador 1'))
+                turno = 0
+                break
+            if comenzar[0] < comenzar[1]:
+                print(term.underline('Comienza el jugador 2'))
+                turno = 1
+                break
+            else: continue
 
-while turno == 0:
-    comenzar = Dados(2)
-    print(f"Dado Jugador 1 ({Ejercitos_objetos[0].faccion}): {comenzar[0]}")
-    print(f"Dado Jugador 2 ({Ejercitos_objetos[1].faccion}): {comenzar[1]}")
-    if comenzar[0] > comenzar[1]:
-        print("Comienza el jugador 1")
-        turno = 0
-        break
-    if comenzar[0] < comenzar[1]:
-        print("Comienza el jugador 2")
-        turno = 1
-        break
-    else: continue
-    
 #Actua el jugador Ejercitos_objetos[turno%2]
 
 
