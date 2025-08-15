@@ -3,6 +3,18 @@ import json
 import blessed
 import sys
 
+#Función de dados
+def Dados(n_dados):
+    res_dados=[]
+    res_dados = [rand.randint(1, 6) for _ in range(1, (n_dados+1))]
+    return res_dados
+
+StatsTx = ["Movimiento", "Resistencia", "Salvación",
+           "Heridas", "Liderazgo", "Control de objetivo"]   #Nombre de las stats de las miniaturas
+
+ArmaTx = ["Nombre", "Alcance", "No. de Ataques",
+          "Habilidad", "Fuerza", "Perforación", "Daño"] #Nombre de las stats de las armas
+
 #Inicializar ventana
 term = blessed.Terminal()
 
@@ -16,7 +28,7 @@ DISPONIBLE = [
 Ejercitos_diccionarios = [] #Diccionarios provenientes de los JSON
 
 limite = 0 
-##Solicitar al usuario limite de rondas
+##Elegir ejercitos
 Indice_ejercito = 0
 with term.fullscreen(), term.cbreak(), term.hidden_cursor():
     while True:
@@ -61,18 +73,6 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
         else:
             print(f"\nLa tecla presionada '{tecla}' es invalida")
             term.inkey()
-
-#Función de dados
-def Dados(n_dados):
-    res_dados=[]
-    res_dados = [rand.randint(1, 6) for _ in range(1, (n_dados+1))]
-    return res_dados
-
-StatsTx = ["Movimiento", "Resistencia", "Salvación",
-           "Heridas", "Liderazgo", "Control de objetivo"]   #Nombre de las stats de las miniaturas
-
-ArmaTx = ["Nombre", "Alcance", "No. de Ataques",
-          "Habilidad", "Fuerza", "Perforación", "Daño"] #Nombre de las stats de las armas
     
 class Individuo:
     def __init__(self, diccionario):
@@ -138,7 +138,7 @@ for d in Ejercitos_diccionarios:    #iterar por lista de diccionarios
             if isinstance(vu, dict):    #Determinar si el objeto es un subdiccionario
                 Ejercitos_objetos[i].unidades.append(Unidad(vu))    #Crear el objeto unidad y añadirlo a un ejercito
                 for cm, vm in vu.items():   #Iterar por el subdiccionario
-                    if isinstance(vm, dict):    #Determinar si el objeto es un subsubdiccionario 
+                    if isinstance(vm, dict) and cm != 'Habilidades':    #Determinar si el objeto es un subsubdiccionario 
                         Ejercitos_objetos[i].unidades[j].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad
                 j += 1
         i += 1
@@ -168,6 +168,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
 #Actua el jugador Ejercitos_objetos[turno%2]
 
 
+##Bucle de partida
 
 def disparo(unidad, blanco):
     ##SI
