@@ -2,6 +2,7 @@ import random as rand
 import json
 import blessed
 import sys
+import time
 
 #Función de dados
 def Dados(n_dados):
@@ -27,19 +28,19 @@ DISPONIBLE = [
 
 Ejercitos_diccionarios = [] #Diccionarios provenientes de los JSON
 
-limite = 0 
 ##Elegir ejercitos
 Indice_ejercito = 0
 with term.fullscreen(), term.cbreak(), term.hidden_cursor():
     while True:
         print(term.home + term.clear)
-        print(term.underline('Elige un ejercito: \n'))
+        print(term.on_black)
+        print(term.springgreen4_on_black("Elige un ejercito:\n"))
     
         for i, opcion in enumerate(DISPONIBLE):    #Crear lista de opciones
             if i == Indice_ejercito:
-                print(term.black_on_white(f"{i+1}.- {opcion}"))
+                print(term.black_on_springgreen4(f"{i+1}. {opcion}"))
             else:
-                print(term.white_on_black(f"{i+1}.- {opcion}"))
+                print(term.springgreen4_on_black(f"{i+1}. {opcion}"))
     
         tecla = term.inkey()
     
@@ -53,7 +54,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
             if Indice_ejercito == len(DISPONIBLE) - 1:
                 sys.exit()
             else:
-                print(f"\nElegiste {DISPONIBLE[Indice_ejercito]}")
+                print(term.springgreen4_on_black(f"\nElegiste {DISPONIBLE[Indice_ejercito]}"))
                 #Constructor de unidades 
                 match (Indice_ejercito%len(DISPONIBLE)):
                     case 0:
@@ -71,9 +72,45 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                         else: term.inkey()
                     
         else:
-            print(f"\nLa tecla presionada '{tecla}' es invalida")
+            print(term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
             term.inkey()
+
+##Establecer limite de rondas
+limite = 0
+CadenaIngreso = ''
+with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+    time.sleep(1)
+    print(term.home + term.clear)
+    print(term.springgreen4_on_black("Ingrese el limite de rondas"))
     
+    while True:
+        
+        tecla = term.inkey()
+        
+        if tecla and (tecla.is_sequence == False):
+            CadenaIngreso += tecla
+            print(term.move_x(0), end='')
+            print(term.springgreen4_on_black(f"{CadenaIngreso}"), end='', flush=True)
+            continue
+        
+        elif tecla.name == "KEY_ENTER":
+            print(term.springgreen4_on_black(f"\nIngresaste: {CadenaIngreso}"))
+            print(term.springgreen4_on_black("\nPresiona ENTER para continuar"))
+            print(term.springgreen4_on_black("\nPresiona cualquier tecla para reintentar"))
+            
+            tecla = term.inkey()
+            
+            if tecla.name == "KEY_ENTER" or tecla == '\n':
+                limite = int(CadenaIngreso)
+                break
+            else:
+                CadenaIngreso = ''
+                print(term.home + term.clear)
+                print(term.on_black)
+                print(term.springgreen4_on_black("Ingrese el limite de rondas"))
+                continue
+
+##Clases
 class Individuo:
     def __init__(self, diccionario):
         self.nombre = diccionario.get("Nombre")    #Nombre de la miniatura
@@ -89,7 +126,7 @@ class Individuo:
 
     def recibir_dano(self, dano):
         self.dmg += dano
-        if self.dmg >= self.stats_base[3]:  # Si daño >= heridas
+        if self.dmg >= self.stats_base["Heridas"]:  # Si daño >= heridas
             self.vivo = False
             print(f"{self.nombre} ha muerto.")
 
@@ -138,7 +175,7 @@ for d in Ejercitos_diccionarios:    #iterar por lista de diccionarios
             if isinstance(vu, dict):    #Determinar si el objeto es un subdiccionario
                 Ejercitos_objetos[i].unidades.append(Unidad(vu))    #Crear el objeto unidad y añadirlo a un ejercito
                 for cm, vm in vu.items():   #Iterar por el subdiccionario
-                    if isinstance(vm, dict) and cm != 'Habilidades':    #Determinar si el objeto es un subsubdiccionario 
+                    if isinstance(vm, dict) and cm != 'Habilidades':    #Determinar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
                         Ejercitos_objetos[i].unidades[j].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad
                 j += 1
         i += 1
@@ -150,36 +187,38 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
         
         while turno == 0:
             print(term.home + term.clear)
-            print(term.underline('Determinando los turnos'))
+            print(term.on_black)
+            print(term.springgreen4_on_black("Determinando los turnos"))
         
             comenzar = Dados(2)
-            print(term.white_on_black(f"Dado Jugador 1 ({Ejercitos_objetos[0].faccion}): {comenzar[0]}"))
-            print(term.white_on_black(f"Dado Jugador 2 ({Ejercitos_objetos[1].faccion}): {comenzar[1]}"))
+            print(term.springgreen4_on_black(f"Dado Jugador 1 ({Ejercitos_objetos[0].faccion}): {comenzar[0]}"))
+            print(term.springgreen4_on_black(f"Dado Jugador 2 ({Ejercitos_objetos[1].faccion}): {comenzar[1]}"))
             if comenzar[0] > comenzar[1]:
-                print(term.underline('Comienza el jugador 1'))
+                print(term.springgreen4_on_black("\nComienza el jugador 1"))
                 turno = 0
                 break
             if comenzar[0] < comenzar[1]:
-                print(term.underline('Comienza el jugador 2'))
+                print(term.springgreen4_on_black("\nComienza el jugador 2"))
                 turno = 1
                 break
             else: continue
 
 #Actua el jugador Ejercitos_objetos[turno%2]
 
-
 ##Bucle de partida
 
+##Funciones estandar
 def disparo(unidad, blanco):
     ##SI
     print(f"La {unidad} va a tronarse a {blanco}")
 
+##Estratagemas
 def overwatch(unidad, blanco):
-    if (unidades[-2])>=1:
-        print(f"La {unidad[0]} va a disparar a {blanco[0]} usando el estratagema 'overwatch'")
+    if (unidad.atk)>=1:
+        print(f"{unidad.nombre} va a disparar a {blanco.nombre} usando el estratagema 'overwatch'")
         disparo(unidad, blanco)
     else: print("Tu ere pobre tu no tiene aifon")
-    unidades[-2]-=2
+    unidad.atk-=2
 
 def granadas(unidad, blanco):
     for i in unidad:
@@ -187,5 +226,3 @@ def granadas(unidad, blanco):
             ##disparo() modificado
             disparo(unidad, blanco)
              
-
-##overwatch(unidades, contra)

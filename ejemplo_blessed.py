@@ -15,13 +15,14 @@ def display_menu():
     with term.fullscreen(), term.cbreak(), term.hidden_cursor():
         while True:
             print(term.home + term.clear)  # Limpia pantalla
-            print(term.underline("Pick an option:\n"))
+            print(term.on_black)
+            print(term.springgreen4_on_black("Pick an option:\n"))
 
             for i, option in enumerate(MENU_OPTIONS):
                 if i == selectedIndex:
-                    print(term.black_on_white(f"{i+1}. {option}"))
+                    print(term.black_on_springgreen4(f"{i+1}. {option}"))
                 else:
-                    print(term.white_on_black(f"{i+1}. {option}"))
+                    print(term.springgreen4_on_black(f"{i+1}. {option}"))
 
             key = term.inkey()
 
@@ -34,11 +35,11 @@ def display_menu():
             elif key.name == "KEY_ENTER" or key == '\n':
                 if selectedIndex == len(MENU_OPTIONS) - 1:
                     break
-                print(f"\nYou chose {MENU_OPTIONS[selectedIndex]}")
+                print(term.springgreen4_on_black(f"\nYou chose {MENU_OPTIONS[selectedIndex]}"))
                 term.inkey()  # Espera tecla
 
             else:
-                print(f"\nThe pressed key '{key}' is not associated with a menu function.")
+                print(term.springgreen4_on_black(f"\nThe pressed key '{key}' is not associated with a menu function."))
                 term.inkey()  # Espera tecla
 
 
