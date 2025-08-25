@@ -5,9 +5,9 @@ import sys
 import time
 
 #Función de dados
-def Dados(n_dados):
+def Dados(n_dados, Dx):
     res_dados=[]
-    res_dados = [rand.randint(1, 6) for _ in range(1, (n_dados+1))]
+    res_dados = [rand.randint(1, Dx) for _ in range(1, (n_dados+1))]
     return res_dados
 
 StatsTx = ["Movimiento", "Resistencia", "Salvación",
@@ -138,6 +138,7 @@ class Unidad:
     def __init__(self, diccionario):
         self.mov = 0
         self.atk = 0
+        self.engaged = False
         self.shock = False
         self.miembros = []
         self.nombre = diccionario.get("Nombre")
@@ -149,7 +150,7 @@ class Unidad:
     def eliminar_muertos(self):
         self.miembros = [
             Individuo for mini in self.miembros if Individuo.vivo == False]
-
+    
     def __repr__(self):
         return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros)
 
@@ -161,6 +162,11 @@ class Ejercito:
         self.nu = diccionario.get('Numero Unidades')
         self.unidades = []
 
+    def eliminar_unidades(self):
+        self.unidades =[
+            Unidad for uni in self.unidades if any in Unidad.miembros
+        ]
+    
     def __repr__(self):
         return f"{self.faccion}:\n" + "\n".join(str(unidad) for unidad in self.unidades)
 
@@ -190,7 +196,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
             print(term.on_black)
             print(term.springgreen4_on_black("Determinando los turnos"))
         
-            comenzar = Dados(2)
+            comenzar = Dados(2, 6)
             print(term.springgreen4_on_black(f"Dado Jugador 1 ({Ejercitos_objetos[0].faccion}): {comenzar[0]}"))
             print(term.springgreen4_on_black(f"Dado Jugador 2 ({Ejercitos_objetos[1].faccion}): {comenzar[1]}"))
             if comenzar[0] > comenzar[1]:
@@ -205,12 +211,76 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
 
 #Actua el jugador Ejercitos_objetos[turno%2]
 
-##Bucle de partida
+##Combatir con regla "Pelea primero" v1 (sistema dos colas)
+primero = []
+segundo = []
+for i in Ejercitos_objetos[turno%2].unidades:
+    if "Tem Pelea Primero" in i.habilidades or "Pelea Primero" in i.habilidades:
+        primero.append(i)
+    else:
+        segundo.append(i)
+        
+for i in primero:
+    combate(i, blanco)
+for i in segundo:
+    combate(i, blanco)
+
+##Combatir con regla "Pelea primero" v3 (ordenar)
+'''
+for i in Ejercitos_objetos[turno%2].unidades:
+    if "Tem Pelea Primero" in i.habilidades or "Pelea Primero" in i.habilidades:
+        aux = Ejercitos_objetos[turno%2].unidades.pop(i)
+        Ejercitos_objetos[turno%2].unidades.insert(aux, 0)
+        
+for j in Ejercitos_objetos[turno%2].unidades:
+    combate(i, blanco)
+'''
 
 ##Funciones estandar
+def aumentar_PC():
+    for i in Ejercitos_objetos:
+        i.pc += 1
+
 def disparo(unidad, blanco):
     ##SI
-    print(f"La {unidad} va a tronarse a {blanco}")
+    print(f"La {unidad.nombre} va a tronarse a {blanco.nombre}")
+
+def combate(unidad, blanco):
+    if unidad.engaged:
+        print(f"La {unidad.nombre} va a tronarse a {blanco.nombre}")
+        if unidad.habilidades[-1] == "Tem Pelea Primero":
+            unidad.habilidades.remove("Tem Pelea Primero")
+        blanco.eliminar_muertos()
+
+def estatico(unidad):
+    print(f"La unidad {unidad.nombre} se quedara estatica")
+    unidad.mov -= 1
+    
+def normal(unidad):
+    print(f"La unidad se moverá hasta {unidad.miembros[0].stats_base["Movimiento"]}")
+    unidad.mov -= 1
+    
+def avance(unidad):
+    temp = Dados(1, 6)
+    print(f"1D6: {temp}")
+    print(f"La unidad avanzará hasta {unidad.miembros[0].stats_base["Movimiento"]}'' + {temp}'' ")
+    unidad.mov -= 2
+    
+def carga(unidad):
+    dis = int(input(f"Ingrese la distancia entre la unidad {unidad.nombre} y la unidad objetivo"))
+    d = Dados(2, 6)
+    print(f"2D6: {d} = {d[0]+d[1]}")
+    if (d[0]+d[1])<dis:
+        print(f"La unidad {unidad.nombre} ha fallado la carga!")
+        unidad.mov -= 1
+        unidad.atk -= 1
+    else:
+        print(f"La unidad ha cargado con exito!")
+        unidad.mov -= 1
+        unidad.atk -= 1
+        unidad.habilidades.append["Tem Pelea Primero"]
+        unidad.engaged = True
+
 
 ##Estratagemas
 def overwatch(unidad, blanco):
@@ -226,3 +296,81 @@ def granadas(unidad, blanco):
             ##disparo() modificado
             disparo(unidad, blanco)
              
+##BUCLE DE PARTIDA
+
+MOVIMIENTO_T = [
+    'Movimiento normal',
+    'Estatico',
+    'Avance'
+]
+
+MOVIMIENTO_F = [
+    normal(),
+    estatico(),
+    avance()
+]
+
+##Función menu
+def Menu_mov(unidad):
+    Indice = 0
+    with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+        while True:
+            print(term.home + term.clear)
+            print(term.on_black)
+            print(term.springgreen4_on_black(f"Elige una acción para realizar con {unidad} \n"))
+    
+            for i, opcion in enumerate(MOVIMIENTO_T):    #Crear lista de opciones
+                if i == Indice:
+                    print(term.black_on_springgreen4(f"{i+1}. {opcion}"))
+                else:
+                    print(term.springgreen4_on_black(f"{i+1}. {opcion}"))
+    
+            tecla = term.inkey()
+    
+            if tecla.name in ("KEY_UP", "KEY_LEFT"):
+                Indice = (Indice - 1 + len(MOVIMIENTO_T)) % len(MOVIMIENTO_T)
+        
+            elif tecla.name in ("KEY_DOWN", "KEY_RIGHT"):
+                Indice = (Indice + 1 + len(MOVIMIENTO_T)) % len(MOVIMIENTO_T)
+            
+            elif tecla.name == "KEY_ENTER" or tecla == '\n':
+                if Indice == len(MOVIMIENTO_T) - 1:
+                    ##menu anterior
+                    continue
+    
+                else:
+                    print(term.springgreen4_on_black(f"\nElegiste {MOVIMIENTO_T[Indice]}"))
+                    conf_usr(MOVIMIENTO_F, Indice, unidad)
+                
+                        
+                    
+            else:
+                print(term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
+                term.inkey()
+
+##Funcion confirmación
+def conf_usr(lista_F, indice_F, p1, p2 = None):
+    with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+        print(term.home + term.clear)
+    
+        while True:
+        
+            tecla = term.inkey()
+        
+            if tecla.name == "KEY_ENTER":
+                print(term.springgreen4_on_black(f"\nIngresaste: {str(lista_F[indice_F])}"))
+                print(term.springgreen4_on_black("\nPresiona ENTER para continuar"))
+                print(term.springgreen4_on_black("\nPresiona cualquier tecla para regresar"))
+            
+                tecla = term.inkey()
+            
+                if tecla.name == "KEY_ENTER" or tecla == '\n':
+                    ##Hacer algo
+                    lista_F[indice_F](p1, p2 if p2 else None)
+                    break
+                else:
+                    print(term.home + term.clear)
+                    print(term.on_black)
+                    print(term.springgreen4_on_black("Regresando..."))
+                    time.sleep(1.5)
+                    break
