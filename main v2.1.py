@@ -52,14 +52,14 @@ with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
                 #Constructor de unidades 
                 match (Indice_ejercito%len(DISPONIBLE)):
                     case 0:
-                        with open('Ty_patrol.json', 'r') as file:
+                        with open('Ejercitos/Ty_patrol.json', 'r') as file:
                             Ejercitos_diccionarios.append(json.load(file))
                         if len(Ejercitos_diccionarios) == 2:
                             break
                         else: Term.inkey()
                     
                     case 1:
-                        with open('UM_patrol.json', 'r') as file:
+                        with open('Ejercitos/UM_patrol.json', 'r') as file:
                             Ejercitos_diccionarios.append(json.load(file))
                         if len(Ejercitos_diccionarios)  == 2:
                             break
@@ -169,18 +169,18 @@ Ejercitos_objetos =[]   #Lista donde se guardaran los ejercitos convertidos en o
 i = 0
 for d in Ejercitos_diccionarios:    #iterar por lista de diccionarios
     j = 0
-    if isinstance(d, dict):     #DeTerminar si el objeto es un diccionario
+    if isinstance(d, dict):     #Determinar si el objeto es un diccionario
         Ejercitos_objetos.append(Ejercito(d))   #Crear el objeto ejercito
         for cu, vu in d.items():    #iterar por diccionario
-            if isinstance(vu, dict):    #DeTerminar si el objeto es un subdiccionario
+            if isinstance(vu, dict):    #Determinar si el objeto es un subdiccionario
                 Ejercitos_objetos[i].unidades.append(Unidad(vu))    #Crear el objeto unidad y añadirlo a un ejercito
                 for cm, vm in vu.items():   #Iterar por el subdiccionario
-                    if isinstance(vm, dict) and cm != 'Habilidades':    #DeTerminar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
+                    if isinstance(vm, dict) and cm != 'Habilidades':    #Determinar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
                         Ejercitos_objetos[i].unidades[j].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad
                 j += 1
         i += 1
 
-#DeTerminar turno
+#Determinar turno
 turno = 0
 with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
     while True:
@@ -188,7 +188,7 @@ with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
         while turno == 0:
             print(Term.home + Term.clear)
             print(Term.on_black)
-            print(Term.springgreen4_on_black("DeTerminando los turnos"))
+            print(Term.springgreen4_on_black("Determinando los turnos"))
         
             comenzar = Dados(2, 6)
             print(Term.springgreen4_on_black(f"Dado Jugador 1 ({Ejercitos_objetos[0].faccion}): {comenzar[0]}"))
