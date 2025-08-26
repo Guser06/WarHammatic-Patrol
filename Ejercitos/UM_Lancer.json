@@ -1,0 +1,563 @@
+{
+    "u1": {
+        "Nombre": "Capitan en armadura exterminador",
+        "Lider": null,
+        "Numero Miniaturas": 1,
+        "Habilidades": {
+            "Valor imparable": null,
+            "Ritos de batalla": null,
+            "Invulnerable": 4
+            },
+        "Claves": [
+            "Personaje",
+            "Infanteria",
+            "Capitan",
+            "Imperio",
+            "Exterminador"
+            ],
+        "m1": {
+            "Nombre": "Capitan en armadura exterminador",
+            "Stats": [
+                5, 5, 2, 6, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Bolter tormenta",
+                "stats": [
+                    24, 2, 2, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Fuego Rapido": 2                
+                    }
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Arma reliquia",
+                "stats": [
+                    0, 6, 2, 5, 2, 2
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+
+    "u2": {
+        "Nombre": "Bibliotecario en armadura exterminador",
+        "Lider": null,
+        "Numero Miniaturas": 1,
+        "Habilidades": {
+            "Velo de tiempo": null,
+            "Capucha psiquica": null,
+            "Invulnerable": 4
+            },
+        "Claves": [
+            "Personaje",
+            "Infanteria",
+            "Imperio",
+            "Psiquico",
+            "Exterminador",
+            "Bibliotecario"
+            ],
+        "m1": {
+            "Nombre": "Bibliotecario en armadura exterminador",
+            "Stats": [
+                5, 5, 2, 5, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Castigo-Fuego brujo",
+                "stats": [
+                    24, "D6", 3, 5, 1, "D3"
+                    ],
+                "Claves": {
+                    "Psiquico": null,
+                    "Eleccion": null                
+                    }
+                },
+            "Rango2": {
+                "Nombre": "Castigo-Fuego brujo enfocado",
+                "stats": [
+                    24, "D6", 3, 6, 2, "D3"
+                    ],
+                "Claves": {
+                    "Heridas devastadoras": null,
+                    "Riesgoso": null,
+                    "Psiquico": null
+                    }
+                },
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Arma de psicofuerza",
+                "stats": [
+                    0, 4, 3, 6, -1, "D3"
+                    ],
+                "Claves": {
+                    "Psiquico": null 
+                    }
+                },
+            "Mele2": null
+            }
+        },
+
+    "u3": {
+        "Nombre": "Escuadra infernus",
+        "Lider": [
+            "Anciano",
+            "Apotecario",
+            "Capitan",
+            "Capellan",
+            "Judiciar",
+            "Bibliotecario",
+            "Teniente"
+            ],
+        "Numero Miniaturas": 5,
+        "Habilidades": {
+            "Terror incendiario": null
+            },
+        "Claves": [
+            "Infanteria",
+            "Granadas",
+            "Imperio",
+            "Tacticus",
+            "Escuadra infernus"
+            ],
+
+        "m1": {
+            "Nombre": "Sargento infernus",
+            "Stats": [
+                6, 4, 3, 2, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Pyroblaster",
+                "stats": [
+                    12, "D6", 0, 5, 1, 1
+                    ],
+                "Claves": {
+                    "Ignora cobertura": null                
+                    }
+                },
+            "Rango2": {
+                "Nombre": "Pistola bolter",
+                "stats": [
+                    12, 1, 3, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Pistola": null                
+                    }
+                },
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Arma de combate cercano",
+                "stats": [
+                    0, 3, 3, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m2": {
+            "Nombre": "Marine infernus",
+            "Stats": [
+                6, 4, 3, 2, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Pyroblaster",
+                "stats": [
+                    12, "D6", 0, 5, 1, 1
+                    ],
+                "Claves": {
+                    "Ignora cobertura": null                
+                    }
+                },
+            "Rango2": {
+                "Nombre": "Pistola bolter",
+                "stats": [
+                    12, 1, 3, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Pistola": null                
+                    }
+                },
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Arma de combate cercano",
+                "stats": [
+                    0, 3, 3, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m3": {
+            "Nombre": "Marine infernus",
+            "Stats": [
+                6, 4, 3, 2, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Pyroblaster",
+                "stats": [
+                    12, "D6", 0, 5, 1, 1
+                    ],
+                "Claves": {
+                    "Ignora cobertura": null                
+                    }
+                },
+            "Rango2": {
+                "Nombre": "Pistola bolter",
+                "stats": [
+                    12, 1, 3, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Pistola": null                
+                    }
+                },
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Arma de combate cercano",
+                "stats": [
+                    0, 3, 3, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m4": {
+            "Nombre": "Marine infernus",
+            "Stats": [
+                6, 4, 3, 2, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Pyroblaster",
+                "stats": [
+                    12, "D6", 0, 5, 1, 1
+                    ],
+                "Claves": {
+                    "Ignora cobertura": null                
+                    }
+                },
+            "Rango2": {
+                "Nombre": "Pistola bolter",
+                "stats": [
+                    12, 1, 3, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Pistola": null                
+                    }
+                },
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Arma de combate cercano",
+                "stats": [
+                    0, 3, 3, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m5": {
+            "Nombre": "Marine infernus",
+            "Stats": [
+                6, 4, 3, 2, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Pyroblaster",
+                "stats": [
+                    12, "D6", 0, 5, 1, 1
+                    ],
+                "Claves": {
+                    "Ignora cobertura": null                
+                    }
+                },
+            "Rango2": {
+                "Nombre": "Pistola bolter",
+                "stats": [
+                    12, 1, 3, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Pistola": null               
+                    }
+                },
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Arma de combate cercano",
+                "stats": [
+                    0, 3, 3, 4, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+
+    "u4": {
+        "Nombre": "Escuadra de exterminadores",
+        "Lider": [
+            "Anciano en armadura de exterminador",
+            "Capitan en armadura de exterminador",
+            "Capellan en armadura de exterminador",
+            "Bibliotecario en armadura de exterminador"
+            ],
+        "Numero Miniaturas": 5,
+        "Habilidades": {
+            "Baliza de teletransporte": null,
+            "Furia de los primeros": null,
+            "Invulnerable": 4
+            },
+        "Claves": [
+            "Infanteria",
+            "Imperio",
+            "Exterminador",
+            "Escuadra de exterminadores"
+            ],
+        "m1": {
+            "Nombre": "Sargento en armadura exterminador",
+            "Stats": [
+                5, 5, 2, 3, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Bolter tormenta",
+                "stats": [
+                    24, 2, 3, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Fuego Rapido": 2             
+                    }
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Arma de energia",
+                "stats": [
+                    0, 4, 3, 5, 2, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m2": {
+            "Nombre": "Exterminador",
+            "Stats": [
+                5, 5, 2, 3, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Cañon de asalto",
+                "stats": [
+                    24, 6, 3, 6, 0, 1
+                    ],
+                "Claves": {
+                    "Heridas devastadoras": null                
+                    }
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Puño de energia",
+                "stats": [
+                    0, 3, 3, 8, 2, 2
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m3": {
+            "Nombre": "Exterminador",
+            "Stats": [
+                5, 5, 2, 3, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Bolter tormenta",
+                "stats": [
+                    24, 2, 3, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Fuego Rapido": 2                
+                    }
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Puño de energia",
+                "stats": [
+                    0, 3, 3, 8, 2, 2
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m4": {
+            "Nombre": "Exterminador",
+            "Stats": [
+                5, 5, 2, 3, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Bolter tormenta",
+                "stats": [
+                    24, 2, 3, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Fuego Rapido": 2                
+                    }
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Puño de energia",
+                "stats": [
+                    0, 3, 3, 8, 2, 2
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+
+        "m5": {
+            "Nombre": "Exterminador",
+            "Stats": [
+                5, 5, 2, 3, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Bolter tormenta",
+                "stats": [
+                    24, 2, 3, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Fuego Rapido": 2                
+                    }
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Puño de energia",
+                "stats": [
+                    0, 3, 3, 8, 2, 2
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+
+    "u5": {
+        "Nombre": "Gladiator Lancer",
+        "Lider": null,
+        "Numero Miniaturas": 1,
+        "Habilidades": {
+            "Aquilon Optics": null
+            },
+        "Claves": [
+            "Vehiculo",
+            "Humo",
+            "Imperio",
+            "Gladiator Lancer"
+            ],
+        "m1": {
+            "Nombre": "Gladiator Lancer",
+            "Stats": [
+                10, 10, 3, 12, 6, 3
+                ],
+            "Rango1": {
+                "Nombre": "Bolter tormenta",
+                "stats": [
+                    24, 4, 2, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Fuego Rapido": 4                
+                    }
+                },
+            "Rango2": {
+                "Nombre": "Lanzacohetes Icarus",
+                "stats": [
+                    24, "D3", 3, 8, 1, 2
+                    ],
+                "Claves": {
+                    "Anti": ["Volador", 2]                
+                    }
+                },
+            "Rango3": {
+                "Nombre": "Ametralladora pesada Ironhail",
+                "stats": [
+                    36, 3, 3, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Fuego Rapido": 3                
+                    }
+                },
+            "Rango4": {
+                "Nombre": "Destructor Laser Lancer",
+                "stats": [
+                    72, 2, 3, 14, 4, "D6+3"
+                    ],
+                "Claves": {
+                    "Pesado": null         
+                    }
+                },
+
+            "Mele1": {
+                "Nombre": "Caparazón Acorazado",
+                "stats": [
+                    0, 3, 4, 6, 0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+    
+    "Faccion": "Adeptus Astartes",
+    "Numero Unidades": 5
+}

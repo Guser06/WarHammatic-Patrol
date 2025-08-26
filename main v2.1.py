@@ -16,7 +16,9 @@ Term = blessed.Terminal()
 #Menú
 DISPONIBLE = [
     'Tyranidos v1',
+    'Tyrannofex',
     'Space Marines v1',
+    'Gladiator Lancer',
     'salir'
 ]
 
@@ -59,9 +61,23 @@ with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
                         else: Term.inkey()
                     
                     case 1:
+                        with open('Ejercitos/Ty_Tyrannofex.json', 'r') as file:
+                            Ejercitos_diccionarios.append(json.load(file))
+                        if len(Ejercitos_diccionarios) == 2:
+                            break
+                        else: Term.inkey()
+                    
+                    case 2:
                         with open('Ejercitos/UM_patrol.json', 'r') as file:
                             Ejercitos_diccionarios.append(json.load(file))
                         if len(Ejercitos_diccionarios)  == 2:
+                            break
+                        else: Term.inkey()
+                    
+                    case 3:
+                        with open('Ejercitos/UM_Lancer.json', 'r') as file:
+                            Ejercitos_diccionarios.append(json.load(file))
+                        if len(Ejercitos_diccionarios) == 2:
                             break
                         else: Term.inkey()
                     
@@ -214,9 +230,9 @@ MOVIMIENTO_T = [
 ]
 
 MOVIMIENTO_F = [
-    normal(),
-    estatico(),
-    avance()
+    normal,
+    estatico,
+    avance
 ]
 
 
