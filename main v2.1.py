@@ -1,14 +1,8 @@
-import random as rand
+from WHmmatic_lib import *
 import json
 import blessed
 import sys
 import time
-
-#Función de dados
-def Dados(n_dados, Dx):
-    res_dados=[]
-    res_dados = [rand.randint(1, Dx) for _ in range(1, (n_dados+1))]
-    return res_dados
 
 StatsTx = ["Movimiento", "Resistencia", "Salvación",
            "Heridas", "Liderazgo", "Control de objetivo"]   #Nombre de las stats de las miniaturas
@@ -17,7 +11,7 @@ ArmaTx = ["Nombre", "Alcance", "No. de Ataques",
           "Habilidad", "Fuerza", "Perforación", "Daño"] #Nombre de las stats de las armas
 
 #Inicializar ventana
-term = blessed.Terminal()
+Term = blessed.Terminal()
 
 #Menú
 DISPONIBLE = [
@@ -30,19 +24,19 @@ Ejercitos_diccionarios = [] #Diccionarios provenientes de los JSON
 
 ##Elegir ejercitos
 Indice_ejercito = 0
-with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
     while True:
-        print(term.home + term.clear)
-        print(term.on_black)
-        print(term.springgreen4_on_black("Elige un ejercito:\n"))
+        print(Term.home + Term.clear)
+        print(Term.on_black)
+        print(Term.springgreen4_on_black("Elige un ejercito:\n"))
     
         for i, opcion in enumerate(DISPONIBLE):    #Crear lista de opciones
             if i == Indice_ejercito:
-                print(term.black_on_springgreen4(f"{i+1}. {opcion}"))
+                print(Term.black_on_springgreen4(f"{i+1}. {opcion}"))
             else:
-                print(term.springgreen4_on_black(f"{i+1}. {opcion}"))
+                print(Term.springgreen4_on_black(f"{i+1}. {opcion}"))
     
-        tecla = term.inkey()
+        tecla = Term.inkey()
     
         if tecla.name in ("KEY_UP", "KEY_LEFT"):
             Indice_ejercito = (Indice_ejercito - 1 + len(DISPONIBLE)) % len(DISPONIBLE)
@@ -54,7 +48,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
             if Indice_ejercito == len(DISPONIBLE) - 1:
                 sys.exit()
             else:
-                print(term.springgreen4_on_black(f"\nElegiste {DISPONIBLE[Indice_ejercito]}"))
+                print(Term.springgreen4_on_black(f"\nElegiste {DISPONIBLE[Indice_ejercito]}"))
                 #Constructor de unidades 
                 match (Indice_ejercito%len(DISPONIBLE)):
                     case 0:
@@ -62,52 +56,52 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                             Ejercitos_diccionarios.append(json.load(file))
                         if len(Ejercitos_diccionarios) == 2:
                             break
-                        else: term.inkey()
+                        else: Term.inkey()
                     
                     case 1:
                         with open('UM_patrol.json', 'r') as file:
                             Ejercitos_diccionarios.append(json.load(file))
                         if len(Ejercitos_diccionarios)  == 2:
                             break
-                        else: term.inkey()
+                        else: Term.inkey()
                     
         else:
-            print(term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
-            term.inkey()
+            print(Term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
+            Term.inkey()
 
 ##Establecer limite de rondas
 limite = 0
 CadenaIngreso = ''
-with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
     time.sleep(1)
-    print(term.home + term.clear)
-    print(term.springgreen4_on_black("Ingrese el limite de rondas"))
+    print(Term.home + Term.clear)
+    print(Term.springgreen4_on_black("Ingrese el limite de rondas"))
     
     while True:
         
-        tecla = term.inkey()
+        tecla = Term.inkey()
         
         if tecla and (tecla.is_sequence == False):
             CadenaIngreso += tecla
-            print(term.move_x(0), end='')
-            print(term.springgreen4_on_black(f"{CadenaIngreso}"), end='', flush=True)
+            print(Term.move_x(0), end='')
+            print(Term.springgreen4_on_black(f"{CadenaIngreso}"), end='', flush=True)
             continue
         
         elif tecla.name == "KEY_ENTER":
-            print(term.springgreen4_on_black(f"\nIngresaste: {CadenaIngreso}"))
-            print(term.springgreen4_on_black("\nPresiona ENTER para continuar"))
-            print(term.springgreen4_on_black("\nPresiona cualquier tecla para reintentar"))
+            print(Term.springgreen4_on_black(f"\nIngresaste: {CadenaIngreso}"))
+            print(Term.springgreen4_on_black("\nPresiona ENTER para continuar"))
+            print(Term.springgreen4_on_black("\nPresiona cualquier tecla para reintentar"))
             
-            tecla = term.inkey()
+            tecla = Term.inkey()
             
             if tecla.name == "KEY_ENTER" or tecla == '\n':
                 limite = int(CadenaIngreso)
                 break
             else:
                 CadenaIngreso = ''
-                print(term.home + term.clear)
-                print(term.on_black)
-                print(term.springgreen4_on_black("Ingrese el limite de rondas"))
+                print(Term.home + Term.clear)
+                print(Term.on_black)
+                print(Term.springgreen4_on_black("Ingrese el limite de rondas"))
                 continue
 
 ##Clases
@@ -175,127 +169,42 @@ Ejercitos_objetos =[]   #Lista donde se guardaran los ejercitos convertidos en o
 i = 0
 for d in Ejercitos_diccionarios:    #iterar por lista de diccionarios
     j = 0
-    if isinstance(d, dict):     #Determinar si el objeto es un diccionario
+    if isinstance(d, dict):     #DeTerminar si el objeto es un diccionario
         Ejercitos_objetos.append(Ejercito(d))   #Crear el objeto ejercito
         for cu, vu in d.items():    #iterar por diccionario
-            if isinstance(vu, dict):    #Determinar si el objeto es un subdiccionario
+            if isinstance(vu, dict):    #DeTerminar si el objeto es un subdiccionario
                 Ejercitos_objetos[i].unidades.append(Unidad(vu))    #Crear el objeto unidad y añadirlo a un ejercito
                 for cm, vm in vu.items():   #Iterar por el subdiccionario
-                    if isinstance(vm, dict) and cm != 'Habilidades':    #Determinar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
+                    if isinstance(vm, dict) and cm != 'Habilidades':    #DeTerminar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
                         Ejercitos_objetos[i].unidades[j].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad
                 j += 1
         i += 1
 
-#Determinar turno
+#DeTerminar turno
 turno = 0
-with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
     while True:
         
         while turno == 0:
-            print(term.home + term.clear)
-            print(term.on_black)
-            print(term.springgreen4_on_black("Determinando los turnos"))
+            print(Term.home + Term.clear)
+            print(Term.on_black)
+            print(Term.springgreen4_on_black("DeTerminando los turnos"))
         
             comenzar = Dados(2, 6)
-            print(term.springgreen4_on_black(f"Dado Jugador 1 ({Ejercitos_objetos[0].faccion}): {comenzar[0]}"))
-            print(term.springgreen4_on_black(f"Dado Jugador 2 ({Ejercitos_objetos[1].faccion}): {comenzar[1]}"))
+            print(Term.springgreen4_on_black(f"Dado Jugador 1 ({Ejercitos_objetos[0].faccion}): {comenzar[0]}"))
+            print(Term.springgreen4_on_black(f"Dado Jugador 2 ({Ejercitos_objetos[1].faccion}): {comenzar[1]}"))
             if comenzar[0] > comenzar[1]:
-                print(term.springgreen4_on_black("\nComienza el jugador 1"))
+                print(Term.springgreen4_on_black("\nComienza el jugador 1"))
                 turno = 0
                 break
             if comenzar[0] < comenzar[1]:
-                print(term.springgreen4_on_black("\nComienza el jugador 2"))
+                print(Term.springgreen4_on_black("\nComienza el jugador 2"))
                 turno = 1
                 break
             else: continue
 
 #Actua el jugador Ejercitos_objetos[turno%2]
-
-##Combatir con regla "Pelea primero" v1 (sistema dos colas)
-primero = []
-segundo = []
-for i in Ejercitos_objetos[turno%2].unidades:
-    if "Tem Pelea Primero" in i.habilidades or "Pelea Primero" in i.habilidades:
-        primero.append(i)
-    else:
-        segundo.append(i)
         
-for i in primero:
-    combate(i, blanco)
-for i in segundo:
-    combate(i, blanco)
-
-##Combatir con regla "Pelea primero" v3 (ordenar)
-'''
-for i in Ejercitos_objetos[turno%2].unidades:
-    if "Tem Pelea Primero" in i.habilidades or "Pelea Primero" in i.habilidades:
-        aux = Ejercitos_objetos[turno%2].unidades.pop(i)
-        Ejercitos_objetos[turno%2].unidades.insert(aux, 0)
-        
-for j in Ejercitos_objetos[turno%2].unidades:
-    combate(i, blanco)
-'''
-
-##Funciones estandar
-def aumentar_PC():
-    for i in Ejercitos_objetos:
-        i.pc += 1
-
-def disparo(unidad, blanco):
-    ##SI
-    print(f"La {unidad.nombre} va a tronarse a {blanco.nombre}")
-
-def combate(unidad, blanco):
-    if unidad.engaged:
-        print(f"La {unidad.nombre} va a tronarse a {blanco.nombre}")
-        if unidad.habilidades[-1] == "Tem Pelea Primero":
-            unidad.habilidades.remove("Tem Pelea Primero")
-        blanco.eliminar_muertos()
-
-def estatico(unidad):
-    print(f"La unidad {unidad.nombre} se quedara estatica")
-    unidad.mov -= 1
-    
-def normal(unidad):
-    print(f"La unidad se moverá hasta {unidad.miembros[0].stats_base["Movimiento"]}")
-    unidad.mov -= 1
-    
-def avance(unidad):
-    temp = Dados(1, 6)
-    print(f"1D6: {temp}")
-    print(f"La unidad avanzará hasta {unidad.miembros[0].stats_base["Movimiento"]}'' + {temp}'' ")
-    unidad.mov -= 2
-    
-def carga(unidad):
-    dis = int(input(f"Ingrese la distancia entre la unidad {unidad.nombre} y la unidad objetivo"))
-    d = Dados(2, 6)
-    print(f"2D6: {d} = {d[0]+d[1]}")
-    if (d[0]+d[1])<dis:
-        print(f"La unidad {unidad.nombre} ha fallado la carga!")
-        unidad.mov -= 1
-        unidad.atk -= 1
-    else:
-        print(f"La unidad ha cargado con exito!")
-        unidad.mov -= 1
-        unidad.atk -= 1
-        unidad.habilidades.append["Tem Pelea Primero"]
-        unidad.engaged = True
-
-
-##Estratagemas
-def overwatch(unidad, blanco):
-    if (unidad.atk)>=1:
-        print(f"{unidad.nombre} va a disparar a {blanco.nombre} usando el estratagema 'overwatch'")
-        disparo(unidad, blanco)
-    else: print("Tu ere pobre tu no tiene aifon")
-    unidad.atk-=2
-
-def granadas(unidad, blanco):
-    for i in unidad:
-        if (any("granadas") in unidad.claves):
-            ##disparo() modificado
-            disparo(unidad, blanco)
-             
 ##BUCLE DE PARTIDA
 
 MOVIMIENTO_T = [
@@ -310,67 +219,5 @@ MOVIMIENTO_F = [
     avance()
 ]
 
-##Función menu
-def Menu_mov(unidad):
-    Indice = 0
-    with term.fullscreen(), term.cbreak(), term.hidden_cursor():
-        while True:
-            print(term.home + term.clear)
-            print(term.on_black)
-            print(term.springgreen4_on_black(f"Elige una acción para realizar con {unidad} \n"))
-    
-            for i, opcion in enumerate(MOVIMIENTO_T):    #Crear lista de opciones
-                if i == Indice:
-                    print(term.black_on_springgreen4(f"{i+1}. {opcion}"))
-                else:
-                    print(term.springgreen4_on_black(f"{i+1}. {opcion}"))
-    
-            tecla = term.inkey()
-    
-            if tecla.name in ("KEY_UP", "KEY_LEFT"):
-                Indice = (Indice - 1 + len(MOVIMIENTO_T)) % len(MOVIMIENTO_T)
-        
-            elif tecla.name in ("KEY_DOWN", "KEY_RIGHT"):
-                Indice = (Indice + 1 + len(MOVIMIENTO_T)) % len(MOVIMIENTO_T)
-            
-            elif tecla.name == "KEY_ENTER" or tecla == '\n':
-                if Indice == len(MOVIMIENTO_T) - 1:
-                    ##menu anterior
-                    continue
-    
-                else:
-                    print(term.springgreen4_on_black(f"\nElegiste {MOVIMIENTO_T[Indice]}"))
-                    conf_usr(MOVIMIENTO_F, Indice, unidad)
-                
-                        
-                    
-            else:
-                print(term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
-                term.inkey()
 
-##Funcion confirmación
-def conf_usr(lista_F, indice_F, p1, p2 = None):
-    with term.fullscreen(), term.cbreak(), term.hidden_cursor():
-        print(term.home + term.clear)
-    
-        while True:
-        
-            tecla = term.inkey()
-        
-            if tecla.name == "KEY_ENTER":
-                print(term.springgreen4_on_black(f"\nIngresaste: {str(lista_F[indice_F])}"))
-                print(term.springgreen4_on_black("\nPresiona ENTER para continuar"))
-                print(term.springgreen4_on_black("\nPresiona cualquier tecla para regresar"))
-            
-                tecla = term.inkey()
-            
-                if tecla.name == "KEY_ENTER" or tecla == '\n':
-                    ##Hacer algo
-                    lista_F[indice_F](p1, p2 if p2 else None)
-                    break
-                else:
-                    print(term.home + term.clear)
-                    print(term.on_black)
-                    print(term.springgreen4_on_black("Regresando..."))
-                    time.sleep(1.5)
-                    break
+combate(Pelea_Primero(Ejercitos_objetos[turno%2]), Selec_Blanco(Term, 'Combate', Ejercitos_objetos[(turno%2)-1]))
