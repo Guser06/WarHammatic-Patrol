@@ -162,7 +162,7 @@ class Unidad:
             Individuo for mini in self.miembros if Individuo.vivo == False]
     
     def __repr__(self):
-        return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros)
+        return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros + "\n".join("Acobardado") if self.shock == True)
 
 class Ejercito:
     def __init__(self, diccionario):
@@ -180,7 +180,7 @@ class Ejercito:
     def __repr__(self):
         return f"{self.faccion}:\n" + "\n".join(str(unidad) for unidad in self.unidades)
 
-Ejercitos_objetos =[]   #Lista donde se guardaran los ejercitos convertidos en objetos de Python
+Ejercitos_objetos = []   #Lista donde se guardaran los ejercitos convertidos en objetos de Python
 
 i = 0
 for d in Ejercitos_diccionarios:    #iterar por lista de diccionarios
@@ -235,5 +235,17 @@ MOVIMIENTO_F = [
     avance
 ]
 
+while turno/2 < limite:
+    Aumentar_PC(Ejercitos_objetos)
+    for u in Ejercitos_objetos[turno%2]:
+        Shock_Test(u)
+    
+    for unidad in Ejercitos_objetos[turno%2]:
+        Menu(unidad, MOVIMIENTO_T, MOVIMIENTO_F, Term)
+    
+        
+    turno += 1
 
 combate(Pelea_Primero(Ejercitos_objetos[turno%2]), Selec_Blanco(Term, 'Combate', Ejercitos_objetos[(turno%2)-1]))
+
+    

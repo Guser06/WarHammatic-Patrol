@@ -18,45 +18,73 @@ def Dados(n_dados, Dx):     ##Numero de dados que se desean, Numero de caras del
 ##Funciones estandar
 
 ##Aumentar puntos de comando
-def aumentar_PC(Ejer_Obj):
+def Aumentar_PC(Ejer_Obj):
     for i in Ejer_Obj:
         i.pc += 1
 
-def disparo(unidad, blanco):
+def Shock_Test(unidad):
+    if len(unidad.miembros)<(unidad.nm/2) and (unidad.nm != 1):
+        mayor = 0
+        for mini in unidad.miembros:
+            if mini.stats_base.get("Liderazgo") > mayor:
+                mayor = mini.stats_base.get("Liderazgo")
+                
+        prueba = Dados(2, 6)
+        if (prueba[0]+prueba[1]) < mayor:   
+            unidad.shock = True
+            unidad.__repr__
+            return
+        
+        else:
+            return
+        
+    elif unidad.nm == 1 and unidad.miembros[0].dmg > unidad.miembros[0].stats_base.get("Heridas"):
+                
+        prueba = Dados(2, 6)
+        if (prueba[0]+prueba[1]) < unidad.miembros[0].stats_base.get("Liderazgo"):   
+            unidad.shock = True
+            unidad.__repr__
+            return
+        
+        else:
+            return
+    
+    
+def Disparo(unidad, blanco):
     ##SI
-    print(f"La {unidad.nombre} va a tronarse a {blanco.nombre}")
+    print(term.springgreen4_on_black(f"La {unidad.nombre} va a tronarse a {blanco.nombre}"))
 
-def combate(unidad, blanco):
+def Combate(unidad, blanco):
     if unidad.engaged:
-        print(f"La {unidad.nombre} va a tronarse a {blanco.nombre}")
+        print(term.springgreen4_on_black(f"La {unidad.nombre} va a tronarse a {blanco.nombre}"))
         if "Tem Pelea Primero" in unidad.habilidades:
             unidad.habilidades.remove("Tem Pelea Primero")
         blanco.eliminar_muertos()
 
-def estatico(unidad):
-    print(f"La unidad {unidad.nombre} se quedara estatica")
+def Estatico(unidad):
+    print(term.springgreen4_on_black(f"La unidad {unidad.nombre} se quedara estatica"))
     unidad.mov -= 1
     
-def normal(unidad):
-    print(f"La unidad se moverá hasta {unidad.miembros[0].stats_base["Movimiento"]}")
+def Normal(unidad):
+    print(term.springgreen4_on_black(f"La unidad se moverá hasta {unidad.miembros[0].stats_base["Movimiento"]}"))
     unidad.mov -= 1
     
-def avance(unidad):
+def Avance(unidad):
     temp = Dados(1, 6)
-    print(f"1D6: {temp}")
-    print(f"La unidad avanzará hasta {unidad.miembros[0].stats_base["Movimiento"]}'' + {temp}'' ")
+    print(term.springgreen4_on_black(f"1D6: {temp}"))
+    print(term.springgreen4_on_black(f"La unidad avanzará hasta {unidad.miembros[0].stats_base["Movimiento"]}'' + {temp}'' "))
     unidad.mov -= 2
     
-def carga(unidad):
+def Carga(unidad):
     dis = int(input(f"Ingrese la distancia entre la unidad {unidad.nombre} y la unidad objetivo"))
     d = Dados(2, 6)
-    print(f"2D6: {d} = {d[0]+d[1]}")
+    print(term.springgreen4_on_black(f"2D6: {d} = {d[0]+d[1]}"))
     if (d[0]+d[1])<dis:
-        print(f"La unidad {unidad.nombre} ha fallado la carga!")
+        print(term.springgreen4_on_black(f"La unidad {unidad.nombre} ha fallado la carga!"))
         unidad.mov -= 1
         unidad.atk -= 1
     else:
-        print(f"La unidad ha cargado con exito!")
+        print(term.springgreen4_on_black(f"La unidad ha cargado con exito!"))
         unidad.mov -= 1
         unidad.atk -= 1
         unidad.habilidades.append["Tem Pelea Primero"]
@@ -64,18 +92,18 @@ def carga(unidad):
 
 
 ##Estratagemas
-def overwatch(unidad, blanco):
+def Overwatch(unidad, blanco):
     if (unidad.atk)>=1:
-        print(f"{unidad.nombre} va a disparar a {blanco.nombre} usando el estratagema 'overwatch'")
-        disparo(unidad, blanco)
-    else: print("Tu ere pobre tu no tiene aifon")
+        print(term.springgreen4_on_black(f"{unidad.nombre} va a disparar a {blanco.nombre} usando el estratagema 'overwatch'"))
+        Disparo(unidad, blanco)
+    else: print(term.springgreen4_on_black(f"Tu ere pobre tu no tiene aifon"))
     unidad.atk-=2
 
-def granadas(unidad, blanco):
+def Granadas(unidad, blanco):
     for i in unidad:
         if (any("granadas") in unidad.claves):
             ##disparo() modificado
-            disparo(unidad, blanco)
+            Disparo(unidad, blanco)
 
      
 ##Combatir con regla "Pelea primero" v1 (sistema dos colas)
@@ -117,7 +145,7 @@ def Pelea_Primero(ejercito):
                 if i.engaged:
                     yield i 
 
-
+##Funciones GUI
 ##Función menu
 def Menu(unidad, TXT, FUN, term):
     Indice = 0
@@ -148,7 +176,7 @@ def Menu(unidad, TXT, FUN, term):
     
                 else:
                     print(term.springgreen4_on_black(f"\nElegiste {TXT[Indice]}"))
-                    conf_usr(FUN, Indice, unidad)
+                    Conf_usr(FUN, Indice, unidad)
                 
                         
                     
@@ -157,7 +185,7 @@ def Menu(unidad, TXT, FUN, term):
                 term.inkey()
 
 ##Funcion confirmación
-def conf_usr(term, lista_F, indice_F, p1, p2 = None):     ##Enviar terminal, lista de funciones, el indice de la lista y al menos un parametro
+def Conf_usr(term, lista_F, indice_F, p1, p2 = None):     ##Enviar terminal, lista de funciones, el indice de la lista y al menos un parametro
     with term.fullscreen(), term.cbreak(), term.hidden_cursor():
         print(term.home + term.clear)
     
