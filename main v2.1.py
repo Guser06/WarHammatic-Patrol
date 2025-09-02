@@ -162,7 +162,7 @@ class Unidad:
             Individuo for mini in self.miembros if Individuo.vivo == False]
     
     def __repr__(self):
-        return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros + "\n".join("Acobardado") if self.shock == True)
+        return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros) + "\n" + "Acobardado" if self.shock == True else ""
 
 class Ejercito:
     def __init__(self, diccionario):
