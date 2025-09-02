@@ -162,7 +162,7 @@ class Unidad:
             Individuo for mini in self.miembros if Individuo.vivo == False]
     
     def __repr__(self):
-        return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros + "\n".join("Acobardado") if self.shock == True)
+        return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros) + "\n" + "Acobardado" if self.shock == True else ""
 
 class Ejercito:
     def __init__(self, diccionario):
@@ -211,14 +211,19 @@ with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
             print(Term.springgreen4_on_black(f"Dado Jugador 2 ({Ejercitos_objetos[1].faccion}): {comenzar[1]}"))
             if comenzar[0] > comenzar[1]:
                 print(Term.springgreen4_on_black("\nComienza el jugador 1"))
-                turno = 0
+                turno = 2
                 break
             if comenzar[0] < comenzar[1]:
                 print(Term.springgreen4_on_black("\nComienza el jugador 2"))
                 turno = 1
                 break
+            
             else: continue
-
+        
+        print(Term.springgreen4_on_black("Presione cualquier tecla para continuar"))
+        Term.inkey()
+        print(Term.home + Term.clear)
+        break
 #Actua el jugador Ejercitos_objetos[turno%2]
         
 ##BUCLE DE PARTIDA
@@ -226,26 +231,47 @@ with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
 MOVIMIENTO_T = [
     'Movimiento normal',
     'Estatico',
-    'Avance'
+    'Avance',
+    'Regresar'
 ]
 
 MOVIMIENTO_F = [
-    normal,
-    estatico,
-    avance
+    Normal,
+    Estatico,
+    Avance
 ]
 
-while turno/2 < limite:
-    Aumentar_PC(Ejercitos_objetos)
-    for u in Ejercitos_objetos[turno%2]:
-        Shock_Test(u)
+CARGA_T = [
+    'Carga',
+    'Estatico',
+    'Regresar'
+]
+
+CARGA_F = [
+    Carga,
+    Estatico
+]
+
+while turno/2 <= limite:
+    with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
+        Aumentar_PC(Ejercitos_objetos)
     
-    for unidad in Ejercitos_objetos[turno%2]:
-        Menu(unidad, MOVIMIENTO_T, MOVIMIENTO_F, Term)
+        for u in Ejercitos_objetos[turno%2].unidades:
+            Shock_Test(u, Term)
     
-        
+        for unidad in Ejercitos_objetos[turno%2].unidades:
+            Menu(unidad, MOVIMIENTO_T, MOVIMIENTO_F, Term)
+    
+        for unidad in Ejercitos_objetos[turno%2].unidades:
+            Menu(unidad, CARGA_T, CARGA_F, Term, Selec_Blanco(Term, 'Carga', Ejercitos_objetos[(turno%2)-1]))
+    
+        for u in Ejercitos_objetos[turno%2].unidades:
+            Disparo(unidad= u, blanco=Selec_Blanco(Term, 'Disparo', Ejercitos_objetos[(turno%2)-1]), term= Term)
+    
+    
+    Combate(unidad= Pelea_Primero(Ejercitos_objetos[turno%2]), blanco=Selec_Blanco(Term, 'Combate', Ejercitos_objetos[(turno%2)-1]), term=Term)        
+      
     turno += 1
 
-combate(Pelea_Primero(Ejercitos_objetos[turno%2]), Selec_Blanco(Term, 'Combate', Ejercitos_objetos[(turno%2)-1]))
 
     
