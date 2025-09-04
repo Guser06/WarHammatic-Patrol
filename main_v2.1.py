@@ -232,7 +232,7 @@ MOVIMIENTO_T = [
     'Movimiento normal',
     'Estatico',
     'Avance',
-    'Regresar'
+    'Continuar'
 ]
 
 MOVIMIENTO_F = [
@@ -244,7 +244,8 @@ MOVIMIENTO_F = [
 CARGA_T = [
     'Carga',
     'Estatico',
-    'Regresar'
+    'Regresar',
+    'Omitir'
 ]
 
 CARGA_F = [
@@ -253,23 +254,25 @@ CARGA_F = [
 ]
 
 while turno/2 <= limite:
-    with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
-        Aumentar_PC(Ejercitos_objetos)
+    Aumentar_PC(Ejercitos_objetos)
+
+    for u in Ejercitos_objetos[turno%2].unidades:
+        Shock_Test(unidad=u, term=Term)
+
+    Aumentar_Mov_Atk(Ejercitos_objetos[turno%2])
+
+    for u in Ejercitos_objetos[turno%2].unidades:
+        if u.mov >= 0:
+            Menu(term=Term, unidad=u, TXT=MOVIMIENTO_T, FUN=MOVIMIENTO_F)
+        else: continue
     
-        for u in Ejercitos_objetos[turno%2].unidades:
-            Shock_Test(u, Term)
+    for u in Ejercitos_objetos[turno%2].unidades:
+        Disparo(unidad= u, blanco=Selec_Blanco(term=Term, unidad=u, accion='Disparar', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]), term= Term)
     
-        for unidad in Ejercitos_objetos[turno%2].unidades:
-            Menu(unidad, MOVIMIENTO_T, MOVIMIENTO_F, Term)
+    for u in Ejercitos_objetos[turno%2].unidades:
+        Menu(term=Term, unidad=u, TXT=CARGA_T, FUN=CARGA_F, par=Selec_Blanco(term=Term, unidad=u, accion='Cargar', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]))
     
-        for unidad in Ejercitos_objetos[turno%2].unidades:
-            Menu(unidad, CARGA_T, CARGA_F, Term, Selec_Blanco(Term, 'Carga', Ejercitos_objetos[(turno%2)-1]))
-    
-        for u in Ejercitos_objetos[turno%2].unidades:
-            Disparo(unidad= u, blanco=Selec_Blanco(Term, 'Disparo', Ejercitos_objetos[(turno%2)-1]), term= Term)
-    
-    
-    Combate(unidad= Pelea_Primero(Ejercitos_objetos[turno%2]), blanco=Selec_Blanco(Term, 'Combate', Ejercitos_objetos[(turno%2)-1]), term=Term)        
+    Combate(unidad= Pelea_Primero(Ejercitos_objetos[turno%2]), blanco=Selec_Blanco(term=Term, unidad=u, accion='Combatir', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]))        
       
     turno += 1
 
