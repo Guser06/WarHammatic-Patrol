@@ -81,6 +81,7 @@ def Shock_Test(unidad, term):
     
 def Disparo(unidad, blanco, term):
     ##SI
+    
     print(term.springgreen4_on_black(f"La {unidad.nombre} va a tronarse a {blanco.nombre}"))
 
 def Combate(unidad, blanco, term):
@@ -131,6 +132,9 @@ def Avance(term, unidad, p3 = None):
 def Carga(term, unidad, blanco):
     with term.fullscreen(), term.cbreak(), term.hidden_cursor():
         CadenaIngreso = ''
+        print(term.home + term.clear)
+        print(term.on_black)
+        print(term.springgreen4_on_black(f"Ingrese la distancia entre {unidad.nombre} y {blanco.nombre}"))
         while True:
         
             tecla = term.inkey()
@@ -142,42 +146,42 @@ def Carga(term, unidad, blanco):
                 continue
             
             elif tecla.name == "KEY_ENTER":
-            print(Term.springgreen4_on_black(f"\nIngresaste: {CadenaIngreso}"))
-            print(Term.springgreen4_on_black("\nPresiona ENTER para continuar"))
-            print(Term.springgreen4_on_black("\nPresiona cualquier tecla para reintentar"))
+                print(term.springgreen4_on_black(f"\nIngresaste: {CadenaIngreso}''"))
+                print(term.springgreen4_on_black("\nPresiona ENTER para continuar"))
+                print(term.springgreen4_on_black("\nPresiona cualquier tecla para reintentar"))
             
-            tecla = Term.inkey()
+                tecla = term.inkey()
             
-            if tecla.name == "KEY_ENTER" or tecla == '\n':
-                limite = int(CadenaIngreso)
-                break
-            else:
-                CadenaIngreso = ''
-                print(Term.home + Term.clear)
-                print(Term.on_black)
-                print(Term.springgreen4_on_black("Ingrese el limite de rondas"))
-                continue
-            
-            dis = int(input(f"Ingrese la distancia entre la unidad {unidad.nombre} y la unidad {blanco.nombre}"))
-            d = Dados(2, 6)
-            print(term.springgreen4_on_black(f"2D6: {d} = {d[0]+d[1]}"))
-            if (d[0]+d[1])<dis:
-                print(term.springgreen4_on_black(f"La unidad {unidad.nombre} ha fallado la carga!"))
-                unidad.mov -= 1
-                unidad.atk -= 1
-                print(term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
-                term.inkey()
-                return
+                if tecla.name == "KEY_ENTER" or tecla == '\n':
+                    dis = int(CadenaIngreso)
+                    d = Dados(2, 6)
+                    print(term.springgreen4_on_black(f"2D6: {d} = {d[0]+d[1]}"))
+                    if (d[0]+d[1])<dis:
+                        print(term.springgreen4_on_black(f"La unidad {unidad.nombre} ha fallado la carga!"))
+                        unidad.mov -= 1
+                        unidad.atk -= 1
+                        print(term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
+                        term.inkey()
+                        return
 
-            else:
-                print(term.springgreen4_on_black(f"La unidad ha cargado con exito!"))
-                unidad.mov -= 1
-                unidad.atk -= 1
-                unidad.habilidades.append["Tem Pelea Primero"]
-                unidad.engaged = True
-                print(term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
-                term.inkey()
-                return
+                    else:
+                        print(term.springgreen4_on_black(f"La unidad ha cargado con exito!"))
+                        unidad.mov -= 1
+                        unidad.atk -= 1
+                        unidad.habilidades.append["Tem Pelea Primero"]
+                        unidad.engaged = True
+                        print(term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
+                        term.inkey()
+                        return
+                
+                else:
+                    CadenaIngreso = ''
+                    print(term.home + term.clear)
+                    print(term.on_black)
+                    print(term.springgreen4_on_black(f"Ingrese la distancia entre {unidad.nombre} y {blanco.nombre}"))
+                    continue
+            
+            
 
 
 ##Estratagemas
@@ -226,7 +230,7 @@ for j in Ejercitos_objetos[turno%2].unidades:
     combate(i, blanco)
 '''
 
-##Combarir con regla "Pelea Primero" v3 (yield) #ChatGPT
+##Combarir con regla "Pelea Primero" v3 (yield) #Menos iteraciones por la lista
 def Pelea_Primero(ejercito):
     for i in ejercito.unidades:
         if "Tem Pelea Primero" in i.habilidades or "Pelea Primero" in i. habilidades:
