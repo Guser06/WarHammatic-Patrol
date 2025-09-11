@@ -1,0 +1,14 @@
+-- SQLBook: Code
+SELECT prueba.*
+FROM OPENROWSET(BULK N'C:\Users\guseg\Documents\Warhammer\Programas\WarHammatic-Patrol\WarHammatic-Patrol\Ejercitos\Ty_patrol.json', SINGLE_CLOB) AS json
+CROSS APPLY OPENJSON(BulkColumn) WITH (
+    u1 NVARCHAR(100),
+    u2 NVARCHAR(100),
+    u3 NVARCHAR(100),
+    u4 NVARCHAR(100),
+    u5 NVARCHAR(100),
+    u6 NVARCHAR(100),
+    u7 NVARCHAR(100),
+    Faccion NVARCHAR(20),
+    Numero_Unidades int
+) AS book
