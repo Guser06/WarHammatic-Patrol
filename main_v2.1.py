@@ -143,7 +143,7 @@ class Individuo:
     def __repr__(self):
         estado = "Vivo" if self.vivo else "Muerto"
         return f"{self.nombre} ({estado})"
-
+   
 class Unidad:
     def __init__(self, diccionario):
         self.mov = 0
@@ -152,6 +152,7 @@ class Unidad:
         self.shock = False
         self.miembros = []
         self.nombre = diccionario.get("Nombre")
+        self.posLid = diccionario.get("Lider")
         self.lider = ''
         self.habilidades = diccionario.get("Habilidades")
         self.claves = diccionario.get("Claves")
@@ -159,10 +160,31 @@ class Unidad:
 
     def eliminar_muertos(self):
         self.miembros = [
-            Individuo for mini in self.miembros if Individuo.vivo == False]
+            mini for mini in self.miembros if mini.vivo == True]
     
     def __repr__(self):
-        return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros) + "\n" + "Acobardado" if self.shock == True else ""
+        return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros) + ("\nAcobardado" if self.shock else "")
+
+class Lider(Unidad):
+    def __init__(self, diccionario):
+        Unidad.__init__(self, diccionario = diccionario)
+        self.liderando = True
+    
+    def AddLider(self, ej):
+        for i in ej.unidades:
+            if isinstance(i.posLid, list) and i.lider == '':
+                for x in i.posLid:
+                    if x == self.nombre:
+                        i.lider = self.nombre
+                        i.miembros += self.miembros
+                        i.habilidades = i.habilidades|self.habilidades
+                        i.nm += self.nm
+                        i.claves += self.claves
+                        return -1
+        else:
+            self.liderando = False
+            ej.unidades.append(self)
+            return 0
 
 class Ejercito:
     def __init__(self, diccionario):
@@ -189,7 +211,10 @@ for d in Ejercitos_diccionarios:    #iterar por lista de diccionarios
         Ejercitos_objetos.append(Ejercito(d))   #Crear el objeto ejercito
         for cu, vu in d.items():    #iterar por diccionario
             if isinstance(vu, dict):    #Determinar si el objeto es un subdiccionario
-                Ejercitos_objetos[i].unidades.append(Unidad(vu))    #Crear el objeto unidad y añadirlo a un ejercito
+                if vu["Lider"] is True:
+                    j += Lider(vu).AddLider(Ejercitos_objetos[i])
+                else:
+                    Ejercitos_objetos[i].unidades.append(Unidad(vu))    #Crear el objeto unidad y añadirlo a un ejercito
                 for cm, vm in vu.items():   #Iterar por el subdiccionario
                     if isinstance(vm, dict) and cm != 'Habilidades':    #Determinar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
                         Ejercitos_objetos[i].unidades[j].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad

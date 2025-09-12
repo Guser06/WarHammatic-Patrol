@@ -1,110 +1,4 @@
 {
-    "u1": {
-        "Nombre": "Capitan en armadura exterminador",
-        "Lider": null,
-        "Numero Miniaturas": 1,
-        "Habilidades": {
-            "Valor imparable": null,
-            "Ritos de batalla": null,
-            "Invulnerable": 4
-            },
-        "Claves": [
-            "Personaje",
-            "Infanteria",
-            "Capitan",
-            "Imperio",
-            "Exterminador"
-            ],
-        "m1": {
-            "Nombre": "Capitan en armadura exterminador",
-            "Stats": [
-                5, 5, 2, 6, 6, 1
-                ],
-            "Rango1": {
-                "Nombre": "Bolter tormenta",
-                "stats": [
-                    24, 2, 2, 4, 0, 1
-                    ],
-                "Claves": {
-                    "Fuego Rapido": 2                
-                    }
-                },
-            "Rango2": null,
-            "Rango3": null,
-            "Rango4": null,
-
-            "Mele1": {
-                "Nombre": "Arma reliquia",
-                "stats": [
-                    0, 6, 2, 5, 2, 2
-                    ],
-                "Claves": [
-                    null         
-                    ]
-                },
-            "Mele2": null
-            }
-        },
-
-    "u2": {
-        "Nombre": "Bibliotecario en armadura exterminador",
-        "Lider": null,
-        "Numero Miniaturas": 1,
-        "Habilidades": {
-            "Velo de tiempo": null,
-            "Capucha psiquica": null,
-            "Invulnerable": 4
-            },
-        "Claves": [
-            "Personaje",
-            "Infanteria",
-            "Imperio",
-            "Psiquico",
-            "Exterminador",
-            "Bibliotecario"
-            ],
-        "m1": {
-            "Nombre": "Bibliotecario en armadura exterminador",
-            "Stats": [
-                5, 5, 2, 5, 6, 1
-                ],
-            "Rango1": {
-                "Nombre": "Castigo-Fuego brujo",
-                "stats": [
-                    24, "D6", 3, 5, 1, "D3"
-                    ],
-                "Claves": {
-                    "Psiquico": null,
-                    "Eleccion": null                
-                    }
-                },
-            "Rango2": {
-                "Nombre": "Castigo-Fuego brujo enfocado",
-                "stats": [
-                    24, "D6", 3, 6, 2, "D3"
-                    ],
-                "Claves": {
-                    "Heridas devastadoras": null,
-                    "Riesgoso": null,
-                    "Psiquico": null
-                    }
-                },
-            "Rango3": null,
-            "Rango4": null,
-
-            "Mele1": {
-                "Nombre": "Arma de psicofuerza",
-                "stats": [
-                    0, 4, 3, 6, -1, "D3"
-                    ],
-                "Claves": {
-                    "Psiquico": null 
-                    }
-                },
-            "Mele2": null
-            }
-        },
-
     "u3": {
         "Nombre": "Escuadra infernus",
         "Lider": [
@@ -485,6 +379,112 @@
                 "Claves": [
                     null         
                     ]
+                },
+            "Mele2": null
+            }
+        },
+
+    "u1": {
+        "Nombre": "Capitan en armadura de exterminador",
+        "Lider": true,
+        "Numero Miniaturas": 1,
+        "Habilidades": {
+            "Valor imparable": null,
+            "Ritos de batalla": null,
+            "Invulnerable": 4
+            },
+        "Claves": [
+            "Personaje",
+            "Infanteria",
+            "Capitan",
+            "Imperio",
+            "Exterminador"
+            ],
+        "m1": {
+            "Nombre": "Capitan en armadura de exterminador",
+            "Stats": [
+                5, 5, 2, 6, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Bolter tormenta",
+                "stats": [
+                    24, 2, 2, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Fuego Rapido": 2                
+                    }
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Arma reliquia",
+                "stats": [
+                    0, 6, 2, 5, 2, 2
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+
+    "u2": {
+        "Nombre": "Bibliotecario en armadura de exterminador",
+        "Lider": true,
+        "Numero Miniaturas": 1,
+        "Habilidades": {
+            "Velo de tiempo": null,
+            "Capucha psiquica": null,
+            "Invulnerable": 4
+            },
+        "Claves": [
+            "Personaje",
+            "Infanteria",
+            "Imperio",
+            "Psiquico",
+            "Exterminador",
+            "Bibliotecario"
+            ],
+        "m1": {
+            "Nombre": "Bibliotecario en armadura de exterminador",
+            "Stats": [
+                5, 5, 2, 5, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Castigo-Fuego brujo",
+                "stats": [
+                    24, "D6", 3, 5, 1, "D3"
+                    ],
+                "Claves": {
+                    "Psiquico": null,
+                    "Eleccion": null                
+                    }
+                },
+            "Rango2": {
+                "Nombre": "Castigo-Fuego brujo enfocado",
+                "stats": [
+                    24, "D6", 3, 6, 2, "D3"
+                    ],
+                "Claves": {
+                    "Heridas devastadoras": null,
+                    "Riesgoso": null,
+                    "Psiquico": null
+                    }
+                },
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Arma de psicofuerza",
+                "stats": [
+                    0, 4, 3, 6, -1, "D3"
+                    ],
+                "Claves": {
+                    "Psiquico": null 
+                    }
                 },
             "Mele2": null
             }
