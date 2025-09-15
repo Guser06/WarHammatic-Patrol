@@ -121,24 +121,40 @@ with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
                 continue
 
 ##Clases
+class Arma:
+    def __init__(self, diccionario):
+        self.nombre = diccionario.get("Nombre")
+        self.stats = dict(zip(ArmaTx, diccionario.get("stats")))
+        self.claves = diccionario.get("Claves")
+
 class Individuo:
     def __init__(self, diccionario):
         self.nombre = diccionario.get("Nombre")    #Nombre de la miniatura
         self.stats_base = dict(zip(StatsTx, diccionario.get("Stats"))) #Stats de la miniatura
-        self.rango1 = dict(zip(ArmaTx, diccionario.get("Rango1"))) if diccionario.get("Rango1") is not None else None # Armas de rango
-        self.rango2 = dict(zip(ArmaTx, diccionario.get("Rango2"))) if diccionario.get("Rango2") is not None else None
-        self.rango3 = dict(zip(ArmaTx, diccionario.get("Rango3"))) if diccionario.get("Rango3") is not None else None
-        self.rango4 = dict(zip(ArmaTx, diccionario.get("Rango4"))) if diccionario.get("Rango4") is not None else None
-        self.mele1 = dict(zip(ArmaTx, diccionario.get("Mele1"))) if diccionario.get("Mele1") is not None else None    # Armas cuerpo a cuerpo
-        self.mele2 = dict(zip(ArmaTx, diccionario.get("Mele2"))) if diccionario.get("Mele2") is not None else None
+        self.rango = [] # Armas de rango
+        self.mele = [] # Armas cuerpo a cuerpo
         self.dmg = 0    #Daño recibido por la miniatura
         self.vivo = True    #La miniatura esta viva
+
+    def AddWeap(self, diccionario):
+        rans = ["Rango1", "Rango2", "Rango3", "Rango4"]
+        for i in rans:
+            if diccionario.get(i) is not None:
+                self.rango.append(Arma(diccionario.get(i)))
+            else:
+                break
+        mels = ["Mele1", "Mele2"]
+        for i in mels:
+            if diccionario.get(i) is not None:
+                self.mele.append(Arma(diccionario.get(i)))
+            else:
+                break
 
     def recibir_dano(self, dano):
         self.dmg += dano
         if self.dmg >= self.stats_base["Heridas"]:  # Si daño >= heridas
             self.vivo = False
-            print(f"{self.nombre} ha muerto.")
+            return f"{self.nombre} ha muerto."
 
     def __repr__(self):
         estado = "Vivo" if self.vivo else "Muerto"
@@ -218,6 +234,7 @@ for d in Ejercitos_diccionarios:    #iterar por lista de diccionarios
                 for cm, vm in vu.items():   #Iterar por el subdiccionario
                     if isinstance(vm, dict) and cm != 'Habilidades':    #Determinar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
                         Ejercitos_objetos[i].unidades[j].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad
+                        Ejercitos_objetos[i].unidades[j].miembros[-1].AddWeap(vm)   #Crear armas y añadirlas al individuo
                 j += 1
         i += 1
 

@@ -25,8 +25,8 @@ def Aumentar_PC(Ejer_Obj):
 
 def Aumentar_Mov_Atk(Ejercito):
     for u in Ejercito.unidades:
-        u.mov += 2
-        u.atk += 2
+        u.mov = 3
+        u.atk = 3
     return
 
 def Shock_Test(unidad, term):
@@ -80,29 +80,73 @@ def Shock_Test(unidad, term):
     
     
 def Disparo(unidad, blanco, term):
-    ##SI
-    
-    print(term.springgreen4_on_black(f"La {unidad.nombre} va a tronarse a {blanco.nombre}"))
+    whitelist = ["Vehiculo", "Monstruo", "Pistola", "Asalto"]
+    graylist = ["Vehiculo", "Monstruo", ]
+    while True:
+        with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+            keysu = []
+            keysb = []
+            keysu = set(keysu)
+            keysb = set(keysb)
+            for miembro in unidad.miembros:
+                for arma in miembro.rango:
+                    keysu|=(set(arma.claves.keys()) & set(whitelist))
+            keysu|=(set(unidad.claves) & set(whitelist))
+            
+            keysb|=(set(blanco.claves) & set(graylist))
+
+            if unidad.atk == 0:
+                print(term.springgreen4_on_black(f"{unidad.nombre} ya no puede disparar en este turno"))
+                print(term.springgreen4_on_black("Presiona cualquier tecla para continuar"))
+                term.inkey()
+                return
+            
+            for miembro in unidad.miembros:
+                if len(miembro.rango) != 0:
+                    break
+            else:
+                print(term.springgreen4_on_black(f"{unidad.nombre} no tiene armas para disparar"))
+                print(term.springgreen4_on_black("Presiona cualquier tecla para continuar"))
+                term.inkey()
+                return
+            
+            if unidad.engaged == True and not any(unidad.claves & whitelist):
+                print(term.springgreen4_on_black(f"{unidad.nombre} no puede disparar, está demasiado cerca de un enemigo"))
+                print(term.springgreen4_on_black("Presiona cualquier tecla para continuar"))
+                term.inkey()
+                return
+
 
 def Combate(unidad, blanco, term):
-    with term.fullscreen(), term.cbreak(), term.hidden_cursor():
-        if unidad.engaged:
-            print(term.springgreen4_on_black(f"La {unidad.nombre} va a tronarse a {blanco.nombre}"))
-            if "Tem Pelea Primero" in unidad.habilidades:
-                unidad.habilidades.remove("Tem Pelea Primero")
+    while True:
+        with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+            if unidad.engaged:
+                print(term.springgreen4_on_black(f"La {unidad.nombre} va a tronarse a {blanco.nombre}"))
+                if "Tem Pelea Primero" in unidad.habilidades:
+                    unidad.habilidades.remove("Tem Pelea Primero")
+
+            print(term.springgreen4_on_black("Presiona cualquier tecla para continuar"))
+            term.inkey()
             blanco.eliminar_muertos()
+            break
+    return
+
 
 def Estatico(term, unidad, p3 = None):
-    with term.fullscreen(), term.cbreak(), term.hidden_cursor():
-        print(term.springgreen4_on_black(f"La unidad {unidad.nombre} se quedara estatica"))
-        unidad.mov -= 1
-        return
+    while True:
+        with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+            print(term.springgreen4_on_black(f"La unidad {unidad.nombre} se quedara estatica"))
+            unidad.mov = 1
+            print(term.springgreen4_on_black("Presiona cualquier tecla para continuar"))
+            term.inkey()
+            break
+    return
     
 def Normal(term, unidad, p3 = None):
     with term.fullscreen(), term.cbreak(), term.hidden_cursor():
         if unidad.mov >= 1:
             print(term.springgreen4_on_black(f"La unidad se moverá hasta {unidad.miembros[0].stats_base["Movimiento"]} pulgadas"))
-            unidad.mov -= 1
+            unidad.mov = 1
             print(term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
             term.inkey()
             return
@@ -119,7 +163,8 @@ def Avance(term, unidad, p3 = None):
             temp = Dados(1, 6)
             print(term.springgreen4_on_black(f"1D6: {temp}"))
             print(term.springgreen4_on_black(f"La unidad avanzará hasta {unidad.miembros[0].stats_base["Movimiento"]}'' + {temp}'' "))
-            unidad.mov -= 2
+            unidad.mov = 1
+            unidad.atk = 1
             print(term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
             term.inkey()
             return
@@ -128,14 +173,46 @@ def Avance(term, unidad, p3 = None):
             print(term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
             term.inkey()
             return
-    
-def Carga(term, unidad, blanco):
+
+def Retroceder(term, unidad, p3 = None):
     with term.fullscreen(), term.cbreak(), term.hidden_cursor():
-        CadenaIngreso = ''
-        print(term.home + term.clear)
-        print(term.on_black)
-        print(term.springgreen4_on_black(f"Ingrese la distancia entre {unidad.nombre} y {blanco.nombre}"))
-        while True:
+        whitelist = ["Volador", "Titanico"]
+        if unidad.shock == True or not any(unidad.claves & whitelist):
+            print(term.springreen4_on_black("La unidad realizara una huida desesperada!"))
+            for mini in unidad.miembros:
+                d = Dados(1, 3)
+                if d[0]<2:
+                    print("Una miniatura no ha pasado la prueba!")
+                    print("Elije cual será eliminada: ")
+                    indice = Selec_mini(term, unidad)
+                    print(term.springgreen4_on_black(unidad.miembros[indice].recibir_dano(unidad.miembros.stats_base["Heridas"])))
+                    unidad.eliminar_muertos()
+            print("La huida desesperada ha terminado")
+            print("Presione cualquier tecla para continuar")
+            term.inkey()
+            unidad.mov = 0
+            unidad.atk = 0
+            unidad.engaged = False
+            return
+        
+        else:
+            print(term.springreen4_on_black(f"La unidad retrocederá hasta {unidad.miembros[0].stats_base.get("Movimiento")}'' "))
+            print(term.springreen4_on_black("Recuerde que las miniaturas no pueden terminar este movimiento en zona de amenaza de una unidad enemiga"))
+            print(term.springreen4_on_black("\nPresione cualquier tecla para continuar"))
+            term.inkey()
+            unidad.mov = 0
+            unidad.atk = 0
+            unidad.engaged = False
+            return
+
+
+def Carga(term, unidad, blanco):
+    while True:
+        with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+            CadenaIngreso = ''
+            print(term.home + term.clear)
+            print(term.on_black)
+            print(term.springgreen4_on_black(f"Ingrese la distancia entre {unidad.nombre} y {blanco.nombre}"))
         
             tecla = term.inkey()
         
@@ -158,8 +235,8 @@ def Carga(term, unidad, blanco):
                     print(term.springgreen4_on_black(f"2D6: {d} = {d[0]+d[1]}"))
                     if (d[0]+d[1])<dis:
                         print(term.springgreen4_on_black(f"La unidad {unidad.nombre} ha fallado la carga!"))
-                        unidad.mov -= 1
-                        unidad.atk -= 1
+                        unidad.mov = 1
+                        unidad.atk = 1
                         print(term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
                         term.inkey()
                         return
@@ -246,8 +323,8 @@ def Pelea_Primero(ejercito):
 ##Función menu
 def Menu(term, unidad, TXT, FUN, par = None):
     Indice = 0
-    with term.fullscreen(), term.cbreak(), term.hidden_cursor():
-        while True:
+    while True:
+        with term.fullscreen(), term.cbreak(), term.hidden_cursor():
             print(term.home + term.clear)
             print(term.on_black)
             print(term.springgreen4_on_black(f"Elige una acción para realizar con {unidad.nombre}"))
@@ -284,9 +361,9 @@ def Menu(term, unidad, TXT, FUN, par = None):
 
 ##Funcion confirmación
 def Conf_usr(term, lista_F, lista_T, indice_F, p1, p2 = None):     ##Enviar terminal, lista de funciones, el indice de la lista y al menos un parametro
-    with term.fullscreen(), term.cbreak(), term.hidden_cursor():
-    
-        while True:
+    while True:
+        with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+
             print(term.home + term.clear)
 
             print(term.springgreen4_on_black(f"\nIngresaste: {str(lista_T[indice_F])}"))
@@ -311,11 +388,14 @@ def Conf_usr(term, lista_F, lista_T, indice_F, p1, p2 = None):     ##Enviar term
 ##Funcion seleccionar blanco
 def Selec_Blanco(term, unidad, accion, Ejer_Enem):   ##Accion debe ser una cadena: 'cargar', 'disparar', 'combatir'
     indice = 0
-    with term.fullscreen(), term.cbreak(), term.hidden_cursor():
-        while True:
+    while True:
+        with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+            
             print(term.home + term.clear)
             print(term.on_black)
-            print(term.springgreen4_on_black(f"Elige un blanco para {accion} con {unidad.nombre}:\n"))
+            print(term.springgreen4_on_black(f"Elige un blanco para {accion} con {unidad.nombre}"))
+            print(term.springgreen4_on_black(f"Asegurese que el blanco sea valido para {accion}\n"))
+
     
             for i, opcion in enumerate(Ejer_Enem.unidades):    #Crear lista de opciones
                 if i == indice:
@@ -333,7 +413,42 @@ def Selec_Blanco(term, unidad, accion, Ejer_Enem):   ##Accion debe ser una caden
             
             elif tecla.name == "KEY_ENTER" or tecla == '\n':
                 print(term.springgreen4_on_black(f"\nElegiste: {Ejer_Enem.unidades[indice].nombre}"))
+                print(term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
+                term.inkey()
                 return Ejer_Enem.unidades[indice]
+                    
+            else:
+                print(term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
+                term.inkey()
+
+def Selec_mini(term, unidad):
+    indice = 0
+    while True:
+        with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+            
+            print(term.home + term.clear)
+            print(term.on_black)
+            print(term.springgreen4_on_black(f"Elige una miniatura de {unidad.nombre} para recibir daño"))
+
+            for i, opcion in enumerate(unidad.miembros):    #Crear lista de opciones
+                if i == indice:
+                    print(term.black_on_springgreen4(f"{i+1}. {opcion.nombre}"))
+                else:
+                    print(term.springgreen4_on_black(f"{i+1}. {opcion.nombre}"))
+            
+            tecla = term.inkey()
+
+            if tecla.name in ("KEY_UP", "KEY_LEFT"):
+                indice = (indice - 1 + len(unidad.miembros)) % len(unidad.miembros)
+        
+            elif tecla.name in ("KEY_DOWN", "KEY_RIGHT"):
+                indice = (indice + 1 + len(unidad.miembros)) % len(unidad.miembros)
+            
+            elif tecla.name == "KEY_ENTER" or tecla == '\n':
+                print(term.springgreen4_on_black(f"\nElegiste: {unidad.miembros[indice].nombre}"))
+                print(term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
+                term.inkey()
+                return indice
                     
             else:
                 print(term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
