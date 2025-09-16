@@ -2,13 +2,6 @@ from WHmmatic_lib import *
 import json
 import blessed
 import sys
-import time
-
-StatsTx = ["Movimiento", "Resistencia", "Salvación",
-           "Heridas", "Liderazgo", "Control de objetivo"]   #Nombre de las stats de las miniaturas
-
-ArmaTx = ["Nombre", "Alcance", "No. de Ataques",
-          "Habilidad", "Fuerza", "Perforación", "Daño"] #Nombre de las stats de las armas
 
 #Inicializar ventana
 Term = blessed.Terminal()
@@ -89,7 +82,6 @@ with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
 limite = 0
 CadenaIngreso = ''
 with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
-    time.sleep(1)
     print(Term.home + Term.clear)
     print(Term.springgreen4_on_black("Ingrese el limite de rondas"))
     
@@ -119,104 +111,6 @@ with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
                 print(Term.on_black)
                 print(Term.springgreen4_on_black("Ingrese el limite de rondas"))
                 continue
-
-##Clases
-class Arma:
-    def __init__(self, diccionario):
-        self.nombre = diccionario.get("Nombre")
-        self.stats = dict(zip(ArmaTx, diccionario.get("stats")))
-        self.claves = diccionario.get("Claves")
-
-class Individuo:
-    def __init__(self, diccionario):
-        self.nombre = diccionario.get("Nombre")    #Nombre de la miniatura
-        self.stats_base = dict(zip(StatsTx, diccionario.get("Stats"))) #Stats de la miniatura
-        self.rango = [] # Armas de rango
-        self.mele = [] # Armas cuerpo a cuerpo
-        self.dmg = 0    #Daño recibido por la miniatura
-        self.vivo = True    #La miniatura esta viva
-
-    def AddWeap(self, diccionario):
-        rans = ["Rango1", "Rango2", "Rango3", "Rango4"]
-        for i in rans:
-            if diccionario.get(i) is not None:
-                self.rango.append(Arma(diccionario.get(i)))
-            else:
-                break
-        mels = ["Mele1", "Mele2"]
-        for i in mels:
-            if diccionario.get(i) is not None:
-                self.mele.append(Arma(diccionario.get(i)))
-            else:
-                break
-
-    def recibir_dano(self, dano):
-        self.dmg += dano
-        if self.dmg >= self.stats_base["Heridas"]:  # Si daño >= heridas
-            self.vivo = False
-            return f"{self.nombre} ha muerto."
-
-    def __repr__(self):
-        estado = "Vivo" if self.vivo else "Muerto"
-        return f"{self.nombre} ({estado})"
-   
-class Unidad:
-    def __init__(self, diccionario):
-        self.mov = 0
-        self.atk = 0
-        self.engaged = False
-        self.shock = False
-        self.miembros = []
-        self.nombre = diccionario.get("Nombre")
-        self.posLid = diccionario.get("Lider")
-        self.lider = ''
-        self.habilidades = diccionario.get("Habilidades")
-        self.claves = diccionario.get("Claves")
-        self.nm = diccionario.get("Numero Miniaturas")
-
-    def eliminar_muertos(self):
-        self.miembros = [
-            mini for mini in self.miembros if mini.vivo == True]
-    
-    def __repr__(self):
-        return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros) + ("\nAcobardado" if self.shock else "")
-
-class Lider(Unidad):
-    def __init__(self, diccionario):
-        Unidad.__init__(self, diccionario = diccionario)
-        self.liderando = True
-    
-    def AddLider(self, ej):
-        for i in ej.unidades:
-            if isinstance(i.posLid, list) and i.lider == '':
-                for x in i.posLid:
-                    if x == self.nombre:
-                        i.lider = self.nombre
-                        i.miembros += self.miembros
-                        i.habilidades = i.habilidades|self.habilidades
-                        i.nm += self.nm
-                        i.claves += self.claves
-                        return -1
-        else:
-            self.liderando = False
-            ej.unidades.append(self)
-            return 0
-
-class Ejercito:
-    def __init__(self, diccionario):
-        self.pc = 0
-        self.pv = 0
-        self.faccion = diccionario.get('Faccion')
-        self.nu = diccionario.get('Numero Unidades')
-        self.unidades = []
-
-    def eliminar_unidades(self):
-        self.unidades =[
-            Unidad for uni in self.unidades if any in Unidad.miembros
-        ]
-    
-    def __repr__(self):
-        return f"{self.faccion}:\n" + "\n".join(str(unidad) for unidad in self.unidades)
 
 Ejercitos_objetos = []   #Lista donde se guardaran los ejercitos convertidos en objetos de Python
 
@@ -248,7 +142,7 @@ with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
             print(Term.on_black)
             print(Term.springgreen4_on_black("Determinando los turnos"))
         
-            comenzar = Dados(2, 6)
+            comenzar = Dados(2, 6, ret_num=False)
             print(Term.springgreen4_on_black(f"Dado Jugador 1 ({Ejercitos_objetos[0].faccion}): {comenzar[0]}"))
             print(Term.springgreen4_on_black(f"Dado Jugador 2 ({Ejercitos_objetos[1].faccion}): {comenzar[1]}"))
             if comenzar[0] > comenzar[1]:
@@ -309,7 +203,7 @@ while turno/2 <= limite:
         else: continue
     
     for u in Ejercitos_objetos[turno%2].unidades:
-        Disparo(unidad= u, blanco=Selec_Blanco(term=Term, unidad=u, accion='Disparar', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]), term= Term)
+        Disparo(unidad= u, term= Term, Ejer_Enem=Ejercitos_objetos[(turno%2)-1])
     
     for u in Ejercitos_objetos[turno%2].unidades:
         Menu(term=Term, unidad=u, TXT=CARGA_T, FUN=CARGA_F, par=Selec_Blanco(term=Term, unidad=u, accion='Cargar', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]))

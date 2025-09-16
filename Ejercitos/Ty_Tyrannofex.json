@@ -1,44 +1,4 @@
 {
-    "u1": {
-        "Nombre": "Tyranido Alado Primus",
-        "Lider": null,
-        "Numero Miniaturas": 1,
-        "Habilidades": {
-            "Guerrero Alpha": null,
-            "Golpe mortal": null
-            },
-        "Claves": [
-            "Tyranido alado primus",
-            "Personaje",
-            "Infanteria",
-            "Volador",
-            "Gran devorador",
-            "Sinapsis",
-            "Invasor de vanguardia"
-            ],
-        "m1": {
-            "Nombre": "Tyranido Alado Primus",
-            "Stats": [
-                12, 5, 4, 6, 7, 1
-                ],
-            "Rango1": null,
-            "Rango2": null,
-            "Rango3": null,
-            "Rango4": null,
-
-            "Mele1": {
-                "Nombre": "Garras y dientes primus",
-                "stats": [
-                    0, 6, 2, 6, 1, 2
-                    ],
-                "Claves": [
-                    null         
-                    ]
-                },
-            "Mele2": null
-            }
-        },
-
     "u2": {
         "Nombre": "Psicofago",
         "Lider": null,
@@ -89,7 +49,7 @@
         },
 
     "u3": {
-        "Nombre": " 1",
+        "Nombre": "Termagantes 1",
         "Lider": null,
         "Numero Miniaturas": 10,
         "Habilidades": {
@@ -1055,7 +1015,7 @@
             "Tyrannofex"
             ],
         "m1": {
-            "Nombre": "Psicofago",
+            "Nombre": "Tyrannofex",
             "Stats": [
                 9, 12, 2, 16, 8, 5
                 ],
@@ -1084,6 +1044,47 @@
             "Mele2": null
         }
     },
+
+    "u1": {
+        "Nombre": "Tyranido Alado Primus",
+        "Lider": true,
+        "Numero Miniaturas": 1,
+        "Habilidades": {
+            "Guerrero Alpha": null,
+            "Golpe mortal": null
+            },
+        "Claves": [
+            "Tyranido alado primus",
+            "Personaje",
+            "Infanteria",
+            "Volador",
+            "Gran devorador",
+            "Sinapsis",
+            "Invasor de vanguardia"
+            ],
+        "m1": {
+            "Nombre": "Tyranido Alado Primus",
+            "Stats": [
+                12, 5, 4, 6, 7, 1
+                ],
+            "Rango1": null,
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes primus",
+                "stats": [
+                    0, 6, 2, 6, 1, 2
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            }
+        },
+
     "Faccion": "Tyranidos",
     "Numero Unidades": 8
 }
