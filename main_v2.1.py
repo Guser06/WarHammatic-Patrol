@@ -119,17 +119,29 @@ for d in Ejercitos_diccionarios:    #iterar por lista de diccionarios
     j = 0
     if isinstance(d, dict):     #Determinar si el objeto es un diccionario
         Ejercitos_objetos.append(Ejercito(d))   #Crear el objeto ejercito
+        lids = []
+        k = 0
         for cu, vu in d.items():    #iterar por diccionario
             if isinstance(vu, dict):    #Determinar si el objeto es un subdiccionario
                 if vu["Lider"] is True:
-                    j += Lider(vu).AddLider(Ejercitos_objetos[i])
-                else:
+                    lids.append(Lider(vu))
+                    for cm, vm in vu.items():   #Iterar por el subdiccionario
+                        if isinstance(vm, dict) and cm != 'Habilidades':    #Determinar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
+                            lids[k].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad
+                            lids[k].miembros[-1].AddWeap(vm)   #Crear armas y añadirlas al individuo
+                    k += 1
+
+                if vu["Lider"] is not True:
                     Ejercitos_objetos[i].unidades.append(Unidad(vu))    #Crear el objeto unidad y añadirlo a un ejercito
-                for cm, vm in vu.items():   #Iterar por el subdiccionario
-                    if isinstance(vm, dict) and cm != 'Habilidades':    #Determinar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
-                        Ejercitos_objetos[i].unidades[j].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad
-                        Ejercitos_objetos[i].unidades[j].miembros[-1].AddWeap(vm)   #Crear armas y añadirlas al individuo
-                j += 1
+                    for cm, vm in vu.items():   #Iterar por el subdiccionario
+                        if isinstance(vm, dict) and cm != 'Habilidades':    #Determinar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
+                            Ejercitos_objetos[i].unidades[j].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad
+                            Ejercitos_objetos[i].unidades[j].miembros[-1].AddWeap(vm)   #Crear armas y añadirlas al individuo
+                    j += 1
+
+        for lid in lids:
+            lid.AddLider(Ejercitos_objetos[i])
+
         i += 1
 
 #Determinar turno
@@ -212,5 +224,3 @@ while turno/2 <= limite:
       
     turno += 1
 
-
-    

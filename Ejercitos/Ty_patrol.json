@@ -22,7 +22,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Torrente psicoclastico",
-                "stats": [
+                "Stats": [
                     12, "D6", 0, 6,	1, 1
                     ],
                 "Claves": {
@@ -36,7 +36,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y mandibula tentacular",
-                "stats": [
+                "Stats": [
                     0, 6, 3, 6, 2, 2
                     ],
                 "Claves": {
@@ -70,7 +70,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -83,7 +83,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -100,7 +100,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -113,7 +113,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -130,7 +130,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -143,7 +143,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -160,7 +160,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -173,7 +173,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -190,7 +190,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -203,7 +203,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -220,7 +220,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -233,7 +233,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -250,7 +250,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -263,7 +263,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -280,7 +280,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -293,7 +293,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -310,7 +310,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -323,7 +323,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -340,7 +340,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -353,7 +353,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -386,7 +386,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -399,7 +399,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -416,7 +416,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -429,7 +429,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -446,7 +446,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -459,7 +459,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -476,7 +476,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -489,7 +489,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -506,7 +506,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -519,7 +519,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -536,7 +536,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -549,7 +549,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -566,7 +566,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -579,7 +579,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -596,7 +596,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -609,7 +609,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -626,7 +626,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -639,7 +639,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -656,7 +656,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Perforacarne",
-                "stats": [
+                "Stats": [
                     18,	1, 4, 5, 0, 1
                     ],
                 "Claves": {
@@ -669,7 +669,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 3,	0, 1
                     ],
                 "Claves": [
@@ -699,11 +699,11 @@
                 ],
             "Rango1": {
                 "Nombre": "Lanzaespinas",
-                "stats": [
+                "Stats": [
                     24,	"D6", 4, 5, 0, 1
                     ],
                 "Claves": {
-                    "Explosivo": null,
+                    "Area": null,
                     "Pesado": null                
                     }
                 },
@@ -713,7 +713,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 4, 0, 1
                     ],
                 "Claves": [
@@ -730,11 +730,11 @@
                 ],
             "Rango1": {
                 "Nombre": "Lanzaespinas",
-                "stats": [
+                "Stats": [
                     24,	"D6", 4, 5, 0, 1
                     ],
                 "Claves": {
-                    "Explosivo": null,
+                    "Area": null,
                     "Pesado": null                
                     }
                 },
@@ -744,7 +744,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 4, 0, 1
                     ],
                 "Claves": [
@@ -761,11 +761,11 @@
                 ],
             "Rango1": {
                 "Nombre": "Lanzaespinas",
-                "stats": [
+                "Stats": [
                     24,	"D6", 4, 5, 0, 1
                     ],
                 "Claves": {
-                    "Explosivo": null,
+                    "Area": null,
                     "Pesado": null                
                     }
                 },
@@ -775,7 +775,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 4, 0, 1
                     ],
                 "Claves": [
@@ -792,11 +792,11 @@
                 ],
             "Rango1": {
                 "Nombre": "Lanzaespinas",
-                "stats": [
+                "Stats": [
                     24,	"D6", 4, 5, 0, 1
                     ],
                 "Claves": {
-                    "Explosivo": null,
+                    "Area": null,
                     "Pesado": null                
                     }
                 },
@@ -806,7 +806,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 4, 0, 1
                     ],
                 "Claves": [
@@ -823,11 +823,11 @@
                 ],
             "Rango1": {
                 "Nombre": "Lanzaespinas",
-                "stats": [
+                "Stats": [
                     24,	"D6", 4, 5, 0, 1
                     ],
                 "Claves": {
-                    "Explosivo": null,
+                    "Area": null,
                     "Pesado": null                
                     }
                 },
@@ -837,7 +837,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 1, 4, 4, 0, 1
                     ],
                 "Claves": [
@@ -873,7 +873,7 @@
 
             "Mele1": {
                 "Nombre": "Espolones de saltador",
-                "stats": [
+                "Stats": [
                     0, 6, 3, 5, 1, 1
                     ],
                 "Claves": [
@@ -895,7 +895,7 @@
 
             "Mele1": {
                 "Nombre": "Espolones de saltador",
-                "stats": [
+                "Stats": [
                     0, 6, 3, 5, 1, 1
                     ],
                 "Claves": [
@@ -917,7 +917,7 @@
 
             "Mele1": {
                 "Nombre": "Espolones de saltador",
-                "stats": [
+                "Stats": [
                     0, 6, 3, 5, 1, 1
                     ],
                 "Claves": [
@@ -948,7 +948,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Mandibula espinoza",
-                "stats": [
+                "Stats": [
                     6, 4, 5, 3, 0, 1
                     ],
                 "Claves": [
@@ -961,7 +961,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 6, 5, 2,	0, 1
                     ],
                 "Claves": [
@@ -978,7 +978,7 @@
                 ],
             "Rango1": {
                 "Nombre": "Mandibula espinoza",
-                "stats": [
+                "Stats": [
                     6, 4, 5, 3, 0, 1
                     ],
                 "Claves": [
@@ -991,7 +991,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes quintinosos",
-                "stats": [
+                "Stats": [
                     0, 6, 5, 2,	0, 1
                     ],
                 "Claves": [
@@ -1031,7 +1031,7 @@
 
             "Mele1": {
                 "Nombre": "Garras y dientes primus",
-                "stats": [
+                "Stats": [
                     0, 6, 2, 6, 1, 2
                     ],
                 "Claves": [
