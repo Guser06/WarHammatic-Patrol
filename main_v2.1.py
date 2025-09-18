@@ -1,5 +1,6 @@
 from WHmmatic_lib import *
 import json
+from pathlib import Path
 import blessed
 import sys
 
@@ -47,28 +48,32 @@ with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
                 #Constructor de unidades 
                 match (Indice_ejercito%len(DISPONIBLE)):
                     case 0:
-                        with open('Ejercitos/Ty_patrol.json', 'r') as file:
+                        filepath = Path(__file__).parent / "Ejercitos/Ty_patrol.json"
+                        with open(filepath, 'r') as file:
                             Ejercitos_diccionarios.append(json.load(file))
                         if len(Ejercitos_diccionarios) == 2:
                             break
                         else: Term.inkey()
                     
                     case 1:
-                        with open('Ejercitos/Ty_Tyrannofex.json', 'r') as file:
+                        filepath = Path(__file__).parent / "Ejercitos/Ty_Tyrannofex.json"
+                        with open(filepath, 'r') as file:
                             Ejercitos_diccionarios.append(json.load(file))
                         if len(Ejercitos_diccionarios) == 2:
                             break
                         else: Term.inkey()
                     
                     case 2:
-                        with open('Ejercitos/UM_patrol.json', 'r') as file:
+                        filepath = Path(__file__).parent / "Ejercitos/UM_patrol.json"
+                        with open(filepath, 'r') as file:
                             Ejercitos_diccionarios.append(json.load(file))
                         if len(Ejercitos_diccionarios)  == 2:
                             break
                         else: Term.inkey()
                     
                     case 3:
-                        with open('Ejercitos/UM_Lancer.json', 'r') as file:
+                        filepath = Path(__file__).parent / "Ejercitos/UM_Lancer.json"
+                        with open(filepath, 'r') as file:
                             Ejercitos_diccionarios.append(json.load(file))
                         if len(Ejercitos_diccionarios) == 2:
                             break
