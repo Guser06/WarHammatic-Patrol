@@ -243,12 +243,14 @@ def Disparo(term, unidad, Ejer_Enem):
         else:
             ##Seleccionar un arma
             for miembro in unidad.miembros:
-                print(term.springgreen4_on_black(f"Elija un arma para disparar con {miembro.nombre}:"))
                 indice = 0
                 while True:
                     ##Romper ciclo en caso de que se hallan usado todas las armas
-                    if any(x.usado for x in miembro.rango):
+                    if all([x.usado for x in miembro.rango]):
                         break
+
+                    print(term.home + term.clear)
+                    print(term.springgreen4_on_black(f"Elija un arma para disparar con {miembro.nombre}:"))
 
                     ##Construir menú
 
@@ -262,9 +264,11 @@ def Disparo(term, unidad, Ejer_Enem):
 
                     if tecla.name in ("KEY_UP", "KEY_LEFT"):
                         indice = (indice - 1 + len(miembro.rango)) % len(miembro.rango)
+                        continue
         
                     elif tecla.name in ("KEY_DOWN", "KEY_RIGHT"):
                         indice = (indice + 1 + len(miembro.rango)) % len(miembro.rango)
+                        continue
             
                     elif tecla.name == "KEY_ENTER" or tecla == '\n':
                         if not miembro.rango[indice].usado:
@@ -274,6 +278,7 @@ def Disparo(term, unidad, Ejer_Enem):
 
                             ##Elegir un blanco y recuperar sus claves
                             blanco = Selec_Blanco(term=term, unidad=unidad, accion='Disparar', Ejer_Enem=Ejer_Enem)
+                            miembro.rango[indice].usado = True
                             if blanco is None:
                                 break
 
@@ -322,14 +327,13 @@ def Disparo(term, unidad, Ejer_Enem):
                                 ##Tirada para impactar
                                 print(term.home + term.clear)
                                 n = miembro.rango[indice].stats.get("No. de Ataques")
-                                impact = Dados(n, 6, False) if not 'D' in miembro.rango[indice].stats.get("No. de Ataques") else AtkDmg_Rand(n)
+                                impact = Dados(n, 6, False) if isinstance(miembro.rango[indice].stats.get("No. de Ataques"), int) else AtkDmg_Rand(n)
                                 impact = [dado for dado in impact if dado >= miembro.rango[indice].stats.get("Habilidad")]
                                 print(term.springgreen4_on_black(f"Se han lanzado {miembro.rango[indice].stats.get("No. de Ataques")} ataques"))
                                 print(term.springgreen4_on_black("Las tiradas para impactar exitosas:"))
                                 print(term.springgreen4_on_black(f"{impact}"))
                                 print(term.springgreen4_on_black("Presione cualquier tecla para continuar"))
                                 term.inkey()
-                                miembro.rango[indice].usado = True
                                 if len(impact) == 0:
                                     break
                                 else:
@@ -364,17 +368,19 @@ def Disparo(term, unidad, Ejer_Enem):
                                     print(term.home + term.clear)
                                     print(term.springgreen4_on_black(f"Es momento de las tiradas de salvación de {blanco.nombre}"))
                                     print(term.springgreen4_on_black(f"El factor de perforación del arma atacante es -{miembro.rango[indice].stats.get("Perforación")}"))
+                                    
                                     salvacion = blanco.miembros[0].stats_base.get("Salvación")
                                     if miembro.rango[indice].stats.get("Perforación") > 0:
                                         print(term.springgreen4_on_black(f"La salvación requerida sube a {blanco.miembros[0].stats_base.get("Salvación") + miembro.rango[indice].stats.get("Perforación")}"))
                                         salvacion += miembro.rango[indice].stats.get("Perforación")
-                                    elif 'Invulnerable' in blanco.habilidades.keys():
+
+                                    if 'Invulnerable' in blanco.habilidades.keys():
                                         print(term.springgreen4_on_black(f"\nLa unidad atacada tiene una salvación invulnerable de {blanco.habilidades.get('Invulnerable')}"))
                                         print(term.springgreen4_on_black(f"¿Que perfil desea usar?\n"))
 
                                         index = 0
                                         while True:
-                                            S = [f"Salvación regular: {blanco.miembros[0].stats.get("Salvación") + miembro.rango[indice].get("Perforación")}+",
+                                            S = [f"Salvación regular: {blanco.miembros[0].stats_base.get('Salvación') + miembro.rango[indice].stats.get('Perforación')}+",
                                                 f"Salvación invulnerable: {blanco.habilidades.get('Invulnerable')}+"]
 
                                             for i, opcion in enumerate(S):    #Crear lista de opciones
@@ -393,7 +399,7 @@ def Disparo(term, unidad, Ejer_Enem):
             
                                             elif boton.name == "KEY_ENTER" or boton == '\n':
                                                 if index == 0:
-                                                    salvacion = blanco.miembros[0].stats.get("Salvación") + miembro.rango[indice].get("Perforación")
+                                                    salvacion = blanco.miembros[0].stats_base.get("Salvación") + miembro.rango[indice].stats.get("Perforación")
                                                     break
                                                 elif index == 1:
                                                     salvacion = blanco.habilidades.get('Invulnerable')
@@ -406,7 +412,7 @@ def Disparo(term, unidad, Ejer_Enem):
 
                                     if len(herir) > len(salvar):
                                         print(term.black_on_springgreen4(f"A que miniatura se le asignarán las heridas?"))
-                                        salvar = len(herir)
+                                        salvar = len(herir) - len(salvar)
                                         m = miembro.rango[indice].stats.get("Daño")
                                         if isinstance(m, str):
                                             dano = sum(AtkDmg_Rand(m))
@@ -414,17 +420,24 @@ def Disparo(term, unidad, Ejer_Enem):
                                             dano = int(m)
                                         salvar*=dano
 
+                                        print(term.springgreen4_on_black("Presione cualquier tecla para continuar"))
+                                        term.inkey()
+
                                         while salvar >= 1:
                                             danada = Selec_mini(term, blanco)
-                                            if salvar >= blanco.miembros[danada].stats_base("Heridas"):
-                                                salvar -= blanco.miembros[danada].stats_base("Heridas")
-                                                print(term.springgreen4_on_black(f"{blanco.miembros[danada].recibir_dano(blanco.miembros[danada].stats_base("Heridas"))}"))
+                                            if salvar >= blanco.miembros[danada].stats_base.get("Heridas"):
+                                                print(term.springgreen4_on_black(f"{blanco.miembros[danada].recibir_dano(blanco.miembros[danada].stats_base.get("Heridas"))}"))
+                                                print(term.springgreen4_on_black("Presione cualquier tecla para continuar"))
+                                                term.inkey()
+                                                salvar -= blanco.miembros[danada].stats_base.get("Heridas")
                                                 blanco.eliminar_muertos()
                                                 continue
                                             else:
-                                                salvar = 0
-                                                blanco.miembros[danada].recibir_dano(blanco.miembros[danada].stats_base("Heridas"))
+                                                blanco.miembros[danada].recibir_dano(salvar)
                                                 print(term.springgreen4_on_black(f"{blanco.miembros[danada].__repr__()}\nHeridas recibidas: {blanco.miembros[danada].dmg}"))
+                                                print(term.springgreen4_on_black("Presione cualquier tecla para continuar"))
+                                                term.inkey()
+                                                salvar = 0
                                                 break
 
                 
@@ -437,8 +450,6 @@ def Disparo(term, unidad, Ejer_Enem):
                         print(term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
                         term.inkey()
                         continue
-
-
 
 
 def Combate(unidad, blanco, term):
@@ -717,6 +728,7 @@ def Conf_usr(term, lista_F, lista_T, indice_F, p1, p2 = None):     ##Enviar term
 ##Funcion seleccionar blanco devuelve una unidad
 def Selec_Blanco(term, unidad, accion, Ejer_Enem):   ##Accion debe ser una cadena: 'cargar', 'disparar', 'combatir'
     indice = 0
+    Ejer_Enem.eliminar_unidades()
     while True:
         with term.fullscreen(), term.cbreak(), term.hidden_cursor():
             
@@ -761,8 +773,6 @@ def Selec_mini(term, unidad): ##Devuelve indice que la miniatura ocupa en la uni
     while True:
         with term.fullscreen(), term.cbreak(), term.hidden_cursor():
             
-            print(term.home + term.clear)
-            print(term.on_black)
             print(term.springgreen4_on_black(f"Elige una miniatura de {unidad.nombre} para recibir daño"))
 
             for i, opcion in enumerate(unidad.miembros):    #Crear lista de opciones
