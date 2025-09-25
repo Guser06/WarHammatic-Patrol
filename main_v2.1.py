@@ -13,6 +13,7 @@ DISPONIBLE = [
     'Tyrannofex',
     'Space Marines v1',
     'Gladiator Lancer',
+    'Debug',
     'salir'
 ]
 
@@ -78,7 +79,15 @@ with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
                         if len(Ejercitos_diccionarios) == 2:
                             break
                         else: Term.inkey()
-                    
+                        
+                    case 4:
+                        filepath = Path(__file__).parent / "Ejercitos/Debug_army.json"
+                        with open(filepath, 'r') as file:
+                            Ejercitos_diccionarios.append(json.load(file))
+                        if len(Ejercitos_diccionarios) == 2:
+                            break
+                        else: Term.inkey()
+
         else:
             print(Term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
             Term.inkey()
@@ -225,7 +234,11 @@ while turno/2 <= limite:
     for u in Ejercitos_objetos[turno%2].unidades:
         Menu(term=Term, unidad=u, TXT=CARGA_T, FUN=CARGA_F, par=Selec_Blanco(term=Term, unidad=u, accion='Cargar', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]))
     
-    Combate(unidad= Pelea_Primero(Ejercitos_objetos[turno%2]), blanco=Selec_Blanco(term=Term, unidad=u, accion='Combatir', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]))        
-      
-    turno += 1
+    unidades = Pelea_Primero(Ejercitos_objetos[turno%2])
+    for u in unidades:
+        Combate(unidad= u, blanco=Selec_Blanco(term=Term, unidad=u, accion='Combatir', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]), term=Term)        
+        if "Tem Pelea Primero" in u.habilidades.keys():
+            del u.habilidades["Tem Pelea Primero"]
+            
+turno += 1
 

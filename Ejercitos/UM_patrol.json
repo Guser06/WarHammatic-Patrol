@@ -460,7 +460,7 @@
                     ],
                 "Claves": {
                     "Psiquico": null,
-                    "Eleccion": null                
+                    "Perfil": null                
                     }
                 },
             "Rango2": {
@@ -469,12 +469,23 @@
                     24, "D6", 3, 6, 2, "D3"
                     ],
                 "Claves": {
+                    "Perfil": null,
                     "Heridas devastadoras": null,
                     "Riesgoso": null,
                     "Psiquico": null
                     }
                 },
-            "Rango3": null,
+            "Rango3": {
+                "Nombre": "Combi-Arma",
+                "Stats": [
+                    24, 1, 4, 4, 0, 1
+                    ],
+                "Claves": {
+                    "Anti": ["Infanteria", 4],
+                    "Heridas devastadoras": null,
+                    "Fuego Rapido": 2
+                    }
+                },
             "Rango4": null,
 
             "Mele1": {

@@ -951,9 +951,9 @@
                 "Stats": [
                     6, 4, 5, 3, 0, 1
                     ],
-                "Claves": [
-                    "Pistola"                
-                    ]
+                "Claves": {
+                    "Pistola": null            
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -981,9 +981,9 @@
                 "Stats": [
                     6, 4, 5, 3, 0, 1
                     ],
-                "Claves": [
-                    "Pistola"                
-                    ]
+                "Claves": {
+                    "Pistola": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,

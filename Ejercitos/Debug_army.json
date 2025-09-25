@@ -1,0 +1,54 @@
+{
+    "u2": {
+        "Nombre": "Debuger",
+        "Lider": true,
+        "Numero Miniaturas": 1,
+        "Habilidades": {
+            "No hay dolor": 5,
+            "Invulnerable": 4,
+            "Sigilo": null
+            },
+        "Claves": [
+            "Personaje",
+            "Monstruo",
+            "Psiquico",
+            "Volador"
+            ],
+        "m1": {
+            "Nombre": "Bugus debugus",
+            "Stats": [
+                5, 5, 2, 5, 6, 1
+                ],
+            "Rango1": {
+                "Nombre": "Rasho laser enfocado",
+                "Stats": [
+                    24, "D6", 3, 6, 2, "D3"
+                    ],
+                "Claves": {
+                    "Heridas devastadoras": null,
+                    "Riesgoso": null,
+                    "Acoplado": null,
+                    "Asalto": null,
+                    "Fuego Rapido": 2,
+                    "Pesado": null
+                    }
+                },
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Wachi wachi wa",
+                "Stats": [
+                    0, "D3+3", 2, 8, -1, "D3+3"
+                    ],
+                "Claves": {
+                    "Acoplado": null 
+                    }
+                },
+            "Mele2": null
+            }
+        },
+
+    "Faccion": "Adeptus Debugus",
+    "Numero Unidades": 1
+}

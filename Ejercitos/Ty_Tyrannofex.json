@@ -951,9 +951,9 @@
                 "Stats": [
                     6, 4, 5, 3, 0, 1
                     ],
-                "Claves": [
-                    "Pistola"                
-                    ]
+                "Claves": {
+                    "Pistola": null              
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -981,9 +981,9 @@
                 "Stats": [
                     6, 4, 5, 3, 0, 1
                     ],
-                "Claves": [
-                    "Pistola"                
-                    ]
+                "Claves": {
+                    "Pistola": null                
+                    }
                 },
             "Rango2": null,
             "Rango3": null,
@@ -1028,7 +1028,15 @@
                     "Pesado": null         
                     }
                 },
-            "Rango2": null,
+            "Rango2": {
+                "Nombre": "Salvas de Aguijon",
+                "Stats": [
+                    24, 8, 3, 5, 0, 1
+                    ],
+                "Claves": {
+                    "Pesado": null         
+                    }
+                },
             "Rango3": null,
             "Rango4": null,
 
