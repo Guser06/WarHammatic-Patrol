@@ -750,7 +750,7 @@ def Disparo(term, unidad, Ejer_Enem):
         return
 
 ##Funcion de combate cuerpo a cuerpo
-def Combate(unidad, blanco, Ejer_Enem, term):
+def Combate(unidad, blanco, term):
     while True:
         with term.fullscreen(), term.cbreak(), term.hidden_cursor():
             if unidad.engaged and blanco is not None:

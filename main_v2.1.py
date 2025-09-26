@@ -240,5 +240,5 @@ while turno/2 <= limite:
         if "Tem Pelea Primero" in u.habilidades.keys():
             del u.habilidades["Tem Pelea Primero"]
             
-turno += 1
+    turno += 1
 
