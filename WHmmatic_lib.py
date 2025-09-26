@@ -508,10 +508,13 @@ def Disparo(term, unidad, Ejer_Enem):
                                                 salvar = len(dev)
                                                 m = miembro.rango[indice].stats.get("Daño")
                                                 if isinstance(m, str):
-                                                    dano = AtkDmg_Rand(m, True)
+                                                    dano_azar = []
+                                                    for x in range(0, len(dev)):
+                                                        dano_azar.append(AtkDmg_Rand(m, True) )
+                                                    salvar = sum(dano_azar)
                                                 else:
                                                     dano = int(m)
-                                                salvar*=dano
+                                                    salvar*=dano
 
                                                 print(term.black_on_springgreen4(f"A que miniatura se le asignarán {salvar} heridas?"))
                                                 print(term.springgreen4_on_black("Presione cualquier tecla para continuar"))
@@ -588,10 +591,13 @@ def Disparo(term, unidad, Ejer_Enem):
                                                     print(term.black_on_springgreen4(f"A que miniatura se le asignarán las heridas?"))
                                                     m = miembro.rango[indice].stats.get("Daño")
                                                     if isinstance(m, str):
-                                                        dano = AtkDmg_Rand(m, True)
+                                                        dano_azar = []
+                                                        for x in range(0, a):
+                                                            dano_azar.append(AtkDmg_Rand(m, True) )
+                                                        dano = sum(dano_azar)
                                                     else:
                                                         dano = int(m)
-                                                    dano*=a
+                                                        dano*=a
 
                                                     print(term.springgreen4_on_black("Presione cualquier tecla para continuar"))
                                                     term.inkey()
@@ -679,10 +685,13 @@ def Disparo(term, unidad, Ejer_Enem):
                                             salvar = len(herir) - len(salvar)
                                             m = miembro.rango[indice].stats.get("Daño")
                                             if isinstance(m, str):
-                                                dano = AtkDmg_Rand(m, True)
+                                                dano_azar = []
+                                                for x in range(0, salvar):
+                                                    dano_azar.append(AtkDmg_Rand(m, True))
+                                                salvar = sum(dano_azar)
                                             else:
                                                 dano = int(m)
-                                            salvar*=dano
+                                                salvar*=dano
 
                                             print(term.black_on_springgreen4(f"A que miniatura se le asignarán {salvar} heridas?"))
                                             print(term.springgreen4_on_black("Presione cualquier tecla para elegir"))
