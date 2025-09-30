@@ -6,7 +6,8 @@
         "Habilidades": {
             "Bio-estimulo": null,
             "Frenesi Alimenticio": null,
-            "No hay dolor": 5
+            "No hay dolor": 5,
+            "Final Violento": 1
             },
         "Claves": [
             "Monstruo",
@@ -1007,7 +1008,8 @@
         "Lider": null,
         "Numero Miniaturas": 1,
         "Habilidades": {
-            "Organismo Resiliente": null
+            "Organismo Resiliente": null,
+            "Final Violento": "D6"
             },
         "Claves": [
             "Monstruo",
