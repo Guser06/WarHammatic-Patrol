@@ -469,6 +469,7 @@ def Disparo(term, unidad, Ejer_Enem):
                                     term.inkey()
                                     break
 
+                                ##Regla Melta (fusion)
 
                                 else:
                                     ##Tirada para impactar
@@ -490,7 +491,6 @@ def Disparo(term, unidad, Ejer_Enem):
                                         if dist <= miembro.rango[indice].stats.get("Alcance")//2:
                                             print(term.springgreen4_on_black(f"{unidad.nombre} está cerca de su objetivo y lanza {miembro.rango[indice].claves.get('Fuego Rapido')} ataques adicionales"))
                                             n += miembro.rango[indice].claves.get('Fuego Rapido') if isinstance(n, int) else f'+{miembro.rango[indice].claves.get('Fuego Rapido')}'
-
                                 
                                     ##Si se repite el arma usar Tirada rapida
                                     impact = []
@@ -524,6 +524,10 @@ def Disparo(term, unidad, Ejer_Enem):
                                                     arma.usado = True
                                             
                                         impact = Dados(n, 6, False) if isinstance(miembro.rango[indice].stats.get("No. de Ataques"), int) else AtkDmg_Rand(n)
+                                        
+                                    ##Golpes Sostenidos
+                        
+                                    ##Impactos letales
 
                                     ##Regla Pesada
                                     if 'Pesado' in miembro.rango[indice].claves.keys() and unidad.mov == 3:
@@ -793,6 +797,11 @@ def Combate(unidad, blanco, term):
                 unidad.atk -= 1
             return
 
+
+##Reglas de movimiento
+
+##Añadir comprobación de cobertura
+
 ##Permanecer estatico
 def Estatico(term, unidad, p3 = None):
     while True:
@@ -1030,7 +1039,9 @@ def FinViol(term, dic_habs, nombre, Ejers):
                 term.inkey()
 
 ##Regla empeorar stats si hay daños
-def Worsen(term, unidad):
+def Danado(term, unidad):
+    ## 1 a 4 heridas -> resta 1 a tirada para herir
+    ## 1 a 5 heridas -> resta 1 "
     
     return
 
