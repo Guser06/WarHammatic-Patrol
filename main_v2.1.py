@@ -121,7 +121,7 @@ while turno/2 <= limite:
     
     unidades = Pelea_Primero(Ejercitos_objetos[turno%2])
     for u in unidades:
-        Combate(unidad= u, blanco=Selec_Blanco(term=Term, unidad=u, accion='Combatir', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]), term=Term)        
+        Combate(term=Term, unidad= u, Ejer_Enem=Ejercitos_objetos[(turno%2)-1])        
         if "Tem Pelea Primero" in u.habilidades.keys():
             del u.habilidades["Tem Pelea Primero"]
             
