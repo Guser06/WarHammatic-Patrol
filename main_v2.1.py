@@ -79,20 +79,21 @@ MOVIMIENTO_T = [
     'Movimiento normal',
     'Estatico',
     'Avance',
+    'Retroceder',
     'Continuar'
 ]
 
 MOVIMIENTO_F = [
     Normal,
     Estatico,
-    Avance
+    Avance,
+    Retroceder
 ]
 
 CARGA_T = [
     'Carga',
     'Estatico',
-    'Regresar',
-    'Omitir'
+    'Continuar'
 ]
 
 CARGA_F = [
