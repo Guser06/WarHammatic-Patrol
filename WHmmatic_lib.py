@@ -1706,3 +1706,15 @@ def Selec_SN(term, row, col, text):
             else:
                 print(term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
                 term.inkey()
+                
+##Definir si se terminó la partida
+def Victoria(term, lista_Ejs):
+    for j in len(lista_Ejs):
+        if len(lista_Ejs[j].unidades) == 0:
+            print(term.springgreen4_on_black(f"El ejercito de {lista_Ejs[j].faccion} ha sido eliminado"))
+            print(term.springgreen4_on_black(f"El ejercito de {lista_Ejs[j-1].faccion} ha salido ganador"))
+            print(term.springgreen4_on_black(f"La partida ha terminado"))
+            term.inkey()
+            sys.exit()
+        
+    else: return False

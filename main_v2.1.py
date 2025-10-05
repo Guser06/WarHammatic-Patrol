@@ -125,6 +125,19 @@ while turno/2 <= limite:
         Combate(term=Term, unidad= u, Ejer_Enem=Ejercitos_objetos[(turno%2)-1])        
         if "Tem Pelea Primero" in u.habilidades.keys():
             del u.habilidades["Tem Pelea Primero"]
-            
+    
     turno += 1
+    
+    if Victoria(Term, Ejercitos_objetos):
+        break
 
+if (Ejercitos_objetos[0].nu - len(Ejercitos_objetos[0].unidades)) > (Ejercitos_objetos[1].nu - len(Ejercitos_objetos[1].unidades)):
+    print(Term.springgreen4_on_black(f"El ejercito de {Ejercitos_objetos[1].faccion} ha ganado tras destruir mas unidades enemigas!"))
+elif (Ejercitos_objetos[0].nu - len(Ejercitos_objetos[0].unidades)) < (Ejercitos_objetos[1].nu - len(Ejercitos_objetos[1].unidades)):
+    print(Term.springgreen4_on_black(f"El ejercito de {Ejercitos_objetos[0].faccion} ha ganado tras destruir mas unidades enemigas!"))
+elif (Ejercitos_objetos[0].nu - len(Ejercitos_objetos[0].unidades)) == (Ejercitos_objetos[1].nu - len(Ejercitos_objetos[1].unidades)):
+    print(Term.springgreen4_on_black(f"Ningun ejercito ha destruido mas unidades enemigas que el otro, la partida termina en empate!"))
+        
+print(Term.springgreen4_on_black("Presione cualquier tecla para terminar el programa"))
+Term.inkey()
+sys.exit()
