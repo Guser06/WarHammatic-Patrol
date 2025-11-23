@@ -1,0 +1,51 @@
+{
+"Nombre": "Tyrannofex",
+"Lider": null,
+"Numero Miniaturas": 1,
+"Habilidades": {
+    "Organismo Resiliente": null,
+    "Final Violento": "D6"
+    },
+"Claves": [
+    "Monstruo",
+    "Gran devorador",
+    "Tyrannofex"
+    ],
+"m1": {
+    "Nombre": "Tyrannofex",
+    "Stats": [
+        9, 12, 2, 16, 8, 5
+        ],
+    "Rango1": {
+        "Nombre": "Cañon de ruptura",
+        "Stats": [
+            48, 2, 3, 18, 4, "D6+6"
+            ],
+        "Claves": {
+            "Pesado": null         
+            }
+        },
+    "Rango2": {
+        "Nombre": "Salvas de Aguijon",
+        "Stats": [
+            24, 8, 3, 5, 0, 1
+            ],
+        "Claves": {
+            "Pesado": null         
+            }
+        },
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Extremidades poderosas",
+        "Stats": [
+            0, 4, 3, 8, 0, 2
+            ],
+        "Claves": [
+            null
+            ]
+        },
+    "Mele2": null
+    }
+}

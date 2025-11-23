@@ -1,4 +1,4 @@
-
+/*
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <vector>
@@ -81,3 +81,4 @@ vector<unordered_map<string, vector<string>>> ElegirEjercitos(sf::RenderWindow& 
 	}
 	return ejercitos;
 }
+*/

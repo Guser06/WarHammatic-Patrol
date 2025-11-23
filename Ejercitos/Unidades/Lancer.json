@@ -1,0 +1,68 @@
+{
+"Nombre": "Gladiator Lancer",
+"Lider": null,
+"Numero Miniaturas": 1,
+"Habilidades": {
+    "Aquilon Optics": null,
+    "Final Violento": "D3"
+    },
+"Claves": [
+    "Vehiculo",
+    "Humo",
+    "Imperio",
+    "Gladiator Lancer"
+    ],
+"m1": {
+    "Nombre": "Gladiator Lancer",
+    "Stats": [
+        10, 10, 3, 12, 6, 3
+        ],
+    "Rango1": {
+        "Nombre": "Bolter tormenta",
+        "Stats": [
+            24, 4, 2, 4, 0, 1
+            ],
+        "Claves": {
+            "Fuego Rapido": 4                
+            }
+        },
+    "Rango2": {
+        "Nombre": "Lanzacohetes Icarus",
+        "Stats": [
+            24, "D3", 3, 8, 1, 2
+            ],
+        "Claves": {
+            "Anti": ["Volador", 2]                
+            }
+        },
+    "Rango3": {
+        "Nombre": "Ametralladora pesada Ironhail",
+        "Stats": [
+            36, 3, 3, 4, 0, 1
+            ],
+        "Claves": {
+            "Fuego Rapido": 3                
+            }
+        },
+    "Rango4": {
+        "Nombre": "Destructor Laser Lancer",
+        "Stats": [
+            72, 2, 3, 14, 4, "D6+3"
+            ],
+        "Claves": {
+            "Pesado": null         
+            }
+        },
+
+    "Mele1": {
+        "Nombre": "Caparazón Acorazado",
+        "Stats": [
+            0, 3, 4, 6, 0, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    }
+}
