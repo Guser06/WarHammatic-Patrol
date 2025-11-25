@@ -15,55 +15,60 @@
     "Exterminador",
     "Bibliotecario"
     ],
-"m1": {
-    "Nombre": "Bibliotecario en armadura de exterminador",
-    "Stats": [
-        5, 5, 2, 5, 6, 1
-        ],
-    "Rango1": {
-        "Nombre": "Castigo-Fuego brujo",
+"minis": [
+    {
+        "Nombre": "Bibliotecario en armadura de exterminador",
         "Stats": [
-            24, "D6", 3, 5, 1, "D3"
+            5, 5, 2, 5, 6, 1
             ],
-        "Claves": {
-            "Psiquico": null,
-            "Perfil": null                
-            }
-        },
-    "Rango2": {
-        "Nombre": "Castigo-Fuego brujo enfocado",
-        "Stats": [
-            24, "D6", 3, 6, 2, "D3"
+        "rangos": [
+            {
+            "Nombre": "Castigo-Fuego brujo",
+            "Stats": [
+                24, "D6", 3, 5, 1, "D3"
+                ],
+            "Claves": {
+                "Psiquico": null,
+                "Perfil": null                
+                }
+            },
+            {
+            "Nombre": "Castigo-Fuego brujo enfocado",
+            "Stats": [
+                24, "D6", 3, 6, 2, "D3"
+                ],
+            "Claves": {
+                "Perfil": null,
+                "Heridas devastadoras": null,
+                "Riesgoso": null,
+                "Psiquico": null
+                }
+            },
+            {
+            "Nombre": "Combi-Arma",
+            "Stats": [
+                24, 1, 4, 4, 0, 1
+                ],
+            "Claves": {
+                "Anti": ["Infanteria", 4],
+                "Heridas devastadoras": null,
+                "Fuego Rapido": 2
+                }
+            },
+            null
             ],
-        "Claves": {
-            "Perfil": null,
-            "Heridas devastadoras": null,
-            "Riesgoso": null,
-            "Psiquico": null
-            }
-        },
-    "Rango3": {
-        "Nombre": "Combi-Arma",
-        "Stats": [
-            24, 1, 4, 4, 0, 1
-            ],
-        "Claves": {
-            "Anti": ["Infanteria", 4],
-            "Heridas devastadoras": null,
-            "Fuego Rapido": 2
-            }
-        },
-    "Rango4": null,
-
-    "Mele1": {
-        "Nombre": "Arma de psicofuerza",
-        "Stats": [
-            0, 4, 3, 6, -1, "D3"
-            ],
-        "Claves": {
-            "Psiquico": null 
-            }
-        },
-    "Mele2": null
-    }
+        "meles": [
+            {
+            "Nombre": "Arma de psicofuerza",
+            "Stats": [
+                0, 4, 3, 6, -1, "D3"
+                ],
+            "Claves": {
+                "Psiquico": null 
+                }
+            },
+            null
+            ]
+        }
+    ]
 }

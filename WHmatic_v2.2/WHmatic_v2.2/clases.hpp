@@ -1,201 +1,3 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include "json.hpp"
-#include "clases.hpp"
-#include <vector>
-#include <optional>
-#include <iostream>
-#include <fstream>
-#include <random>
-#include <chrono>
-#include <string>
-#include <map>
-using namespace std;
-using json = nlohmann::json;
-
-//Clase base para los elementos de la interfaz
-class Elemento
-{
-public:
-	sf::Vector2f posicion;
-	std::string Texto;
-	sf::Texture textura;
-	virtual ~Elemento() {};
-	virtual string Type() {};
-};
-
-//Clase botón para la interfaz
-class Boton : public Elemento
-{
-public:
-	sf::Vector2f tamano;
-	bool presionado = false;
-	sf::RectangleShape rect;
-	sf::Sprite* sprite = nullptr;
-	sf::Font* font = nullptr;
-	sf::Text* textoBoton;
-	Boton(sf::Vector2f pos, sf::Vector2f tam, string texto)
-	{
-		this->presionado = false;
-		this->posicion = pos;
-		this->tamano = tam;
-		this->Texto = texto;
-		this->rect.setSize(this->tamano);
-		this->rect.setPosition(this->posicion);
-		this->font = new sf::Font();
-		this->font->openFromFile("sprites/ARIAL.TTF");
-		this->textoBoton->setString("Reintentar?");
-		this->textoBoton->setCharacterSize(24);
-		this->textoBoton->setFillColor(sf::Color::Black);
-		this->textoBoton->setPosition(pos);
-	}
-	Boton(sf::Vector2f pos, sf::Vector2f tam, sf::Texture tex)
-	{
-		this->presionado = false;
-		this->posicion = pos;
-		this->tamano = tam;
-		this->sprite = new sf::Sprite(tex);
-	}
-	bool CheckClick(sf::Vector2i PosM) {
-		if (PosM.x >= this->posicion.x && PosM.x <= this->posicion.x + this->tamano.x &&
-			PosM.y >= this->posicion.y && PosM.y <= this->posicion.y + this->tamano.y)
-		{
-			this->presionado = true;
-		}
-		else
-			this->presionado = false;
-		return this->presionado;
-	}
-	virtual ~Boton() { delete this->sprite; }
-	virtual string Type() override { return "Boton"; }
-};
-
-class Ventana
-{
-public:
-	sf::RenderWindow* ventana = nullptr;
-	vector<Elemento*> elementos;
-	sf::Vector2i PosMouse;
-	Ventana(int Ancho, int Alto, string Nombre)
-	{
-		this->ventana = new sf::RenderWindow(sf::VideoMode({ Ancho, Alto }), Nombre);
-		this->ventana->setFramerateLimit(60);
-	}
-	virtual ~Ventana() {
-		delete this->ventana;
-		for (size_t i = 0; i < this->elementos.size(); i++)
-			delete this->elementos[i];
-	}
-	string Type() { return "Ventana"; }
-};
-
-class Arma
-{
-public:
-	string nombre; //Nombre del arma
-	vector<string> claves; //Claves del arma
-	map<string, vector<variant<int,string>>> stats; //Equivalente de diccionario de stats
-	bool usado; //Indica si el arma ya fue usada en el turno actual
-	vector<string> ArmaTx = { "Alcance", "No. de Ataques",
-		  "Habilidad", "Fuerza", "Perforación", "Daño"};
-
-	Arma(map<string, json>& diccionario) {
-		this->nombre = diccionario["Nombre"];
-		for (size_t i = 0; i < ArmaTx.size(); i++)
-			this->stats[ArmaTx[i]].push_back(diccionario["Stats"][i]); //Llena el diccionario de stats
-		this->claves = diccionario["Claves"];
-		this->usado = false;
-	}
-
-	void reboot() { this->usado = false; }
-	string Type() { return "Arma"; }
-};
-
-class Individuo : public Arma, public Elemento
-{
-public:
-	vector<Arma> Melee; //Armas cuerpo a cuerpo
-	vector<Arma> Rango; //Armas a distancia
-	int dmg = 0; //Daño recibido
-
-	Individuo (map<string, json> & diccionario, vector<string>& StatsTx) :
-		Arma(diccionario)
-	{
-		this->usado = true;
-		this->nombre = 
-	}
-	string Type() override { return "Individuo"; }
-};
-
-vector<map<string, vector<string>>> ElegirEjercitos(Ventana& v) {
-	map<string, vector<string>> opts;
-	opts.insert({"Tyranidos Pesados", {"EnjambresDevoradores.json", "Espinogantes.json", 
-								"Psicofago.json", "SaltadoresVonRyan.json", "Termagantes.json",
-								"Termagantes.json", "TyranidoPrimus.json", "Tyrannofex.json"} });
-	opts.insert({ "Marines Pesados", {"BibliotecarioExterminador.json", "CapitanExterminador.json",
-								"Exterminadores.json", "Infernus.json", "Lancer.json",
-								"Techmarine.json"}});
-	opts.insert({ "Tyranidos", {"EnjambresDevoradores.json", "Espinogantes.json",
-								"Psicofago.json", "SaltadoresVonRyan.json", "Termagantes.json",
-								"Termagantes.json", "TyranidoPrimus.json"} });
-	opts.insert({ "Marines Pesados", {"BibliotecarioExterminador.json", "CapitanExterminador.json",
-								"Exterminadores.json", "Infernus.json"} });
-	int indice = 0;
-	vector < map < string, vector < string > > > ejercitos;
-
-	v.ventana->clear(sf::Color::Black);
-	for (auto i: opts)
-	{
-		Boton* B = new Boton(sf::Vector2f({indice*60, 0}), sf::Vector2f({60, 180}), i.first);
-		v.elementos.push_back(B);
-		indice++;
-		v.ventana->draw(B->rect);
-	}
-	
-	while (const std::optional ev = v.ventana->pollEvent())
-	{
-		if (ejercitos.size() >= 2)
-			break;
-		if (ev->is<sf::Event::Closed>())
-			v.ventana->close();
-		else if (const auto* tecla = ev->getIf<sf::Event::KeyPressed>())
-			if (tecla->scancode == sf::Keyboard::Scancode::Escape)
-				v.ventana->close();
-		else if (const auto* click = ev->getIf<sf::Event::MouseButtonPressed>())
-		{
-			v.PosMouse = sf::Mouse::getPosition(*(v.ventana));
-			int PosY = v.PosMouse.y / 60;
-
-			if (click->button == sf::Mouse::Button::Left)
-			{
-				Boton* B = dynamic_cast<Boton*>(v.elementos[PosY]);
-				B->presionado = true;
-			}
-		}
-	}
-
-	for (auto& e : v.elementos)
-	{
-		Boton* B = dynamic_cast<Boton*>(e);
-		if (B->presionado)
-		{
-			map < string, map < string, string > > temp;
-			for (auto& f : opts[B->Texto])
-			{
-				ifstream archivo("ejercitos/" + f);
-				nlohmann::json j = nlohmann::json::parse(archivo);
-				map<string, string> datos =j.get< map <string, string > >();
-				temp.insert({ f, datos });
-			}
-			ejercitos.push_back(temp);
-		}
-	}
-
-	v.elementos.clear();
-	return ejercitos;
-}
-
-
 // War40kModels.hpp
 #pragma once
 
@@ -206,7 +8,7 @@ vector<map<string, vector<string>>> ElegirEjercitos(Ventana& v) {
 #include <optional>
 #include <iostream>
 
-#include "nlohmann/json.hpp"
+#include "json.hpp"
 using json = nlohmann::json;
 
 // -------------------------
@@ -275,7 +77,7 @@ struct Unidad {
     // Método para eliminar minis muertas (usado == false)
     void eliminar_muertos() {
         miembros.erase(std::remove_if(miembros.begin(), miembros.end(),
-            [](const Individuo &m) { return m.usado == false; }),
+            [](const Individuo& m) { return m.usado == false; }),
             miembros.end());
     }
 };
@@ -293,7 +95,7 @@ struct Ejercito {
 
     void eliminar_unidades() {
         unidades.erase(std::remove_if(unidades.begin(), unidades.end(),
-            [](const Unidad &u) { return u.miembros.empty(); }),
+            [](const Unidad& u) { return u.miembros.empty(); }),
             unidades.end());
     }
 };
@@ -366,7 +168,8 @@ inline void from_json(const json& j, Arma& a) {
     if (j.contains("usado")) {
         // Si el JSON define 'usado' y es booleano, lo tomamos.
         if (j["usado"].is_boolean()) a.usado = j["usado"].get<bool>();
-    } else if (j.contains("Usado")) {
+    }
+    else if (j.contains("Usado")) {
         // Manejo de variantes de capitalización (por si el JSON usa 'Usado')
         if (j["Usado"].is_boolean()) a.usado = j["Usado"].get<bool>();
     }
@@ -424,7 +227,8 @@ inline void from_json(const json& j, Individuo& ind) {
     // Si el JSON no define usado, mantenemos el valor por defecto (true)
     if (j.contains("usado") && j["usado"].is_boolean()) {
         ind.usado = j["usado"].get<bool>();
-    } else if (j.contains("Usado") && j["Usado"].is_boolean()) {
+    }
+    else if (j.contains("Usado") && j["Usado"].is_boolean()) {
         ind.usado = j["Usado"].get<bool>();
     }
 }
@@ -449,7 +253,7 @@ inline void from_json(const json& j, Unidad& u) {
 
     u.claves.clear();
     if (j.contains("Claves") && j["Claves"].is_array()) {
-        for (const auto &c : j["Claves"]) {
+        for (const auto& c : j["Claves"]) {
             if (c.is_string()) u.claves.push_back(c.get<std::string>());
         }
     }
@@ -464,7 +268,7 @@ inline void from_json(const json& j, Unidad& u) {
     // Miembros (vector de Individuo)
     u.miembros.clear();
     if (j.contains("minis") && j["minis"].is_array()) {
-        for (const auto &m : j["minis"]) {
+        for (const auto& m : j["minis"]) {
             if (m.is_null()) continue;
             Individuo ind;
             from_json(m, ind);
@@ -491,7 +295,7 @@ inline void from_json(const json& j, Ejercito& e) {
 
     e.unidades.clear();
     if (j.contains("unidades") && j["unidades"].is_array()) {
-        for (const auto &u : j["unidades"]) {
+        for (const auto& u : j["unidades"]) {
             if (u.is_null()) continue;
             Unidad uu;
             from_json(u, uu);
@@ -501,7 +305,7 @@ inline void from_json(const json& j, Ejercito& e) {
 
     // También puede haber casos en que el JSON tenga "Unidades" u otra capitalización.
     if (e.unidades.empty() && j.contains("Unidades") && j["Unidades"].is_array()) {
-        for (const auto &u : j["Unidades"]) {
+        for (const auto& u : j["Unidades"]) {
             if (u.is_null()) continue;
             Unidad uu;
             from_json(u, uu);
