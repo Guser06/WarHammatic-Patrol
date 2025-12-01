@@ -1,6 +1,7 @@
-// War40kModels.hpp
 #pragma once
 
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 #include <string>
 #include <vector>
 #include <map>
@@ -10,16 +11,95 @@
 
 #include "json.hpp"
 using json = nlohmann::json;
+using namespace std;
+
+//Clase base para los elementos de la interfaz
+class Elemento
+{
+public:
+    sf::Vector2f posicion;
+    std::string Texto;
+    sf::Texture textura;
+    virtual ~Elemento() {};
+    virtual string Type() {};
+};
+
+//Clase botón para la interfaz
+class Boton : public Elemento
+{
+public:
+    sf::Vector2f tamano;
+    bool presionado = false;
+    sf::RectangleShape rect;
+    sf::Sprite* sprite = nullptr;
+    sf::Font* font = nullptr;
+    sf::Text* textoBoton;
+    Boton(sf::Vector2f pos, sf::Vector2f tam, string texto)
+    {
+        this->presionado = false;
+        this->posicion = pos;
+        this->tamano = tam;
+        this->Texto = texto;
+        this->rect.setSize(this->tamano);
+        this->rect.setPosition(this->posicion);
+        this->font = new sf::Font();
+        this->font->openFromFile("sprites/ARIAL.TTF");
+        this->textoBoton->setString("Reintentar?");
+        this->textoBoton->setCharacterSize(24);
+        this->textoBoton->setFillColor(sf::Color::Black);
+        this->textoBoton->setPosition(pos);
+    }
+    Boton(sf::Vector2f pos, sf::Vector2f tam, sf::Texture tex)
+    {
+        this->presionado = false;
+        this->posicion = pos;
+        this->tamano = tam;
+        this->sprite = new sf::Sprite(tex);
+    }
+    bool CheckClick(sf::Vector2i PosM) {
+        if (PosM.x >= this->posicion.x && PosM.x <= this->posicion.x + this->tamano.x &&
+            PosM.y >= this->posicion.y && PosM.y <= this->posicion.y + this->tamano.y)
+        {
+            this->presionado = true;
+        }
+        else
+            this->presionado = false;
+        return this->presionado;
+    }
+    virtual ~Boton() { delete this->sprite; }
+    virtual string Type() override { return "Boton"; }
+};
+
+class Ventana
+{
+public:
+    sf::RenderWindow* ventana = nullptr;
+    vector<Elemento*> elementos;
+    sf::Vector2i PosMouse;
+    Ventana(int Ancho, int Alto, string Nombre)
+    {
+        this->ventana = new sf::RenderWindow(sf::VideoMode({ Ancho, Alto }), Nombre);
+        this->ventana->setFramerateLimit(60);
+    }
+    virtual ~Ventana() {
+        delete this->ventana;
+        for (size_t i = 0; i < this->elementos.size(); i++)
+            delete this->elementos[i];
+    }
+    string Type() { return "Ventana"; }
+};
+
 
 // -------------------------
 // Clase Arma (base)
 // -------------------------
-struct Arma {
+class Arma {
     std::string nombre;
 
     // TX: vector de strings que actuarán como 'headers' (ArmaTx).
     // Lo dejas vacío y lo llenarás después externamente.
-    std::vector<std::string> tx;
+    std::vector<std::string> tx = { "Alcance", "No. de Ataques",
+          "Habilidad", "Fuerza", "Perforación", "Daño" };
 
     // stats_raw guarda directamente el array "Stats" del JSON en orden.
     // Útil para luego "zipear" con tx cuando tx esté disponible.
@@ -32,18 +112,29 @@ struct Arma {
     // claves puede contener valores null, arrays, enteros, etc.
     std::map<std::string, json> claves;
 
-    bool usado = false;
+    bool usado;
 
-    Arma() = default;
+    Arma()
+    {
+        this -> usado = false;
+        for (size_t i = 0; i < tx.size(); i++)
+            this->stats_map[tx[i]] = stats_raw[i]; //Llena el diccionario de stats
+    }
     virtual ~Arma() = default;
+
+    void Reboot()
+    {
+        this->usado = false;
+    }
 };
 
 // -------------------------
 // Clase Individuo : Arma
 // -------------------------
-struct Individuo : public Arma {
+class Individuo : public Arma, public Elemento {
     // TX propia para Individuo (StatsTx). También la dejas vacía.
-    std::vector<std::string> tx_ind;
+    std::vector<std::string> tx = { "Movimiento", "Resistencia", "Salvación",
+           "Heridas", "Liderazgo", "Control de objetivo" };
 
     // Armas de rango y cuerpo a cuerpo (composición real)
     std::vector<Arma> rango;
@@ -52,7 +143,13 @@ struct Individuo : public Arma {
     int dmg = 0;
 
     // En la semántica original, usado = true significa "vivo".
-    Individuo() { usado = true; }
+    Individuo():
+        Arma()
+    {
+        this->usado = true;
+    }
+
+
 };
 
 // -------------------------
@@ -196,12 +293,6 @@ inline void from_json(const json& j, Individuo& ind) {
     // Primero cargar la parte de Arma
     from_json(j, static_cast<Arma&>(ind));
 
-    // Individuo: tx_ind (se deja vacío por defecto), dmg y usado
-    ind.dmg = 0;
-    if (j.contains("dmg") && j["dmg"].is_number_integer()) {
-        ind.dmg = j["dmg"].get<int>();
-    }
-
     // rangos: puede ser "rangos" (array) en tu JSON
     ind.rango.clear();
     if (j.contains("rangos") && j["rangos"].is_array()) {
@@ -222,14 +313,6 @@ inline void from_json(const json& j, Individuo& ind) {
             from_json(m, a);
             ind.mele.push_back(std::move(a));
         }
-    }
-
-    // Si el JSON no define usado, mantenemos el valor por defecto (true)
-    if (j.contains("usado") && j["usado"].is_boolean()) {
-        ind.usado = j["usado"].get<bool>();
-    }
-    else if (j.contains("Usado") && j["Usado"].is_boolean()) {
-        ind.usado = j["Usado"].get<bool>();
     }
 }
 
@@ -286,12 +369,6 @@ inline void from_json(const json& j, Ejercito& e) {
 
     if (j.contains("Numero Unidades") && j["Numero Unidades"].is_number_integer())
         e.nu = j["Numero Unidades"].get<int>();
-
-    if (j.contains("pc") && j["pc"].is_number_integer())
-        e.pc = j["pc"].get<int>();
-
-    if (j.contains("pv") && j["pv"].is_number_integer())
-        e.pv = j["pv"].get<int>();
 
     e.unidades.clear();
     if (j.contains("unidades") && j["unidades"].is_array()) {

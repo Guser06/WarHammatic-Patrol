@@ -1,0 +1,516 @@
+{
+    "unidades": [
+        {
+            "Nombre": "Escuadra infernus",
+            "Lider": [
+                "Anciano",
+                "Apotecario",
+                "Capitan",
+                "Capellan",
+                "Judiciar",
+                "Bibliotecario",
+                "Teniente"
+                ],
+            "Numero Miniaturas": 5,
+            "Habilidades": {
+                "Terror incendiario": null
+                },
+            "Claves": [
+                "Infanteria",
+                "Granadas",
+                "Imperio",
+                "Tacticus",
+                "Escuadra infernus"
+                ],
+
+            "minis": [
+                {
+                    "Nombre": "Sargento infernus",
+                    "Stats": [
+                        6, 4, 3, 2, 6, 1
+                        ],
+                    "Rangos": [
+                        {
+                        "Nombre": "Pyroblaster",
+                        "Stats": [
+                            12, "D6", 0, 5, 1, 1
+                            ],
+                        "Claves": {
+                            "Ignora cobertura": null                
+                            }
+                        },
+                        {
+                        "Nombre": "Pistola bolter",
+                        "Stats": [
+                            12, 1, 3, 4, 0, 1
+                            ],
+                        "Claves": {
+                            "Pistola": null                
+                            }
+                        }
+                    ],
+                    "meles": [
+                        {
+                        "Nombre": "Arma de combate cercano",
+                        "Stats": [
+                            0, 3, 3, 4, 0, 1
+                        ],
+                        "Claves": [
+                            null         
+                        ]
+                        }
+                    ]
+                },
+
+                {
+                    "Nombre": "Marine infernus",
+                    "Stats": [
+                        6, 4, 3, 2, 6, 1
+                        ],
+                    "Rangos": [
+                        {
+                        "Nombre": "Pyroblaster",
+                        "Stats": [
+                            12, "D6", 0, 5, 1, 1
+                            ],
+                        "Claves": {
+                            "Ignora cobertura": null                
+                            }
+                        },
+                        {
+                        "Nombre": "Pistola bolter",
+                        "Stats": [
+                            12, 1, 3, 4, 0, 1
+                            ],
+                        "Claves": {
+                            "Pistola": null                
+                            }
+                        }
+                    ],
+                    "meles": [
+                        {
+                        "Nombre": "Arma de combate cercano",
+                        "Stats": [
+                            0, 3, 3, 4, 0, 1
+                        ],
+                        "Claves": [
+                            null         
+                        ]
+                        }
+                    ]
+                },
+
+                {
+                    "Nombre": "Marine infernus",
+                    "Stats": [
+                        6, 4, 3, 2, 6, 1
+                        ],
+                    "Rangos": [
+                        {
+                        "Nombre": "Pyroblaster",
+                        "Stats": [
+                            12, "D6", 0, 5, 1, 1
+                            ],
+                        "Claves": {
+                            "Ignora cobertura": null                
+                            }
+                        },
+                        {
+                        "Nombre": "Pistola bolter",
+                        "Stats": [
+                            12, 1, 3, 4, 0, 1
+                            ],
+                        "Claves": {
+                            "Pistola": null                
+                            }
+                        }
+                    ],
+                    "meles": [
+                        {
+                        "Nombre": "Arma de combate cercano",
+                        "Stats": [
+                            0, 3, 3, 4, 0, 1
+                        ],
+                        "Claves": [
+                            null         
+                        ]
+                        }
+                    ]
+                },
+
+                {
+                    "Nombre": "Marine infernus",
+                    "Stats": [
+                        6, 4, 3, 2, 6, 1
+                        ],
+                    "Rangos": [
+                        {
+                        "Nombre": "Pyroblaster",
+                        "Stats": [
+                            12, "D6", 0, 5, 1, 1
+                            ],
+                        "Claves": {
+                            "Ignora cobertura": null                
+                            }
+                        },
+                        {
+                        "Nombre": "Pistola bolter",
+                        "Stats": [
+                            12, 1, 3, 4, 0, 1
+                            ],
+                        "Claves": {
+                            "Pistola": null                
+                            }
+                        }
+                    ],
+                    "meles": [
+                        {
+                        "Nombre": "Arma de combate cercano",
+                        "Stats": [
+                            0, 3, 3, 4, 0, 1
+                        ],
+                        "Claves": [
+                            null         
+                        ]
+                        }
+                    ]
+                },
+
+                {
+                    "Nombre": "Marine infernus",
+                    "Stats": [
+                        6, 4, 3, 2, 6, 1
+                        ],
+                    "Rangos": [
+                        {
+                        "Nombre": "Pyroblaster",
+                        "Stats": [
+                            12, "D6", 0, 5, 1, 1
+                            ],
+                        "Claves": {
+                            "Ignora cobertura": null                
+                            }
+                        },
+                        {
+                        "Nombre": "Pistola bolter",
+                        "Stats": [
+                            12, 1, 3, 4, 0, 1
+                            ],
+                        "Claves": {
+                            "Pistola": null                
+                            }
+                        }
+                    ],
+                    "meles": [
+                        {
+                        "Nombre": "Arma de combate cercano",
+                        "Stats": [
+                            0, 3, 3, 4, 0, 1
+                        ],
+                        "Claves": [
+                            null         
+                        ]
+                        }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "Nombre": "Escuadra de exterminadores",
+            "Lider": [
+                "Anciano en armadura de exterminador",
+                "Capitan en armadura de exterminador",
+                "Capellan en armadura de exterminador",
+                "Bibliotecario en armadura de exterminador"
+                ],
+            "Numero Miniaturas": 5,
+            "Habilidades": {
+                "Baliza de teletransporte": null,
+                "Furia de los primeros": null,
+                "Invulnerable": 4
+                },
+            "Claves": [
+                "Infanteria",
+                "Imperio",
+                "Exterminador",
+                "Escuadra de exterminadores"
+                ],
+            "minis": [
+                {
+                "Nombre": "Sargento en armadura exterminador",
+                "Stats": [
+                    5, 5, 2, 3, 6, 1
+                    ],
+                "rangos": [
+                    {
+                    "Nombre": "Bolter tormenta",
+                    "Stats": [
+                        24, 2, 3, 4, 0, 1
+                        ],
+                    "Claves": {
+                        "Fuego Rapido": 2             
+                        }
+                    }
+                ],
+                "meles": [
+                    {
+                        "Nombre": "Arma de energia",
+                        "Stats": [
+                            0, 4, 3, 5, 2, 1
+                        ],
+                        "Claves": [
+                            null         
+                        ]
+                    }
+                ]
+            },
+
+            {
+                "Nombre": "Exterminador",
+                "Stats": [
+                    5, 5, 2, 3, 6, 1
+                    ],
+                "rangos": [
+                    {
+                    "Nombre": "Cañon de asalto",
+                    "Stats": [
+                        24, 6, 3, 6, 0, 1
+                        ],
+                    "Claves": {
+                        "Heridas devastadoras": null                
+                        }
+                    }
+                ],
+
+                "meles": [
+                    {
+                    "Nombre": "Puño de energia",
+                    "Stats": [
+                        0, 3, 3, 8, 2, 2
+                        ],
+                    "Claves": [
+                        null         
+                        ]
+                    }
+                ]
+            },
+
+            {
+                "Nombre": "Exterminador",
+                "Stats": [
+                    5, 5, 2, 3, 6, 1
+                    ],
+                "rangos": [
+                    {
+                    "Nombre": "Cañon de asalto",
+                    "Stats": [
+                        24, 6, 3, 6, 0, 1
+                        ],
+                    "Claves": {
+                        "Heridas devastadoras": null                
+                        }
+                    }
+                ],
+
+                "meles": [
+                    {
+                    "Nombre": "Puño de energia",
+                    "Stats": [
+                        0, 3, 3, 8, 2, 2
+                        ],
+                    "Claves": [
+                        null         
+                        ]
+                    }
+                ]
+            },
+
+            {
+                "Nombre": "Exterminador",
+                "Stats": [
+                    5, 5, 2, 3, 6, 1
+                    ],
+                "rangos": [
+                    {
+                    "Nombre": "Cañon de asalto",
+                    "Stats": [
+                        24, 6, 3, 6, 0, 1
+                        ],
+                    "Claves": {
+                        "Heridas devastadoras": null                
+                        }
+                    }
+                ],
+
+                "meles": [
+                    {
+                    "Nombre": "Puño de energia",
+                    "Stats": [
+                        0, 3, 3, 8, 2, 2
+                        ],
+                    "Claves": [
+                        null         
+                        ]
+                    }
+                ]
+            },
+
+            {
+                "Nombre": "Exterminador",
+                "Stats": [
+                    5, 5, 2, 3, 6, 1
+                    ],
+                "rangos": [
+                    {
+                    "Nombre": "Cañon de asalto",
+                    "Stats": [
+                        24, 6, 3, 6, 0, 1
+                        ],
+                    "Claves": {
+                        "Heridas devastadoras": null                
+                        }
+                    }
+                ],
+
+                "meles": [
+                    {
+                    "Nombre": "Puño de energia",
+                    "Stats": [
+                        0, 3, 3, 8, 2, 2
+                        ],
+                    "Claves": [
+                        null         
+                        ]
+                    }
+                ]
+            }
+            ]
+        },
+
+        {
+        "Nombre": "Capitan en armadura de exterminador",
+        "Lider": true,
+        "Numero Miniaturas": 1,
+        "Habilidades": {
+            "Valor imparable": null,
+            "Ritos de batalla": null,
+            "Invulnerable": 4
+            },
+        "Claves": [
+            "Personaje",
+            "Infanteria",
+            "Capitan",
+            "Imperio",
+            "Exterminador"
+            ],
+        "minis": [
+            {
+                "Nombre": "Capitan en armadura de exterminador",
+                "Stats": [
+                    5, 5, 2, 6, 6, 1
+                    ],
+                "rangos": [
+                    {
+                    "Nombre": "Bolter tormenta",
+                    "Stats": [
+                        24, 2, 2, 4, 0, 1
+                        ],
+                    "Claves": {
+                        "Fuego Rapido": 2                
+                        }
+                    }
+                ],
+
+                "meles": [
+                    {
+                    "Nombre": "Arma reliquia",
+                    "Stats": [
+                        0, 6, 2, 5, 2, 2
+                        ],
+                    "Claves": [
+                        null         
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "Nombre": "Bibliotecario en armadura de exterminador",
+        "Lider": true,
+        "Numero Miniaturas": 1,
+        "Habilidades": {
+            "Velo de tiempo": null,
+            "Capucha psiquica": null,
+            "Invulnerable": 4
+            },
+        "Claves": [
+            "Personaje",
+            "Infanteria",
+            "Imperio",
+            "Psiquico",
+            "Exterminador",
+            "Bibliotecario"
+            ],
+        "minis": [
+            {
+                "Nombre": "Bibliotecario en armadura de exterminador",
+                "Stats": [
+                    5, 5, 2, 5, 6, 1
+                    ],
+                "rangos": [
+                    {
+                    "Nombre": "Castigo-Fuego brujo",
+                    "Stats": [
+                        24, "D6", 3, 5, 1, "D3"
+                        ],
+                    "Claves": {
+                        "Psiquico": null,
+                        "Perfil": null                
+                        }
+                    },
+                    {
+                    "Nombre": "Castigo-Fuego brujo enfocado",
+                    "Stats": [
+                        24, "D6", 3, 6, 2, "D3"
+                        ],
+                    "Claves": {
+                        "Perfil": null,
+                        "Heridas devastadoras": null,
+                        "Riesgoso": null,
+                        "Psiquico": null
+                        }
+                    },
+                    {
+                    "Nombre": "Combi-Arma",
+                    "Stats": [
+                        24, 1, 4, 4, 0, 1
+                        ],
+                    "Claves": {
+                        "Anti": ["Infanteria", 4],
+                        "Heridas devastadoras": null,
+                        "Fuego Rapido": 2
+                        }
+                    }
+                    ],
+                "meles": [
+                    {
+                    "Nombre": "Arma de psicofuerza",
+                    "Stats": [
+                        0, 4, 3, 6, -1, "D3"
+                        ],
+                    "Claves": {
+                        "Psiquico": null 
+                        }
+                    },
+                    null
+                    ]
+                }
+            ]
+        }
+    ],
+    "Faccion": "Adeptus Astartes",
+    "Numero Unidades": 4
+}
