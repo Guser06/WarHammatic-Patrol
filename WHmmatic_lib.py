@@ -174,7 +174,7 @@ def Dados(n_dados, Dx, ret_num = True): #Numero de dados que se desean, Numero d
 def AtkDmg_Rand(nDX, dmg = False):
     res = []
     ud = str(nDX).find('D')
-    cantidad = int(str(nDX)[ud-1]) if ud != 0 else 1
+    cantidad = int(str(nDX)[:ud-1]) if ud != 0 else 1
     cantidad = Dados(cantidad, int(str(nDX)[ud+1]), True)
     if dmg: ##Si es para hacer cantidad de daño al azar
         if '+' in str(nDX):

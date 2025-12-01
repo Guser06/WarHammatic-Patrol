@@ -4,6 +4,7 @@
             "Nombre": "Psicofago",
             "Lider": null,
             "Numero Miniaturas": 1,
+            "Base": 120,
             "Habilidades": {
                 "Bio-estimulo": null,
                 "Frenesi Alimenticio": null,
@@ -55,6 +56,7 @@
         "Nombre": "Termagantes 1",
         "Lider": null,
         "Numero Miniaturas": 10,
+        "Base": 28,
         "Habilidades": {
             "Horrores acechantes": null
             },
@@ -131,6 +133,7 @@
         "Nombre": "Termagantes 2",
         "Lider": null,
         "Numero Miniaturas": 10,
+        "Base": 28,
         "Habilidades": {
             "Horrores acechantes": null
             },
@@ -207,6 +210,7 @@
         "Nombre": "Espinogantes",
         "Lider": null,
         "Numero Miniaturas": 5,
+        "Base": 40,
         "Habilidades": {
             "Bombardeo disruptor": null
             },
@@ -376,6 +380,7 @@
         "Nombre": "Saltadores de Von Ryan",
         "Lider": null,
         "Numero Miniaturas": 3,
+        "Base": 40,
         "Habilidades": {
             "Salto de ataque": null,
             "Invulnerable": 6
@@ -450,6 +455,7 @@
         "Nombre": "Enjambres devoradores",
         "Lider": null,
         "Numero Miniaturas": 2,
+        "Base": 40,
         "Habilidades": {
             "Horrores quintinosos": null
             },
@@ -526,6 +532,7 @@
         "Nombre": "Tyranido Alado Primus",
         "Lider": true,
         "Numero Miniaturas": 1,
+        "Base": 50,
         "Habilidades": {
             "Guerrero Alpha": null,
             "Golpe mortal": null

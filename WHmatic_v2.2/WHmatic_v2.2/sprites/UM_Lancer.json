@@ -12,6 +12,7 @@
                 "Teniente"
                 ],
             "Numero Miniaturas": 5,
+            "Base": 32
             "Habilidades": {
                 "Terror incendiario": null
                 },
@@ -225,6 +226,7 @@
                 "Bibliotecario en armadura de exterminador"
                 ],
             "Numero Miniaturas": 5,
+            "Base": 40,
             "Habilidades": {
                 "Baliza de teletransporte": null,
                 "Furia de los primeros": null,
@@ -392,6 +394,7 @@
         "Nombre": "Capitan en armadura de exterminador",
         "Lider": true,
         "Numero Miniaturas": 1,
+        "Base": 50,
         "Habilidades": {
             "Valor imparable": null,
             "Ritos de batalla": null,
@@ -441,6 +444,7 @@
         "Nombre": "Bibliotecario en armadura de exterminador",
         "Lider": true,
         "Numero Miniaturas": 1,
+        "Base": 40,
         "Habilidades": {
             "Velo de tiempo": null,
             "Capucha psiquica": null,
@@ -515,6 +519,7 @@
         "Nombre": "Gladiator Lancer",
         "Lider": null,
         "Numero Miniaturas": 1,
+        "Base": 100,
         "Habilidades": {
             "Aquilon Optics": null,
             "Final Violento": "D3"
@@ -586,6 +591,7 @@
         "Nombre": "Techmarine Primaris",
         "Lider": true,
         "Numero Miniaturas": 1,
+        "Base": 40,
         "Habilidades": {
             "Operativo Solitario": null,
             "Bendición del Omnissiah": null,

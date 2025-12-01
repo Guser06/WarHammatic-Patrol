@@ -94,6 +94,7 @@ public:
 // Clase Arma (base)
 // -------------------------
 class Arma {
+public:
     std::string nombre;
 
     // TX: vector de strings que actuarán como 'headers' (ArmaTx).
@@ -132,13 +133,14 @@ class Arma {
 // Clase Individuo : Arma
 // -------------------------
 class Individuo : public Arma, public Elemento {
+public:
     // TX propia para Individuo (StatsTx). También la dejas vacía.
-    std::vector<std::string> tx = { "Movimiento", "Resistencia", "Salvación",
+    vector<string> tx = { "Movimiento", "Resistencia", "Salvación",
            "Heridas", "Liderazgo", "Control de objetivo" };
 
     // Armas de rango y cuerpo a cuerpo (composición real)
-    std::vector<Arma> rango;
-    std::vector<Arma> mele;
+    vector<Arma> rango;
+    vector<Arma> mele;
 
     int dmg = 0;
 
@@ -149,19 +151,29 @@ class Individuo : public Arma, public Elemento {
         this->usado = true;
     }
 
-
+    void zip_stats()
+    {
+        // Combina tx + stats_raw para llenar stats_map de Individuo
+        for (size_t i = 0; i < tx.size(); i++)
+        {
+            if (i < this->stats_raw.size())
+                this->stats_map[tx[i]] = this->stats_raw[i];
+        }
+	}
 };
 
 // -------------------------
 // Clase Unidad
 // -------------------------
 struct Unidad {
-    std::string nombre;
+    string nombre;
     bool posLid = false;           // "Lider" en JSON (si viene)
-    std::optional<std::string> lider; // nombre del líder (opcional)
-    std::map<std::string, json> habilidades;
-    std::vector<std::string> claves;
+    optional<std::string> lider; // nombre del líder (opcional)
+    map<std::string, json> habilidades;
+    vector<std::string> claves;
     int nm = 0; // Numero Miniaturas
+	int Tamano_base; //Tamaño de la base de las miniaturas
+
 
     // Estados de juego
     bool engaged = false;
@@ -169,7 +181,16 @@ struct Unidad {
     int mov = 0;
     int atk = 0;
 
-    std::vector<Individuo> miembros;
+    vector<Individuo> miembros;
+	vector<sf::CircleShape> circulos; // Para representar la unidad en SFML
+
+	Unidad() {};
+    ~Unidad()
+    {
+        for (auto& c : this->circulos)
+            delete &c;
+    }
+
 
     // Método para eliminar minis muertas (usado == false)
     void eliminar_muertos() {
@@ -177,18 +198,33 @@ struct Unidad {
             [](const Individuo& m) { return m.usado == false; }),
             miembros.end());
     }
+
+    void crear_circulos()
+    {
+        for (int i = 0; i < this->miembros.size(); i++)
+        {
+            sf::CircleShape circulo;
+            circulo.setRadius(this->Tamano_base / 2.0f);
+            circulo.setFillColor(sf::Color::Green);
+            circulo.setPosition({ 100.0f + i * (this->Tamano_base + 5.0f), 100.0f }); // Ejemplo de posición
+            this->circulos.push_back(circulo);
+		}
+    }
 };
 
 // -------------------------
 // Clase Ejercito
 // -------------------------
-struct Ejercito {
+class Ejercito {
+public:
     std::string faccion;
     int nu = 0; // Numero Unidades
     int pc = 0;
     int pv = 0;
 
     std::vector<Unidad> unidades;
+
+    Ejercito(){};
 
     void eliminar_unidades() {
         unidades.erase(std::remove_if(unidades.begin(), unidades.end(),
@@ -314,6 +350,8 @@ inline void from_json(const json& j, Individuo& ind) {
             ind.mele.push_back(std::move(a));
         }
     }
+
+    ind.zip_stats();
 }
 
 // -------------------------
@@ -344,9 +382,8 @@ inline void from_json(const json& j, Unidad& u) {
     if (j.contains("Numero Miniaturas") && j["Numero Miniaturas"].is_number_integer())
         u.nm = j["Numero Miniaturas"].get<int>();
 
-    // Estados (opcional)
-    if (j.contains("engaged") && j["engaged"].is_boolean()) u.engaged = j["engaged"].get<bool>();
-    if (j.contains("shock") && j["shock"].is_boolean()) u.shock = j["shock"].get<bool>();
+    if (j.contains("Base") && j["Base"].is_number_integer())
+		u.Tamano_base = j["Base"].get<int>();
 
     // Miembros (vector de Individuo)
     u.miembros.clear();
