@@ -70,6 +70,72 @@ public:
     virtual string Type() override { return "Boton"; }
 };
 
+class TextBox : public Elemento
+{
+private:
+    sf::RectangleShape box;
+    sf::Text *text = nullptr;
+    sf::Font* font = nullptr;
+
+public:
+    TextBox(
+        const sf::Vector2f& size = {200.f, 50.f},
+        const sf::Vector2f& position = {0.f, 0.f},
+        const std::string& contenido = "TextBox"
+    )
+    {
+        this->font = new sf::Font("sprites/ARIAL.TTF");
+        this->text = new sf::Text(*font, contenido, 12);
+        (*(this->text)).setFillColor(sf::Color(0, 255, 127)); // Spring Green
+
+        // Configurar rectángulo
+        this->box.setSize(size);
+        this->box.setPosition(position);
+        this->box.setFillColor(sf::Color::Black);
+        this->box.setOutlineThickness(2.f);
+        this->box.setOutlineColor(sf::Color::White);
+
+        // Posicionar texto centrado
+        centerText();
+    }
+
+    // Setter para texto
+    void setText(const std::string& nuevo)
+    {
+        (*(this->text)).setString(nuevo);
+        centerText();
+    }
+
+    // Setter de posición
+    void setPosition(const sf::Vector2f& pos)
+    {
+        this->box.setPosition(pos);
+        centerText();
+    }
+
+    // Ajustar tamaño
+    void setSize(const sf::Vector2f& size)
+    {
+        this->box.setSize(size);
+        centerText();
+    }
+
+private:
+    // Centrar texto dentro del rectángulo
+    void centerText()
+    {
+        sf::FloatRect boxBounds = this->box.getGlobalBounds();
+        sf::FloatRect textBounds = (*(this->text)).getLocalBounds();
+
+        (*(this->text)).setPosition({
+            boxBounds.position.x + (boxBounds.size.x - textBounds.size.x) / 2.f - textBounds.position.x,
+            boxBounds.position.y + (boxBounds.size.y - textBounds.size.y) / 2.f - textBounds.position.y
+            }
+        );
+    }
+};
+
+
 class Ventana
 {
 public:
@@ -89,25 +155,16 @@ public:
     string Type() { return "Ventana"; }
 };
 
-
-// -------------------------
 // Clase Arma (base)
-// -------------------------
 class Arma {
 public:
     std::string nombre;
 
-    // TX: vector de strings que actuarán como 'headers' (ArmaTx).
-    // Lo dejas vacío y lo llenarás después externamente.
     std::vector<std::string> tx = { "Alcance", "No. de Ataques",
           "Habilidad", "Fuerza", "Perforación", "Daño" };
 
-    // stats_raw guarda directamente el array "Stats" del JSON en orden.
-    // Útil para luego "zipear" con tx cuando tx esté disponible.
     std::vector<json> stats_raw;
 
-    // stats_map puede rellenarse después combinando tx con stats_raw.
-    // Usamos json para permitir int, string, null o estructuras complejas.
     std::map<std::string, json> stats_map;
 
     // claves puede contener valores null, arrays, enteros, etc.
@@ -126,6 +183,16 @@ public:
     void Reboot()
     {
         this->usado = false;
+    }
+
+    void zip_stats()
+    {
+        // Combina tx + stats_raw para llenar stats_map de Arma
+        for (size_t i = 0; i < tx.size(); i++)
+        {
+            if (i < this->stats_raw.size())
+                this->stats_map[tx[i]] = this->stats_raw[i];
+        }
     }
 };
 
@@ -150,16 +217,6 @@ public:
     {
         this->usado = true;
     }
-
-    void zip_stats()
-    {
-        // Combina tx + stats_raw para llenar stats_map de Individuo
-        for (size_t i = 0; i < tx.size(); i++)
-        {
-            if (i < this->stats_raw.size())
-                this->stats_map[tx[i]] = this->stats_raw[i];
-        }
-	}
 };
 
 // -------------------------
@@ -241,22 +298,16 @@ public:
 // A continuación se implementan para Arma, Individuo, Unidad y Ejercito.
 // Comentario detallado incluido para from_json(const json&, Arma&)
 // -------------------------
-
-// -------------------------
+// 
 // from_json para Arma
-// -------------------------
 inline void from_json(const json& j, Arma& a) {
     //
     // Comentario detallado (explicación paso a paso)
     //
     // Propósito:
-    //   - Cargar desde `j` los campos que pertenecen a una Arma,
-    //     sin suponer que exista un "tx" (vector de nombres de estadística).
+    //   - Cargar desde `j` los campos que pertenecen a una Arma
     //   - Guardar el vector original "Stats" en `stats_raw`.
     //   - Guardar "Claves" directamente en `claves`.
-    //   - Dejar `tx` vacío (el usuario lo completará después); si `tx`
-    //     ya estuviera no sobrescribimos pero intentamos no convertir
-    //     automáticamente `stats_raw` en `stats_map` a menos que tx esté presente.
     //
     // Pasos:
     // 1) Nombre: si existe, asignarlo a a.nombre.
@@ -271,9 +322,6 @@ inline void from_json(const json& j, Arma& a) {
     // Notas de diseño:
     //  - Usamos json como valor del map para mayor flexibilidad:
     //    claves pueden ser null, int, array, etc.
-    //  - stats_raw mantiene el orden; la conversión a stats_map debe
-    //    realizarse llamando a una función auxiliar una vez que `tx` esté definido.
-    //
 
     // 1) Nombre
     if (j.contains("Nombre") && j["Nombre"].is_string()) {
@@ -297,34 +345,15 @@ inline void from_json(const json& j, Arma& a) {
         }
     }
 
-    // 4) Usado (opcional en JSON)
-    if (j.contains("usado")) {
-        // Si el JSON define 'usado' y es booleano, lo tomamos.
-        if (j["usado"].is_boolean()) a.usado = j["usado"].get<bool>();
-    }
     else if (j.contains("Usado")) {
         // Manejo de variantes de capitalización (por si el JSON usa 'Usado')
         if (j["Usado"].is_boolean()) a.usado = j["Usado"].get<bool>();
     }
 
-    //
-    // Observación sobre la conversión stats_raw -> stats_map:
-    // Si en algún momento se rellenan `a.tx` con la lista de nombres de cada estadística:
-    //
-    //    // ejemplo (pseudocódigo):
-    //    if (a.tx.size() == a.stats_raw.size()) {
-    //        for (size_t i=0; i<a.tx.size(); ++i)
-    //            a.stats_map[a.tx[i]] = a.stats_raw[i];
-    //    }
-    //
-    // Dejo esa responsabilidad para tu código porque dijiste que llenarás `tx`
-    // externamente (por ejemplo en inicialización global o al cargar reglas).
-    //
+    a.zip_stats();
 }
 
-// -------------------------
 // from_json para Individuo
-// -------------------------
 inline void from_json(const json& j, Individuo& ind) {
     // Primero cargar la parte de Arma
     from_json(j, static_cast<Arma&>(ind));
@@ -354,9 +383,7 @@ inline void from_json(const json& j, Individuo& ind) {
     ind.zip_stats();
 }
 
-// -------------------------
 // from_json para Unidad
-// -------------------------
 inline void from_json(const json& j, Unidad& u) {
     if (j.contains("Nombre") && j["Nombre"].is_string())
         u.nombre = j["Nombre"].get<std::string>();
@@ -373,11 +400,10 @@ inline void from_json(const json& j, Unidad& u) {
     }
 
     u.claves.clear();
-    if (j.contains("Claves") && j["Claves"].is_array()) {
-        for (const auto& c : j["Claves"]) {
+    if (j.contains("Claves") && j["Claves"].is_array())
+        for (const auto& c : j["Claves"])
             if (c.is_string()) u.claves.push_back(c.get<std::string>());
-        }
-    }
+
 
     if (j.contains("Numero Miniaturas") && j["Numero Miniaturas"].is_number_integer())
         u.nm = j["Numero Miniaturas"].get<int>();
@@ -397,9 +423,7 @@ inline void from_json(const json& j, Unidad& u) {
     }
 }
 
-// -------------------------
 // from_json para Ejercito
-// -------------------------
 inline void from_json(const json& j, Ejercito& e) {
     if (j.contains("Faccion") && j["Faccion"].is_string())
         e.faccion = j["Faccion"].get<std::string>();

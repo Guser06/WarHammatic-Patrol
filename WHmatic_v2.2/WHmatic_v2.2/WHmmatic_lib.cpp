@@ -144,7 +144,7 @@ vector<int> RepFallos(vector<int> tiradas, int val, int Dx)
 	for (auto t : tiradas)
 		if (t >= val)
 			exito.push_back(t);
-	nuevos = Dados(tiradas.size() - exito.size(), Dx);
+	nuevos = Dados(tiradas.size() - exito.size(), Dx, false);
 	exito.insert(exito.end(), nuevos.begin(), nuevos.end());
 	return exito;
 }
@@ -156,7 +156,7 @@ int RepFallos(vector<int> tiradas, int val, int Dx, bool ret_num)
 	for (auto t : tiradas)
 		if (t >= val)
 			exito.push_back(t);
-	nuevos = Dados(tiradas.size() - exito.size(), Dx);
+	nuevos = Dados(tiradas.size() - exito.size(), Dx, false);
 	exito.insert(exito.end(), nuevos.begin(), nuevos.end());
 	return accumulate(exito.begin(), exito.end(), 0);
 }
@@ -171,8 +171,10 @@ void Aumentar_PC(vector<Ejercito> Ejs)
 void Aumentar_Mov_Atk(Ejercito Ej)
 {
 	for (auto& u : Ej.unidades)
+	{
 		u.mov = 3;
 		u.atk = 3;
+	}
 	return;
 }
 
@@ -189,7 +191,7 @@ void Shock_Test(Unidad& U, Ventana& v)
 		if (prueba < mayor)
 		{
 			U.shock = true;
-
+			v.elementos[v.elementos.size()].
 		}
 	}
 }
