@@ -44,9 +44,9 @@ public:
         this->rect.setPosition(this->posicion);
         this->font = new sf::Font();
         this->font->openFromFile("sprites/ARIAL.TTF");
-        this->textoBoton->setString("Reintentar?");
-        this->textoBoton->setCharacterSize(24);
-        this->textoBoton->setFillColor(sf::Color::Black);
+        this->textoBoton->setString(texto);
+        this->textoBoton->setCharacterSize(12);
+        this->textoBoton->setFillColor(sf::Color::White);
         this->textoBoton->setPosition(pos);
     }
     Boton(sf::Vector2f pos, sf::Vector2f tam, sf::Texture tex)
@@ -120,6 +120,10 @@ public:
         centerText();
     }
 
+	sf::RectangleShape* getBox() { return &(this->box); }
+
+	sf::Text* getText() { return this->text; }
+
 private:
     // Centrar texto dentro del rectángulo
     void centerText()
@@ -147,12 +151,35 @@ public:
         this->ventana = new sf::RenderWindow(sf::VideoMode({ Ancho, Alto }), Nombre);
         this->ventana->setFramerateLimit(60);
     }
+    
     virtual ~Ventana() {
         delete this->ventana;
         for (size_t i = 0; i < this->elementos.size(); i++)
             delete this->elementos[i];
     }
     string Type() { return "Ventana"; }
+
+    void dibujarElementos()
+    {
+        for (auto& e : this->elementos)
+        {
+            if (e->Type() == "Boton")
+            {
+                Boton* b = dynamic_cast<Boton*>(e);
+                this->ventana->draw(b->rect);
+                if (b->textoBoton)
+                    this->ventana->draw(*(b->textoBoton));
+                if (b->sprite)
+                    this->ventana->draw(*(b->sprite));
+            }
+            else if (e->Type() == "TextBox")
+            {
+                TextBox* tb = dynamic_cast<TextBox*>(e);
+                this->ventana->draw(*(tb->getBox()));
+                this->ventana->draw(*(tb->getText()));
+            }
+		}
+    }
 };
 
 // Clase Arma (base)
@@ -196,9 +223,7 @@ public:
     }
 };
 
-// -------------------------
 // Clase Individuo : Arma
-// -------------------------
 class Individuo : public Arma, public Elemento {
 public:
     // TX propia para Individuo (StatsTx). También la dejas vacía.
@@ -217,11 +242,32 @@ public:
     {
         this->usado = true;
     }
+
+    string Recibir_Dano(Ventana& v_monitor, int& dano, map<string, json>& habs)
+    {
+        for (const auto& h : habs)
+            if (h.first == "No hay dolor")
+            {
+                int nhd = h.second.get<int>();
+                if (nhd > Dados(1, 6))
+                {
+                    this->dmg += dano;
+                    return;
+                }
+                else
+                    return "No hay dolor" + to_string(nhd) + "+ salvo " + to_string(dano) + " heridas";
+            }
+        this->dmg += dano;
+        if (this->dmg >= this->stats_map["Heridas"].get<int>())
+        {
+            this->usado = false;
+            // Por complejidad, se descarta Final Violento
+			return this->nombre + "ha muerto";
+        }
+    }
 };
 
-// -------------------------
 // Clase Unidad
-// -------------------------
 struct Unidad {
     string nombre;
     bool posLid = false;           // "Lider" en JSON (si viene)

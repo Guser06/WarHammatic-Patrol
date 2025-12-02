@@ -178,6 +178,32 @@ void Aumentar_Mov_Atk(Ejercito Ej)
 	return;
 }
 
+
+void esperarConfirmacion(Ventana& v)
+{
+	while (true)
+	{
+		while (const auto event = v.ventana->pollEvent())
+		{
+			if (event->is<sf::Event::Closed>())
+			{
+				v.ventana->close();
+				return;
+			}
+
+			if (event->is<sf::Event::KeyPressed>() ||
+				event->is<sf::Event::MouseButtonPressed>())
+			{
+				return; // Usuario confirma
+			}
+		}
+
+		v.ventana->clear(sf::Color::Black);
+		v.dibujarElementos();
+		v.ventana->display();
+	}
+}
+
 void Shock_Test(Unidad& U, Ventana& v)
 {
 	v.ventana->clear(sf::Color::Black);
@@ -188,10 +214,140 @@ void Shock_Test(Unidad& U, Ventana& v)
 			if (m.stats_map["Liderazgo"] > mayor)
 				mayor = m.stats_map["Liderazgo"];
 		int prueba = Dados(2, 6);
+		TextBox* T = dynamic_cast<TextBox*>(*(v.elementos.end()));
 		if (prueba < mayor)
 		{
 			U.shock = true;
-			v.elementos[v.elementos.size()].
+			T->setText("Unidad " + U.nombre + " esta en shock!");
+			esperarConfirmacion(v);
+		}
+		else
+		{
+			U.shock = false;
+			T->setText("Unidad " + U.nombre + " supera la prueba de shock.");
+			esperarConfirmacion(v);
 		}
 	}
+	else if (U.nm == 1 && U.miembros[0].dmg > U.miembros[0].stats_map["Heridas"] / 2)
+	{
+		int prueba = Dados(2, 6);
+		TextBox* T = dynamic_cast<TextBox*>(*(v.elementos.end()));
+		if (prueba < U.miembros[0].stats_map["Liderazgo"])
+		{
+			U.shock = true;
+			T->setText("Miniatura " + U.miembros[0].nombre + " esta en shock!");
+			esperarConfirmacion(v);
+		}
+		else
+		{
+			U.shock = false;
+			T->setText("Miniatura " + U.miembros[0].nombre + " supera la prueba de shock.");
+			esperarConfirmacion(v);
+		}
+	}
+	else
+	{
+		U.shock = false;
+		TextBox* T = dynamic_cast<TextBox*>(*(v.elementos.end()));
+		T->setText("Unidad " + U.nombre + " no necesita prueba de shock.");
+		esperarConfirmacion(v);
+	}
 }
+
+bool puntoEnCirculo(const sf::Vector2f& punto, const sf::CircleShape& c)
+{
+	sf::Vector2f centro = c.getPosition() + c.getOrigin();
+	float dx = punto.x - centro.x;
+	float dy = punto.y - centro.y;
+	float distancia2 = dx * dx + dy * dy;
+	float r = c.getRadius();
+
+	return distancia2 <= (r * r);
+}
+
+int Selec_mini(Ventana& v_Monitor, Ventana& v_Tablero, Unidad& u)
+{
+	TextBox* mensaje = dynamic_cast<TextBox*>(*(v_Monitor.elementos.end()));
+	mensaje->setText("Seleccione una miniatura...");
+
+	while (v_Tablero.ventana->isOpen())
+	{
+		while (const auto event = v_Tablero.ventana->pollEvent())
+		{
+			if (event->is<sf::Event::Closed>())
+			{
+				v_Tablero.ventana->close();
+				return -1;
+			}
+
+			if (const auto* mouse = event->getIf<sf::Event::MouseButtonPressed>())
+			{
+				if (mouse->button == sf::Mouse::Button::Left)
+				{
+					sf::Vector2f clickPos = {
+						static_cast<float>(mouse->position.x),
+						static_cast<float>(mouse->position.y)
+					};
+
+					// Revisar todos los círculos
+					for (int i = 0; i < u.circulos.size(); i++)
+					{
+						const sf::CircleShape& c = u.circulos[i];
+
+						if (puntoEnCirculo(clickPos, c))
+						{
+							// Selección exitosa
+							mensaje->setText("Seleccionado: " + u.miembros[i].nombre);
+							esperarConfirmacion(v_Tablero);
+							return i;
+						}
+					}
+				}
+			}
+		}
+
+		// Dibujar la ventana normalmente
+		v_Tablero.ventana->clear(sf::Color::White);
+		v_Tablero.dibujarElementos();
+		v_Tablero.ventana->display();
+
+		v_Monitor.ventana->clear(sf::Color::Black);
+		v_Monitor.dibujarElementos();
+		v_Monitor.ventana->display();
+	}
+
+	return -1; // Si se cerró la ventana
+}
+
+void RepDmg(Ventana& v_monitor, Ventana& v_tablero, Unidad& blanco, int& dano, bool presicion = false)
+{
+	while (dano >= 1)
+	{
+		int danada = Selec_mini(v_monitor, v_tablero, blanco);
+		if (danada == -1)
+		{
+			dano = 0;
+			return;
+		}
+		int Qt_dmg = blanco.miembros[danada].stats_map["Heridas"].get<int>() - blanco.miembros[danada].dmg;
+		TextBox* T = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		if (dano >= Qt_dmg)
+		{
+			T->setText(blanco.miembros[danada].Recibir_Dano(v_monitor, Qt_dmg, blanco.habilidades));
+			esperarConfirmacion(v_monitor);
+			dano -= Qt_dmg;
+			blanco.eliminar_muertos();
+			continue;
+		}
+		else
+		{
+			blanco.miembros[danada].Recibir_Dano(v_monitor, dano, blanco.habilidades);
+			T->setText(blanco.miembros[danada].nombre + " ha recibido " + to_string(blanco.miembros[danada].dmg) + " de dano.");
+			esperarConfirmacion(v_monitor);
+			dano = 0;
+			continue;
+		}
+	}
+	return;
+}
+
