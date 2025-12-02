@@ -139,6 +139,22 @@ private:
     }
 };
 
+//Clase Obstaculo para el tablero
+class Obstaculo : public Elemento
+{
+public:
+    sf::RectangleShape rect;
+    Obstaculo(sf::Vector2f pos, sf::Vector2f tam)
+    {
+        this->rect.setPosition(pos);
+        this->rect.setSize(tam);
+        this->rect.setFillColor(sf::Color::Black);
+    }
+
+	virtual string Type() override { return "Obstaculo"; }
+
+	sf::FloatRect getRect() { return this->rect.getGlobalBounds(); }
+};
 
 class Ventana
 {
@@ -224,7 +240,7 @@ public:
 };
 
 // Clase Individuo : Arma
-class Individuo : public Arma, public Elemento {
+class Individuo : public Arma {
 public:
     // TX propia para Individuo (StatsTx). También la dejas vacía.
     vector<string> tx = { "Movimiento", "Resistencia", "Salvación",

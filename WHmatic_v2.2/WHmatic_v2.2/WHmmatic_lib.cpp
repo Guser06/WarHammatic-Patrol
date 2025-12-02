@@ -289,14 +289,14 @@ int Selec_mini(Ventana& v_Monitor, Ventana& v_Tablero, Unidad& u)
 						static_cast<float>(mouse->position.y)
 					};
 
-					// Revisar todos los círculos
+					// Revisar todos los circulos
 					for (int i = 0; i < u.circulos.size(); i++)
 					{
 						const sf::CircleShape& c = u.circulos[i];
 
 						if (puntoEnCirculo(clickPos, c))
 						{
-							// Selección exitosa
+							// Seleccion exitosa
 							mensaje->setText("Seleccionado: " + u.miembros[i].nombre);
 							esperarConfirmacion(v_Tablero);
 							return i;
@@ -316,7 +316,7 @@ int Selec_mini(Ventana& v_Monitor, Ventana& v_Tablero, Unidad& u)
 		v_Monitor.ventana->display();
 	}
 
-	return -1; // Si se cerró la ventana
+	return -1; // Si se cerro la ventana
 }
 
 void RepDmg(Ventana& v_monitor, Ventana& v_tablero, Unidad& blanco, int& dano, bool presicion = false)
@@ -351,3 +351,128 @@ void RepDmg(Ventana& v_monitor, Ventana& v_tablero, Unidad& blanco, int& dano, b
 	return;
 }
 
+Unidad Selec_Blanco(Ventana& v_monitor, Unidad& u, string& accion, Ejercito& Ejer_Enem, bool Indirecta = false)
+{
+	int indice = 0;
+
+	// Depurar ejercito enemigo antes de seleccionar
+	Ejer_Enem.eliminar_unidades();
+
+	TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+	mensaje->setText("Seleccione un objetivo para: " + accion);
+
+	// Bucle principal de seleccion
+	while (v_monitor.ventana->isOpen())
+	{
+		// Procesar eventos
+		while (const auto event = v_monitor.ventana->pollEvent())
+		{
+			if (event->is<sf::Event::Closed>())
+			{
+				v_monitor.ventana->close();
+				return Unidad{}; // Devuelve objeto vacio
+			}
+
+			if (const auto* mouse = event->getIf<sf::Event::MouseButtonPressed>())
+			{
+				if (mouse->button == sf::Mouse::Button::Left)
+				{
+					sf::Vector2f clickPos = {
+						static_cast<float>(mouse->position.x),
+						static_cast<float>(mouse->position.y)
+					};
+
+					// Recorrer todas las unidades enemigas
+					for (Unidad& objetivo : Ejer_Enem.unidades)
+					{
+						// Revisar cada miniatura (circulo)
+						for (int i = 0; i < objetivo.circulos.size(); i++)
+						{
+							const sf::CircleShape& c = objetivo.circulos[i];
+
+							if (puntoEnCirculo(clickPos, c))
+							{
+								// Un objetivo fue clickeado
+								mensaje->setText(
+									"Objetivo seleccionado: " + objetivo.nombre
+								);
+
+								esperarConfirmacion(v_monitor);
+
+								return objetivo; //Se devuelve la unidad completa
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// Refrescar ventana del monitor
+		v_monitor.ventana->clear(sf::Color::Black);
+		v_monitor.dibujarElementos();
+		v_monitor.ventana->display();
+	}
+
+	return Unidad{}; // Si se cerro ventana
+}
+
+bool Visible(Ventana& v_tablero, Ventana& v_monitor,
+	Unidad& A, Unidad& B)
+{
+	// Primero verificar que ambas unidades tengan miniaturas
+	if (A.circulos.empty() || B.circulos.empty())
+		return false;
+
+	// Obtener rectangulos de obstaculos desde el tablero
+	std::vector<sf::FloatRect> obstaculos;
+
+	for (Elemento* e : v_tablero.elementos)
+	{
+		// Si el elemento tiene un metodo getRect(), usalo
+		if (auto* obs = dynamic_cast<Obstaculo*>(e))
+			obstaculos.push_back(obs->getRect());
+	}
+
+	// Comprobacion de linea de vision entre miniaturas
+	for (const auto& cA : A.circulos)
+	{
+		sf::Vector2f pA = cA.getPosition() + cA.getOrigin();
+
+		for (const auto& cB : B.circulos)
+		{
+			sf::Vector2f pB = cB.getPosition() + cB.getOrigin();
+
+			// Crear un rectangulo fino para representar la linea
+			sf::RectangleShape ray;
+			float dx = pB.x - pA.x;
+			float dy = pB.y - pA.y;
+			float distancia = std::sqrt(dx * dx + dy * dy);
+
+			ray.setSize(sf::Vector2f(distancia, 1.f)); // linea fina
+			ray.setPosition(pA);
+
+			sf::Angle angulo = sf::radians(atan2(dy, dx) * 180.f / 3.14159265f);
+			ray.setRotation(angulo);
+
+			bool bloqueado = false;
+
+			for (const auto& obs : obstaculos)
+			{
+				if (ray.getGlobalBounds().findIntersection(obs))
+				{
+					bloqueado = true;
+					break;
+				}
+			}
+
+			if (!bloqueado)
+			{
+				// Linea de vision verdadera
+				return true;
+			}
+		}
+	}
+
+	// Si todos los rayos estan bloqueados
+	return false;
+}
