@@ -124,6 +124,8 @@ public:
 
 	sf::Text* getText() { return this->text; }
 
+	string Type() override { return "TextBox"; }
+
 private:
     // Centrar texto dentro del rectángulo
     void centerText()
@@ -154,6 +156,8 @@ public:
 	virtual string Type() override { return "Obstaculo"; }
 
 	sf::FloatRect getRect() { return this->rect.getGlobalBounds(); }
+
+	string Type() override { return "Obstaculo"; }
 };
 
 class Ventana
@@ -194,7 +198,12 @@ public:
                 this->ventana->draw(*(tb->getBox()));
                 this->ventana->draw(*(tb->getText()));
             }
-		}
+            else if (e->Type() == "Obstaculo")
+            {
+                Obstaculo* o = dynamic_cast<Obstaculo*>(e);
+                this->ventana->draw(o->rect);
+            }
+        }
     }
 };
 

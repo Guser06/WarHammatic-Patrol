@@ -416,7 +416,7 @@ Unidad Selec_Blanco(Ventana& v_monitor, Unidad& u, string& accion, Ejercito& Eje
 	return Unidad{}; // Si se cerro ventana
 }
 
-bool Visible(Ventana& v_tablero, Ventana& v_monitor,
+float Visible(Ventana& v_tablero,
 	Unidad& A, Unidad& B)
 {
 	// Primero verificar que ambas unidades tengan miniaturas
@@ -468,11 +468,12 @@ bool Visible(Ventana& v_tablero, Ventana& v_monitor,
 			if (!bloqueado)
 			{
 				// Linea de vision verdadera
-				return true;
+				return distancia/25.4f;
 			}
 		}
 	}
 
 	// Si todos los rayos estan bloqueados
-	return false;
+	return -1.f;
 }
+
