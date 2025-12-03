@@ -327,7 +327,7 @@ void RepDmg(Ventana& v_monitor, Ventana& v_tablero, Unidad& blanco, int& dano, b
 	return;
 }
 
-Unidad Selec_Blanco(Ventana& v_monitor, Unidad& u, string& accion, Ejercito& Ejer_Enem, bool Indirecta = false)
+Unidad* Selec_Blanco(Ventana& v_monitor, Unidad& u, const string& accion, Ejercito& Ejer_Enem)
 {
 	int indice = 0;
 
@@ -346,7 +346,7 @@ Unidad Selec_Blanco(Ventana& v_monitor, Unidad& u, string& accion, Ejercito& Eje
 			if (event->is<sf::Event::Closed>())
 			{
 				v_monitor.ventana->close();
-				return Unidad{}; // Devuelve objeto vacio
+				return nullptr; // Devuelve objeto vacio
 			}
 
 			if (const auto* mouse = event->getIf<sf::Event::MouseButtonPressed>())
@@ -375,7 +375,7 @@ Unidad Selec_Blanco(Ventana& v_monitor, Unidad& u, string& accion, Ejercito& Eje
 
 								esperarConfirmacion(v_monitor);
 
-								return objetivo; //Se devuelve la unidad completa
+								return &objetivo; //Se devuelve el puntero a la unidad completa
 							}
 						}
 					}
@@ -389,7 +389,7 @@ Unidad Selec_Blanco(Ventana& v_monitor, Unidad& u, string& accion, Ejercito& Eje
 		v_monitor.ventana->display();
 	}
 
-	return Unidad{}; // Si se cerro ventana
+	return nullptr; // Si se cerro ventana
 }
 
 float Visible(Ventana& v_tablero,
@@ -457,6 +457,144 @@ bool allTrue(const vector<bool>& vec)
 	return true;
 }
 
+int Selec_Arma(Ventana& v_tablero, Unidad& u, Individuo& i, bool a_distancia)
+{
+	const auto& armas_originales = a_distancia ? i.rango : i.mele;
+
+	// Crear una lista de nombres con "No disparar" al final
+	std::vector<std::string> nombres;
+	nombres.reserve(armas_originales.size() + 1);
+
+	for (const auto& arma : armas_originales)
+		nombres.push_back(arma.nombre);
+
+	nombres.push_back("No disparar");   // Opción final
+
+	int indice = 0; // índice dentro del vector nombres
+
+	TextBox selector({ 140.f, 30.f }, { 0, 0 }, nombres[indice]);
+
+	if (!u.circulos.empty())
+	{
+		sf::Vector2f pos = u.circulos[0].circle.getPosition();
+		selector.setPosition({ pos.x + 30.f, pos.y - 20.f });
+	}
+
+	while (v_tablero.ventana->isOpen())
+	{
+		while (const auto event = v_tablero.ventana->pollEvent())
+		{
+			if (event->is<sf::Event::Closed>())
+			{
+				v_tablero.ventana->close();
+				return -1;
+			}
+
+			// ----------------- Navegación de armas -----------------
+			if (const auto* key = event->getIf<sf::Event::KeyPressed>())
+			{
+				// Flecha izquierda
+				if (key->scancode == sf::Keyboard::Scancode::Left)
+				{
+					indice--;
+					if (indice < 0) indice = nombres.size() - 1;
+					selector.setText(nombres[indice]);
+				}
+
+				// Flecha derecha
+				if (key->scancode == sf::Keyboard::Scancode::Right)
+				{
+					indice++;
+					if (indice >= nombres.size()) indice = 0;
+					selector.setText(nombres[indice]);
+				}
+			}
+
+			// ----------------- Confirmación -----------------
+			if (const auto* mouse = event->getIf<sf::Event::MouseButtonPressed>())
+			{
+				if (mouse->button == sf::Mouse::Button::Left)
+				{
+					// Caso "No disparar"
+					if (nombres[indice] == "No disparar")
+					{
+						return -1;
+					}
+
+					// Caso arma normal: devolver índice original
+					return indice;
+				}
+			}
+		}
+
+		v_tablero.ventana->clear(sf::Color::Black);
+		v_tablero.dibujarElementos();
+
+		v_tablero.ventana->draw(*(selector.getBox()));
+		v_tablero.ventana->draw(*(selector.getText()));
+		v_tablero.ventana->display();
+	}
+
+	return -1;
+}
+
+int Repetida(Arma& a, Unidad& u)
+{
+	string nombre_a = a.nombre;
+	int n = 0;
+	for (auto& m : u.miembros)
+	{
+		for (auto& ar : m.rango)
+			if (ar.nombre == nombre_a && !(ar.usado))
+				n += 1;
+		for (auto& ar : m.mele)
+			if (ar.nombre == nombre_a && !(ar.usado))
+				n += 1;
+	}
+	return n;
+}
+
+bool Selec_SN(Ventana& v_monitor, const std::string& pregunta)
+{
+	// Obtener el TextBox final del monitor
+	TextBox* mensaje = (*(v_monitor.TextBoxes.end()-1));
+
+	// Texto inicial: pregunta + instrucciones
+	mensaje->setText(pregunta + "\n[S] Sí   /   [N] No");
+
+	while (v_monitor.ventana->isOpen())
+	{
+		// Leer eventos
+		while (const auto event = v_monitor.ventana->pollEvent())
+		{
+			if (event->is<sf::Event::Closed>())
+			{
+				v_monitor.ventana->close();
+				return false;
+			}
+
+			if (const auto* key = event->getIf<sf::Event::KeyPressed>())
+			{
+				// Tecla S → Sí
+				if (key->scancode == sf::Keyboard::Scancode::S)
+					return true;
+
+				// Tecla N → No
+				if (key->scancode == sf::Keyboard::Scancode::N)
+					return false;
+			}
+		}
+
+		// Dibujar ventana
+		v_monitor.ventana->clear(sf::Color::Black);
+		v_monitor.dibujarElementos();
+		v_monitor.ventana->display();
+	}
+
+	return false; // fallback si se cierra la ventana
+}
+
+
 void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& Ejer_enem)
 {
 	set<string> whitelist = { "Vehiculo", "Monstruo", "Pistola", "Asalto" };
@@ -474,9 +612,9 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 	{
 		v_monitor.ventana->clear(sf::Color::Black);
 		mensaje->setText(unidad.nombre + " no tiene armas para disparar");
-		esperarConfirmacion(v_monitor);
 		v_monitor.dibujarElementos();
 		v_monitor.ventana->display();
+		esperarConfirmacion(v_monitor);
 		return;
 	}
 
@@ -504,17 +642,17 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 		asalto = true;
 		v_monitor.ventana->clear(sf::Color::Black);
 		mensaje->setText(unidad.nombre + " solo puede disparar con armas de asalto en este turno");
-		esperarConfirmacion(v_monitor);
 		v_monitor.dibujarElementos();
 		v_monitor.ventana->display();
+		esperarConfirmacion(v_monitor);
 	}
 	else if (unidad.atk == 1 && !(keysu.count("Asalto") == 1))
 	{
 		v_monitor.ventana->clear(sf::Color::Black);
 		mensaje->setText(unidad.nombre + " no puede disparar en este turno.");
-		esperarConfirmacion(v_monitor);
 		v_monitor.dibujarElementos();
 		v_monitor.ventana->display();
+		esperarConfirmacion(v_monitor);
 		return;
 	}
 
@@ -524,9 +662,9 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 	{
 		v_monitor.ventana->clear(sf::Color::Black);
 		mensaje->setText(unidad.nombre + " no puede disparar, esta demasiado cerca de un enemigo.");
-		esperarConfirmacion(v_monitor);
 		v_monitor.dibujarElementos();
 		v_monitor.ventana->display();
+		esperarConfirmacion(v_monitor);
 		return;
 	}
 	else
@@ -542,7 +680,215 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 				if (allTrue(l_armas))
 					break;
 
+				int indice = Selec_Arma(v_tablero, unidad, m, true);
+				if (!m.rango[indice].usado)
+				{
+					bool AsaltoInKeys;
+					bool PrecisionInKeys;
+					//Reutilizar el bucle para otras claves
+					for (auto& par : m.rango[indice].claves)
+					{
+						if (par.first == "Asalto")
+							AsaltoInKeys = true;
+						else if (par.first == "Precision")
+							PrecisionInKeys = true;
+					}
+					if (asalto && !AsaltoInKeys)
+					{
+						v_monitor.ventana->clear(sf::Color::Black);
+						mensaje->setText("No puede disparar con " + m.rango[indice].nombre + " en este turno");
+						v_monitor.dibujarElementos();
+						v_monitor.ventana->display();
+						esperarConfirmacion(v_monitor);
+						continue;
+					}
+				}
 
+				v_monitor.ventana->clear(sf::Color::Black);
+				mensaje->setText("Elegiste: " + m.rango[indice].nombre);
+				v_monitor.dibujarElementos();
+				v_monitor.ventana->display();
+				esperarConfirmacion(v_monitor);
+				string accion = "Disparar";
+				Unidad* blanco = Selec_Blanco(v_monitor, unidad, accion, Ejer_enem);
+				if (blanco == nullptr)
+				{
+					m.rango[indice].usado = true;
+					continue;
+				}
+				else
+				{
+					set <string> keysb;
+					for (auto& k : blanco->claves)
+						keysb.insert(k);
+					set_intersection(keysb.begin(), keysb.end(), graylist.begin(), graylist.end(), std::inserter(keysb, keysb.begin()));
+					if (blanco->engaged && keysb.empty())
+					{
+						v_monitor.ventana->clear(sf::Color::Black);
+						mensaje->setText("No puede disparar a " + blanco->nombre + ", esta demasiado cerca de un aliado.");
+						v_monitor.dibujarElementos();
+						v_monitor.ventana->display();
+						esperarConfirmacion(v_monitor);
+						continue;
+					}
+
+					int dist = Visible(v_tablero, unidad, *blanco);
+					if (dist > m.rango[indice].stats_map["Alcance"].get<int>() || dist == -1.f)
+					{
+						v_monitor.ventana->clear(sf::Color::Black);
+						mensaje->setText("Objetivo fuera de alcance o no visible.");
+						v_monitor.dibujarElementos();
+						v_monitor.ventana->display();
+						esperarConfirmacion(v_monitor);
+						continue;
+					}
+
+					bool AgenteSolitarioInKeys = false;
+					for (auto& c : blanco->claves)
+					{
+						if (c == "Agente Solitario")
+							AgenteSolitarioInKeys = true;
+					}
+					if (blanco->lider != "" && AgenteSolitarioInKeys && dist >= 12)
+					{
+						v_monitor.ventana->clear(sf::Color::Black);
+						mensaje->setText(blanco->nombre + " es un agente solitario y se ha escabullido.");
+						v_monitor.dibujarElementos();
+						v_monitor.ventana->display();
+						esperarConfirmacion(v_monitor);
+						continue;
+					}
+					else
+					{
+						string n = m.rango[indice].stats_map["No. de Ataques"].get<string>();
+						int N;
+						vector<int> N_dados;
+						int tor = 0;
+
+						if (m.rango[indice].claves.find("Area") != m.rango[indice].claves.end())
+							if (blanco->engaged)
+							{
+								v_monitor.ventana->clear(sf::Color::Black);
+								mensaje->setText(blanco->nombre + " esta demasiado cerca de una unidad aliada.");
+								v_monitor.dibujarElementos();
+								v_monitor.ventana->display();
+								esperarConfirmacion(v_monitor);
+								continue;
+							}
+							else
+							{
+								n = n + ("+" + to_string(blanco->miembros.size() / 5));
+							}
+						else if (m.rango[indice].claves.find("Fuego Rapido") != m.rango[indice].claves.end())
+						{
+							if (dist <= m.rango[indice].stats_map["Alcance"].get<int>() / 2)
+							{
+								v_monitor.ventana->clear(sf::Color::Black);
+								mensaje->setText(unidad.nombre + " esta cerca de su objetivo y lanza ataques adicionales.");
+								v_monitor.dibujarElementos();
+								v_monitor.ventana->display();
+								esperarConfirmacion(v_monitor);
+								n = n + m.rango[indice].claves["Fuego Rapido"].get<string>();
+							}
+						}
+						else if (m.rango[indice].claves.find("Torrente") != m.rango[indice].claves.end())
+						{
+							v_monitor.ventana->clear(sf::Color::Black);
+							mensaje->setText(unidad.nombre + " es un arma de torrente e impacta directamente.");
+							v_monitor.dibujarElementos();
+							v_monitor.ventana->display();
+							esperarConfirmacion(v_monitor);
+							tor = 5;
+						}
+
+						if (n.find("D") == string::npos)
+						{
+							N = stoi(n);
+							N_dados.clear();
+						}
+						else
+						{
+							N = 0;
+							N_dados = AtkDmg_Rand(n);
+						}
+
+						vector <int> impact;
+						int nAI = Repetida(m.rango[indice], unidad);
+
+						if (nAI > 1)
+						{
+							string t = "Multiples miniaturas en " + unidad.nombre + " usan " +
+								m.rango[indice].nombre + "\nDesea hacer una tirada rápida para dispararlas todas contra "
+								+ blanco->nombre + "?";
+							bool resp = Selec_SN(v_monitor, t);
+							if (resp)
+							{
+								for (auto& mini : unidad.miembros)
+								{
+									for (auto& arma : mini.rango)
+									{
+										if (arma.nombre == m.rango[indice].nombre && !(arma.usado))
+										{
+											vector<int> tiradas;
+											int Dx = tor ? tor : 6;
+											tiradas = !(N_dados.empty()) ? AtkDmg_Rand(n) : Dados(N, Dx, false);
+											impact.insert(impact.end(), tiradas.begin(), tiradas.end());
+											arma.usado = true;
+											if (mini.rango[indice].claves.find("Perfil") != m.rango[indice].claves.end())
+												for (auto& ar : mini.rango)
+													if (mini.rango[indice].claves.find("Perfil") != m.rango[indice].claves.end())
+														ar.usado = true;
+										}
+										else
+											continue;
+									}
+								}
+							}
+						}
+						else
+						{
+							m.rango[indice].usado = true;
+							if (m.rango[indice].claves.find("Perfil") != m.rango[indice].claves.end())
+								for (auto& ar : m.rango)
+									if (m.rango[indice].claves.find("Perfil") != m.rango[indice].claves.end())
+										ar.usado = true;
+							impact = !(N_dados.empty()) ? AtkDmg_Rand(n) : Dados(N, 6, false);
+						}
+
+						if (m.rango[indice].claves.find("Golpes Sostenidos") != m.rango[indice].claves.end())
+						{
+							string nGS = m.rango[indice].claves["Golpes Sostenidos"].get<string>();
+							bool nGS_IsStr = (nGS.find("D") == string::npos);
+							int nAD = 0;
+							for (auto& d : impact)
+								if (d == 6)
+									nAD += nGS_IsStr ? stoi(nGS): AtkDmg_Rand(nGS, false);
+							v_monitor.ventana->clear(sf::Color::Black);
+							mensaje->setText(m.rango[indice].nombre + " hace Golpes Sostenidos: "+to_string(nAD));
+							v_monitor.dibujarElementos();
+							v_monitor.ventana->display();
+							esperarConfirmacion(v_monitor);
+							for (size_t i = 0; i< nAD; i++)
+								impact.push_back(6);
+						}
+
+						else if (m.rango[indice].claves.find("Impactos Letales") != m.rango[indice].claves.end())
+						{
+							vector<int> seises;
+							copy_if(impact.begin(), impact.end(), back_inserter(seises),[](int val) { return val == 6; });
+							copy_if(impact.begin(), impact.end(), back_inserter(impact), [](int val) { return val != 6; });
+							int m_ = m.rango[indice].claves["Impactos Letales"].get<int>();
+							int dano = 0;
+							for (auto& d : seises)
+								dano += m_ ? Dados(1, 6);
+							v_monitor.ventana->clear(sf::Color::Black);
+							mensaje->setText(to_string(seises.size())+" impactos fueron letales");
+							v_monitor.dibujarElementos();
+							v_monitor.ventana->display();
+							esperarConfirmacion(v_monitor);
+						}
+					}
+				}
 			}
 		}
 	}
