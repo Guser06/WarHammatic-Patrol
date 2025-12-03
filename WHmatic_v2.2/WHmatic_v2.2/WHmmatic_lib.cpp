@@ -30,7 +30,7 @@ vector< Ejercito > ElegirEjercitos(Ventana& v) {
 	v.ventana->clear(sf::Color::Black);
 	for (auto i : opts)
 	{
-		Boton* B = new Boton(sf::Vector2f({ indice * 60, 0 }), sf::Vector2f({ 60, 180 }), i.first);
+		Boton* B = new Boton(sf::Vector2f({ 0.f, indice * 60.f }), sf::Vector2f({ 60.f, 180.f }), i.first);
 		v.elementos.push_back(B);
 		indice++;
 		v.ventana->draw(B->rect);
@@ -74,30 +74,6 @@ vector< Ejercito > ElegirEjercitos(Ventana& v) {
 
 	v.elementos.clear();
 	return ejercitos;
-}
-
-vector<int> Dados(int n_dados, int Dx, bool ret_num)
-{
-	vector<int> res_dados;
-	for (int i = 0; i < n_dados; i++)
-	{
-		srand(time(NULL));
-		int resultado = (rand() % Dx) + 1;
-		res_dados.push_back(resultado);
-	}
-	return res_dados;
-}
-
-int Dados(int n_dados, int Dx)
-{
-	vector<int> res_dados;
-	for (int i = 0; i < n_dados; i++)
-	{
-		srand(time(NULL));
-		int resultado = (rand() % Dx) + 1;
-		res_dados.push_back(resultado);
-	}
-	return accumulate(res_dados.begin(), res_dados.end(), 0);
 }
 
 vector<int> AtkDmg_Rand(string nDx)
@@ -293,7 +269,7 @@ int Selec_mini(Ventana& v_Monitor, Ventana& v_Tablero, Unidad& u)
 					// Revisar todos los circulos
 					for (int i = 0; i < u.circulos.size(); i++)
 					{
-						const sf::CircleShape& c = u.circulos[i];
+						const sf::CircleShape& c = u.circulos[i].circle;
 
 						if (puntoEnCirculo(clickPos, c))
 						{
@@ -389,7 +365,7 @@ Unidad Selec_Blanco(Ventana& v_monitor, Unidad& u, string& accion, Ejercito& Eje
 						// Revisar cada miniatura (circulo)
 						for (int i = 0; i < objetivo.circulos.size(); i++)
 						{
-							const sf::CircleShape& c = objetivo.circulos[i];
+							const sf::CircleShape& c = objetivo.circulos[i].circle;
 
 							if (puntoEnCirculo(clickPos, c))
 							{
@@ -437,11 +413,11 @@ float Visible(Ventana& v_tablero,
 	// Comprobacion de linea de vision entre miniaturas
 	for (const auto& cA : A.circulos)
 	{
-		sf::Vector2f pA = cA.getPosition() + cA.getOrigin();
+		sf::Vector2f pA = cA.circle.getPosition() + cA.circle.getOrigin();
 
 		for (const auto& cB : B.circulos)
 		{
-			sf::Vector2f pB = cB.getPosition() + cB.getOrigin();
+			sf::Vector2f pB = cB.circle.getPosition() + cB.circle.getOrigin();
 
 			// Crear un rectangulo fino para representar la linea
 			sf::RectangleShape ray;
@@ -510,14 +486,14 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 	}
 
 	set<string> keysu(unidad.claves.begin(), unidad.claves.end());
-	set_intersection(keysu.begin(), keysu.end(), whitelist.begin(), whitelist.end(), std::back_inserter(keysu));
+	set_intersection(keysu.begin(), keysu.end(), whitelist.begin(), whitelist.end(), std::inserter(keysu, keysu.begin()));
 	for (auto& m : unidad.miembros)
 		for (auto& a : m.rango)
 		{
 			set<string> keysa;
 			for (auto& k : a.claves)
 				keysa.insert(k.first);
-			set_intersection(keysa.begin(), keysa.end(), whitelist.begin(), whitelist.end(), std::back_inserter(keysa));
+			set_intersection(keysa.begin(), keysa.end(), whitelist.begin(), whitelist.end(), std::inserter(keysa, keysa.begin()));
 			keysu.merge(keysa);
 		}
 
@@ -551,7 +527,7 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 	}
 
 	set<string> keysu2;
-	set_intersection(keysu.begin(), keysu.end(), whitelist.begin(), graylist.end(), std::back_inserter(keysu2));
+	set_intersection(keysu.begin(), keysu.end(), whitelist.begin(), whitelist.end(), std::inserter(keysu2, keysu2.begin()));
 	if (unidad.engaged && keysu2.size() == 0)
 	{
 		v_monitor.ventana->clear(sf::Color::Black);
@@ -580,11 +556,6 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 		}
 	}
 }
-
-
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include "WHmmatic_lib.cpp"
 
 int main()
 {
@@ -627,8 +598,7 @@ int main()
 			for (auto& circulo : unidad.circulos)
 			{
 				// Agregar las miniaturas al tablero
-
-				v_tablero.elementos.push_back(c);
+				v_tablero.elementos.push_back(&circulo);
 			}
 		}
 	}

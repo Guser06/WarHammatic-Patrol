@@ -133,8 +133,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="main_v2.2.cpp" />
     <ClCompile Include="WHmmatic_lib.cpp" />
   </ItemGroup>
   <ItemGroup>

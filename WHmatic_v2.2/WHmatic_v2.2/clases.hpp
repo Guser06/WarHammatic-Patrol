@@ -13,6 +13,30 @@
 using json = nlohmann::json;
 using namespace std;
 
+vector<int> Dados(int n_dados, int Dx, bool ret_num)
+{
+    srand(time(NULL));
+    vector<int> res_dados;
+    for (int i = 0; i < n_dados; i++)
+    {
+        int resultado = (rand() % Dx) + 1;
+        res_dados.push_back(resultado);
+    }
+    return res_dados;
+}
+
+int Dados(int n_dados, int Dx)
+{
+    srand(time(NULL));
+    vector<int> res_dados;
+    for (int i = 0; i < n_dados; i++)
+    {
+        int resultado = (rand() % Dx) + 1;
+        res_dados.push_back(resultado);
+    }
+    return accumulate(res_dados.begin(), res_dados.end(), 0);
+}
+
 //Clase base para los elementos de la interfaz
 class Elemento
 {
@@ -21,7 +45,7 @@ public:
     std::string Texto;
     sf::Texture textura;
     virtual ~Elemento() {};
-    virtual string Type() {};
+    virtual string Type() { return "Elemento"; }
 };
 
 //Clase botón para la interfaz
@@ -33,8 +57,8 @@ public:
     sf::RectangleShape rect;
     sf::Sprite* sprite = nullptr;
     sf::Font* font = nullptr;
-    sf::Text* textoBoton;
-    Boton(sf::Vector2f pos, sf::Vector2f tam, string texto)
+    sf::Text* textoBoton = nullptr;
+    Boton(sf::Vector2f pos, sf::Vector2f tam, const string& texto)
     {
         this->presionado = false;
         this->posicion = pos;
@@ -42,12 +66,17 @@ public:
         this->Texto = texto;
         this->rect.setSize(this->tamano);
         this->rect.setPosition(this->posicion);
-        this->font = new sf::Font();
-        this->font->openFromFile("sprites/ARIAL.TTF");
-        this->textoBoton->setString(texto);
-        this->textoBoton->setCharacterSize(12);
+
+        this->font = new sf::Font("sprites/ARIAL.TTF");
+        this->textoBoton = new sf::Text(*this->font, texto, 12);
         this->textoBoton->setFillColor(sf::Color::White);
         this->textoBoton->setPosition(pos);
+    }
+
+    virtual ~Boton() {
+        delete this->textoBoton;
+        delete this->font;
+        delete this->sprite;
     }
     Boton(sf::Vector2f pos, sf::Vector2f tam, sf::Texture tex)
     {
@@ -66,7 +95,6 @@ public:
             this->presionado = false;
         return this->presionado;
     }
-    virtual ~Boton() { delete this->sprite; }
     virtual string Type() override { return "Boton"; }
 };
 
@@ -156,8 +184,6 @@ public:
 	virtual string Type() override { return "Obstaculo"; }
 
 	sf::FloatRect getRect() { return this->rect.getGlobalBounds(); }
-
-	string Type() override { return "Obstaculo"; }
 };
 
 class Circulo : public Elemento
@@ -179,9 +205,10 @@ public:
     sf::RenderWindow* ventana = nullptr;
     vector<Elemento*> elementos;
     sf::Vector2i PosMouse;
-    Ventana(int Ancho, int Alto, string Nombre)
+    Ventana(unsigned int Ancho, unsigned int Alto, string Nombre)
     {
-        this->ventana = new sf::RenderWindow(sf::VideoMode({ Ancho, Alto }), Nombre);
+        sf::Vector2u tamano({Ancho, Alto });
+        this->ventana = new sf::RenderWindow(sf::VideoMode(tamano), Nombre);
         this->ventana->setFramerateLimit(60);
     }
     
@@ -290,7 +317,7 @@ public:
                 if (nhd > Dados(1, 6))
                 {
                     this->dmg += dano;
-                    return;
+                    return "";
                 }
                 else
                     return "No hay dolor" + to_string(nhd) + "+ salvo " + to_string(dano) + " heridas";
@@ -323,7 +350,7 @@ struct Unidad {
     int atk = 0;
 
     vector<Individuo> miembros;
-	vector<Elemento> circulos; // Para representar la unidad en SFML
+	vector<Circulo> circulos; // Para representar la unidad en SFML
 
 	Unidad() {};
     ~Unidad()
