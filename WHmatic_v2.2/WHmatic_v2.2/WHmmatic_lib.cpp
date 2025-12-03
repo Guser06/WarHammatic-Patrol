@@ -31,7 +31,7 @@ vector< Ejercito > ElegirEjercitos(Ventana& v) {
 	for (auto i : opts)
 	{
 		Boton* B = new Boton(sf::Vector2f({ 0.f, indice * 60.f }), sf::Vector2f({ 60.f, 180.f }), i.first);
-		v.elementos.push_back(B);
+		v.Botones.push_back(B);
 		indice++;
 		v.ventana->draw(B->rect);
 	}
@@ -52,13 +52,12 @@ vector< Ejercito > ElegirEjercitos(Ventana& v) {
 
 				if (click->button == sf::Mouse::Button::Left)
 				{
-					Boton* B = dynamic_cast<Boton*>(v.elementos[PosY]);
+					Boton* B = dynamic_cast<Boton*>(v.Botones[PosY]);
 					B->presionado = true;
 				}
 			}
-		for (auto& e : v.elementos)
+		for (auto& B : v.Botones)
 		{
-			Boton* B = dynamic_cast<Boton*>(e);
 			if (B->presionado)
 			{
 				Ejercito nE;
@@ -72,7 +71,7 @@ vector< Ejercito > ElegirEjercitos(Ventana& v) {
 		}
 	}
 
-	v.elementos.clear();
+	v.Botones.clear();
 	return ejercitos;
 }
 
@@ -191,7 +190,7 @@ void Shock_Test(Unidad& U, Ventana& v)
 			if (m.stats_map["Liderazgo"] > mayor)
 				mayor = m.stats_map["Liderazgo"];
 		int prueba = Dados(2, 6);
-		TextBox* T = dynamic_cast<TextBox*>(*(v.elementos.end()));
+		TextBox* T = v.TextBoxes[v.TextBoxes.size()-1];
 		if (prueba < mayor)
 		{
 			U.shock = true;
@@ -208,7 +207,7 @@ void Shock_Test(Unidad& U, Ventana& v)
 	else if (U.nm == 1 && U.miembros[0].dmg > U.miembros[0].stats_map["Heridas"] / 2)
 	{
 		int prueba = Dados(2, 6);
-		TextBox* T = dynamic_cast<TextBox*>(*(v.elementos.end()));
+		TextBox* T = v.TextBoxes[v.TextBoxes.size() - 1];
 		if (prueba < U.miembros[0].stats_map["Liderazgo"])
 		{
 			U.shock = true;
@@ -225,7 +224,7 @@ void Shock_Test(Unidad& U, Ventana& v)
 	else
 	{
 		U.shock = false;
-		TextBox* T = dynamic_cast<TextBox*>(*(v.elementos.end()));
+		TextBox* T = v.TextBoxes[v.TextBoxes.size() - 1];
 		T->setText("Unidad " + U.nombre + " no necesita prueba de shock.");
 		esperarConfirmacion(v);
 	}
@@ -244,7 +243,7 @@ bool puntoEnCirculo(const sf::Vector2f& punto, const sf::CircleShape& c)
 
 int Selec_mini(Ventana& v_Monitor, Ventana& v_Tablero, Unidad& u)
 {
-	TextBox* mensaje = dynamic_cast<TextBox*>(*(v_Monitor.elementos.end()));
+	TextBox* mensaje = v_Monitor.TextBoxes[v_Monitor.TextBoxes.size()-1];
 	mensaje->setText("Seleccione una miniatura...");
 
 	while (v_Tablero.ventana->isOpen())
@@ -307,7 +306,7 @@ void RepDmg(Ventana& v_monitor, Ventana& v_tablero, Unidad& blanco, int& dano, b
 			return;
 		}
 		int Qt_dmg = blanco.miembros[danada].stats_map["Heridas"].get<int>() - blanco.miembros[danada].dmg;
-		TextBox* T = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		TextBox* T = v_monitor.TextBoxes[v_monitor.TextBoxes.size()-1];
 		if (dano >= Qt_dmg)
 		{
 			T->setText(blanco.miembros[danada].Recibir_Dano(v_monitor, Qt_dmg, blanco.habilidades));
@@ -335,7 +334,7 @@ Unidad Selec_Blanco(Ventana& v_monitor, Unidad& u, string& accion, Ejercito& Eje
 	// Depurar ejercito enemigo antes de seleccionar
 	Ejer_Enem.eliminar_unidades();
 
-	TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+	TextBox* mensaje = v_monitor.TextBoxes[v_monitor.TextBoxes.size()-1];
 	mensaje->setText("Seleccione un objetivo para: " + accion);
 
 	// Bucle principal de seleccion
@@ -403,12 +402,8 @@ float Visible(Ventana& v_tablero,
 	// Obtener rectangulos de obstaculos desde el tablero
 	std::vector<sf::FloatRect> obstaculos;
 
-	for (Elemento* e : v_tablero.elementos)
-	{
-		// Si el elemento tiene un metodo getRect(), usalo
-		if (auto* obs = dynamic_cast<Obstaculo*>(e))
-			obstaculos.push_back(obs->getRect());
-	}
+	for (auto* o : v_tablero.Obstaculos)
+			obstaculos.push_back(o->getRect());
 
 	// Comprobacion de linea de vision entre miniaturas
 	for (const auto& cA : A.circulos)
@@ -466,6 +461,7 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 {
 	set<string> whitelist = { "Vehiculo", "Monstruo", "Pistola", "Asalto" };
 	set<string> graylist = { "Vehiculo", "Monstruo" };
+	TextBox* mensaje = v_monitor.TextBoxes[v_monitor.TextBoxes.size() - 1];
 	bool puede_disparar = false;
 
 	for (auto& m : unidad.miembros)
@@ -477,7 +473,6 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 	if (!puede_disparar)
 	{
 		v_monitor.ventana->clear(sf::Color::Black);
-		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
 		mensaje->setText(unidad.nombre + " no tiene armas para disparar");
 		esperarConfirmacion(v_monitor);
 		v_monitor.dibujarElementos();
@@ -500,7 +495,6 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 	if (unidad.atk == 0)
 	{
 		v_monitor.ventana->clear(sf::Color::Black);
-		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
 		mensaje->setText(unidad.nombre + "ya no puede disparar en este turno.");
 	}
 
@@ -509,7 +503,6 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 	{
 		asalto = true;
 		v_monitor.ventana->clear(sf::Color::Black);
-		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
 		mensaje->setText(unidad.nombre + " solo puede disparar con armas de asalto en este turno");
 		esperarConfirmacion(v_monitor);
 		v_monitor.dibujarElementos();
@@ -518,7 +511,6 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 	else if (unidad.atk == 1 && !(keysu.count("Asalto") == 1))
 	{
 		v_monitor.ventana->clear(sf::Color::Black);
-		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
 		mensaje->setText(unidad.nombre + " no puede disparar en este turno.");
 		esperarConfirmacion(v_monitor);
 		v_monitor.dibujarElementos();
@@ -531,7 +523,6 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 	if (unidad.engaged && keysu2.size() == 0)
 	{
 		v_monitor.ventana->clear(sf::Color::Black);
-		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
 		mensaje->setText(unidad.nombre + " no puede disparar, esta demasiado cerca de un enemigo.");
 		esperarConfirmacion(v_monitor);
 		v_monitor.dibujarElementos();
@@ -569,7 +560,7 @@ int main()
 		{ 0.f, 0.f },
 		"Seleccione un ejército..."
 	);
-	v_monitor.elementos.push_back(msgBox);
+	v_monitor.TextBoxes.push_back(msgBox);
 
 	// --- Selección de Ejércitos ---
 	vector<Ejercito> ejercitos;
@@ -598,7 +589,7 @@ int main()
 			for (auto& circulo : unidad.circulos)
 			{
 				// Agregar las miniaturas al tablero
-				v_tablero.elementos.push_back(&circulo);
+				v_tablero.Circulos.push_back(&circulo);
 			}
 		}
 	}

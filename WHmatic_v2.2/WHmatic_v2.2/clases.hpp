@@ -203,8 +203,12 @@ class Ventana
 {
 public:
     sf::RenderWindow* ventana = nullptr;
-    vector<Elemento*> elementos;
+    vector<Boton*> Botones;
+	vector<Circulo*> Circulos;
+	vector<Obstaculo*> Obstaculos;
+	vector<TextBox*> TextBoxes;
     sf::Vector2i PosMouse;
+
     Ventana(unsigned int Ancho, unsigned int Alto, string Nombre)
     {
         sf::Vector2u tamano({Ancho, Alto });
@@ -214,35 +218,35 @@ public:
     
     virtual ~Ventana() {
         delete this->ventana;
-        for (size_t i = 0; i < this->elementos.size(); i++)
-            delete this->elementos[i];
+        for (size_t i = 0; i < this->Botones.size(); i++)
+            delete this->Botones[i];
+        for (size_t i = 0; i < this->Circulos.size(); i++)
+            delete this->Circulos[i];
+        for (size_t i = 0; i < this->Obstaculos.size(); i++)
+            delete this->Obstaculos[i];
+        for (size_t i = 0; i < this->TextBoxes.size(); i++)
+            delete this->TextBoxes[i];
     }
     string Type() { return "Ventana"; }
 
     void dibujarElementos()
     {
-        for (auto& e : this->elementos)
+        for (size_t i = 0; i < this->Botones.size(); i++)
         {
-            if (e->Type() == "Boton")
-            {
-                Boton* b = dynamic_cast<Boton*>(e);
-                this->ventana->draw(b->rect);
-                if (b->textoBoton)
-                    this->ventana->draw(*(b->textoBoton));
-                if (b->sprite)
-                    this->ventana->draw(*(b->sprite));
-            }
-            else if (e->Type() == "TextBox")
-            {
-                TextBox* tb = dynamic_cast<TextBox*>(e);
-                this->ventana->draw(*(tb->getBox()));
-                this->ventana->draw(*(tb->getText()));
-            }
-            else if (e->Type() == "Obstaculo")
-            {
-                Obstaculo* o = dynamic_cast<Obstaculo*>(e);
-                this->ventana->draw(o->rect);
-            }
+            this->ventana->draw(Botones[i]->rect);
+			if (Botones[i]->textoBoton != nullptr)
+                this->ventana->draw(*(Botones[i]->textoBoton));
+            if (Botones[i]->sprite != nullptr)
+				this->ventana->draw(*(Botones[i]->sprite));
+        }
+        for (size_t i = 0; i < this->Circulos.size(); i++)
+            this->ventana->draw(this->Circulos[i]->circle);
+		for (size_t i = 0; i < this->Obstaculos.size(); i++)
+			this->ventana->draw(this->Obstaculos[i]->rect);
+        for (size_t i = 0; i < this->TextBoxes.size(); i++)
+        {
+			this->ventana->draw(*(this->TextBoxes[i]->getBox()));
+			this->ventana->draw(*(this->TextBoxes[i]->getText()));
         }
     }
 };
