@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <numeric>
+#include <set>
 
 using namespace std;
 using json = nlohmann::json;
@@ -472,8 +473,113 @@ float Visible(Ventana& v_tablero,
 			}
 		}
 	}
-
 	// Si todos los rayos estan bloqueados
 	return -1.f;
 }
 
+bool allTrue(const vector<bool>& vec)
+{
+	for (bool b : vec)
+		if (!b)
+			return false;
+	return true;
+}
+
+void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& Ejer_enem)
+{
+	set<string> whitelist = { "Vehiculo", "Monstruo", "Pistola", "Asalto"};
+	set<string> graylist = { "Vehiculo", "Monstruo" };
+	bool puede_disparar = false;
+
+	for (auto& m : unidad.miembros)
+		if (m.rango.size() != 0)
+		{
+			puede_disparar = true;
+			break;
+		}
+	if (!puede_disparar)
+	{
+		v_monitor.ventana->clear(sf::Color::Black);
+		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		mensaje->setText(unidad.nombre+" no tiene armas para disparar");
+		esperarConfirmacion(v_monitor);
+		v_monitor.dibujarElementos();
+		v_monitor.ventana->display();
+		return;
+	}
+
+	set<string> keysu(unidad.claves.begin(), unidad.claves.end());
+	set_intersection(keysu.begin(), keysu.end(), whitelist.begin(), whitelist.end(), std::back_inserter(keysu));
+	for (auto& m : unidad.miembros)
+		for (auto& a : m.rango)
+		{
+			set<string> keysa;
+			for (auto& k : a.claves)
+				keysa.insert(k.first);
+			set_intersection(keysa.begin(), keysa.end(), whitelist.begin(), whitelist.end(), std::back_inserter(keysa));
+			keysu.merge(keysa);
+		}
+
+	if (unidad.atk == 0)
+	{
+		v_monitor.ventana->clear(sf::Color::Black);
+		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		mensaje->setText(unidad.nombre + "ya no puede disparar en este turno.");
+		esperarConfirmacion(v_monitor);
+		v_monitor.dibujarElementos();
+		v_monitor.ventana->display();
+		return;
+	}
+
+	bool asalto = false;
+	if (unidad.atk == 1 && unidad.mov == 1 && (keysu.count("Asalto")==1))
+	{
+		asalto = true;
+		v_monitor.ventana->clear(sf::Color::Black);
+		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		mensaje->setText(unidad.nombre + " solo puede disparar con armas de asalto en este turno");
+		esperarConfirmacion(v_monitor);
+		v_monitor.dibujarElementos();
+		v_monitor.ventana->display();
+	}
+	else if (unidad.atk == 1 && !(keysu.count("Asalto")==1))
+	{
+		v_monitor.ventana->clear(sf::Color::Black);
+		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		mensaje->setText(unidad.nombre + " no puede disparar en este turno.");
+		esperarConfirmacion(v_monitor);
+		v_monitor.dibujarElementos();
+		v_monitor.ventana->display();
+		return;
+	}
+
+	set<string> keysu2;
+	set_intersection(keysu.begin(), keysu.end(), whitelist.begin(), graylist.end(), std::back_inserter(keysu2));
+	if (unidad.engaged && keysu2.size()==0)
+	{
+		v_monitor.ventana->clear(sf::Color::Black);
+		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		mensaje->setText(unidad.nombre + " no puede disparar, esta demasiado cerca de un enemigo.");
+		esperarConfirmacion(v_monitor);
+		v_monitor.dibujarElementos();
+		v_monitor.ventana->display();
+		return;
+	}
+	else
+	{
+		for (auto& m : unidad.miembros)
+		{
+			int indice = 0;
+			while (true)
+			{
+				vector<bool> l_armas;
+				for (auto& a : m.rango)
+					l_armas.push_back(a.usado);
+				if (allTrue(l_armas))
+					break;
+
+
+			}
+		}
+	}
+}
