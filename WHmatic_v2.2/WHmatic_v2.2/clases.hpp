@@ -160,6 +160,19 @@ public:
 	string Type() override { return "Obstaculo"; }
 };
 
+class Circulo : public Elemento
+{
+    public:
+    sf::CircleShape circle;
+    Circulo(float radio, sf::Vector2f pos, sf::Color color)
+    {
+        this->circle.setRadius(radio);
+        this->circle.setPosition(pos);
+        this->circle.setFillColor(color);
+    }
+	string Type() override { return "Circulo"; }
+};
+
 class Ventana
 {
 public:
@@ -310,7 +323,7 @@ struct Unidad {
     int atk = 0;
 
     vector<Individuo> miembros;
-	vector<sf::CircleShape> circulos; // Para representar la unidad en SFML
+	vector<Elemento> circulos; // Para representar la unidad en SFML
 
 	Unidad() {};
     ~Unidad()
@@ -331,10 +344,7 @@ struct Unidad {
     {
         for (int i = 0; i < this->miembros.size(); i++)
         {
-            sf::CircleShape circulo;
-            circulo.setRadius(this->Tamano_base / 2.0f);
-            circulo.setFillColor(sf::Color::Green);
-            circulo.setPosition({ 100.0f + i * (this->Tamano_base + 5.0f), 100.0f }); // Ejemplo de posición
+            Circulo circulo(this->Tamano_base / 2.0f, { 100.0f + i * (this->Tamano_base + 5.0f), 100.0f }, sf::Color::Green);
             this->circulos.push_back(circulo);
 		}
     }

@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <numeric>
+#include <set>
 
 using namespace std;
 using json = nlohmann::json;
@@ -477,154 +478,105 @@ float Visible(Ventana& v_tablero,
 	return -1.f;
 }
 
-int main()
+bool allTrue(const vector<bool>& vec)
 {
-	// Inicialización de ventanas
-	Ventana v_tablero(800, 600, "WHmmatic: Tablero");
-	Ventana v_monitor(400, 600, "WHmmatic: Monitor");
+	for (bool b : vec)
+		if (!b)
+			return false;
+	return true;
+}
 
-	// Agregar un TextBox a la ventana de monitor para mensajes
-	TextBox* msgBox = new TextBox(
-		{ 400.f, 50.f },
-		{ 0.f, 0.f },
-		"Seleccione un ejército..."
-	);
-	v_monitor.elementos.push_back(msgBox);
+void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& Ejer_enem)
+{
+	set<string> whitelist = { "Vehiculo", "Monstruo", "Pistola", "Asalto" };
+	set<string> graylist = { "Vehiculo", "Monstruo" };
+	bool puede_disparar = false;
 
-	// --- Selección de Ejércitos ---
-	vector<Ejercito> ejercitos;
-
-	while (ejercitos.size() < 2 && v_monitor.ventana->isOpen())
+	for (auto& m : unidad.miembros)
+		if (m.rango.size() != 0)
+		{
+			puede_disparar = true;
+			break;
+		}
+	if (!puede_disparar)
 	{
-		ejercitos = ElegirEjercitos(v_monitor);
-
 		v_monitor.ventana->clear(sf::Color::Black);
+		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		mensaje->setText(unidad.nombre + " no tiene armas para disparar");
+		esperarConfirmacion(v_monitor);
+		v_monitor.dibujarElementos();
+		v_monitor.ventana->display();
+		return;
+	}
+
+	set<string> keysu(unidad.claves.begin(), unidad.claves.end());
+	set_intersection(keysu.begin(), keysu.end(), whitelist.begin(), whitelist.end(), std::back_inserter(keysu));
+	for (auto& m : unidad.miembros)
+		for (auto& a : m.rango)
+		{
+			set<string> keysa;
+			for (auto& k : a.claves)
+				keysa.insert(k.first);
+			set_intersection(keysa.begin(), keysa.end(), whitelist.begin(), whitelist.end(), std::back_inserter(keysa));
+			keysu.merge(keysa);
+		}
+
+	if (unidad.atk == 0)
+	{
+		v_monitor.ventana->clear(sf::Color::Black);
+		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		mensaje->setText(unidad.nombre + "ya no puede disparar en este turno.");
+	}
+
+	bool asalto = false;
+	if (unidad.atk == 1 && unidad.mov == 1 && (keysu.count("Asalto") == 1))
+	{
+		asalto = true;
+		v_monitor.ventana->clear(sf::Color::Black);
+		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		mensaje->setText(unidad.nombre + " solo puede disparar con armas de asalto en este turno");
+		esperarConfirmacion(v_monitor);
 		v_monitor.dibujarElementos();
 		v_monitor.ventana->display();
 	}
-
-	if (ejercitos.size() != 2)
+	else if (unidad.atk == 1 && !(keysu.count("Asalto") == 1))
 	{
-		cout << "Se necesita seleccionar 2 ejércitos para iniciar." << endl;
-		return 0;
-	}
-
-	// Inicialización de Unidades
-	for (auto& ejercito : ejercitos)
-	{
-		for (auto& unidad : ejercito.unidades)
-		{
-			unidad.crear_circulos();
-			for (const auto& circulo : unidad.circulos)
-			{
-				// Agregar las miniaturas al tablero
-				v_tablero.elementos.push_back(new Elemento(circulo));
-			}
-		}
-	}
-
-	int ronda = 1;
-	int turno_jugador = 0; // 0 para el jugador 1, 1 para el jugador 2
-	bool juego_terminado = false;
-
-	while (v_tablero.ventana->isOpen() && !juego_terminado)
-	{
-		// 1. Fase de Comando
-		msgBox->setText("Ronda " + to_string(ronda) + " - Jugador " + to_string(turno_jugador + 1) + ": Fase de Comando");
-		esperarConfirmacion(v_monitor);
-		Aumentar_PC(ejercitos);
-
-		// 2. Fase de Movimiento
-		msgBox->setText("Fase de Movimiento. Seleccione unidad para mover/activar.");
-		esperarConfirmacion(v_monitor);
-		// Lógica de Movimiento y activación
-		Aumentar_Mov_Atk(ejercitos[turno_jugador]);
-
-		// 3. Fase de Disparo
-		msgBox->setText("Fase de Disparo. Seleccione unidad para disparar.");
-		esperarConfirmacion(v_monitor);
-
-		// Ejemplo de lógica de disparo
-		Unidad* unidad_atacante = &ejercitos[turno_jugador].unidades.front();
-		Unidad* unidad_defensora = &ejercitos[1 - turno_jugador].unidades.front();
-		string accion = "Disparar";
-
-		// 4. Fase de Carga 
-		msgBox->setText("Fase de Carga.");
-		esperarConfirmacion(v_monitor);
-
-		// 5. Fase de Combate
-		msgBox->setText("Fase de Combate.");
-		esperarConfirmacion(v_monitor);
-
-		// 6. Prueba de Choque
-		msgBox->setText("Prueba de Shock.");
-		esperarConfirmacion(v_monitor);
-		// Iterar sobre unidades que hayan perdido miniaturas y aplicar Shock_Test
-
-		// 7. Limpieza
-		ejercitos[0].eliminar_unidades();
-		ejercitos[1].eliminar_unidades();
-
-		// Verificar fin de juego
-		if (ejercitos[0].unidades.empty() || ejercitos[1].unidades.empty() || ronda >= 5)
-		{
-			juego_terminado = true;
-		}
-
-		// Cambiar de turno o avanzar ronda
-		if (turno_jugador == 1)
-		{
-			ronda++;
-			turno_jugador = 0;
-		}
-		else
-		{
-			turno_jugador = 1;
-		}
-
-		// Procesamiento de eventos
-		sf::Event event;
-		while (v_tablero.ventana->pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				v_tablero.ventana->close();
-		}
-		while (v_monitor.ventana->pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				v_monitor.ventana->close();
-		}
-
-		// Dibujar todo
-		v_tablero.ventana->clear(sf::Color::White);
-		v_tablero.dibujarElementos();
-		v_tablero.ventana->display();
-
 		v_monitor.ventana->clear(sf::Color::Black);
+		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		mensaje->setText(unidad.nombre + " no puede disparar en este turno.");
+		esperarConfirmacion(v_monitor);
 		v_monitor.dibujarElementos();
 		v_monitor.ventana->display();
+		return;
 	}
 
-	// Fin del Juego
-	if (ejercitos[0].unidades.empty() && !ejercitos[1].unidades.empty())
+	set<string> keysu2;
+	set_intersection(keysu.begin(), keysu.end(), whitelist.begin(), graylist.end(), std::back_inserter(keysu2));
+	if (unidad.engaged && keysu2.size() == 0)
 	{
-		msgBox->setText("¡Ejército " + ejercitos[1].faccion + " ha ganado!");
-	}
-	else if (ejercitos[1].unidades.empty() && !ejercitos[0].unidades.empty())
-	{
-		msgBox->setText("¡Ejército " + ejercitos[0].faccion + " ha ganado!");
+		v_monitor.ventana->clear(sf::Color::Black);
+		TextBox* mensaje = dynamic_cast<TextBox*>(*(v_monitor.elementos.end()));
+		mensaje->setText(unidad.nombre + " no puede disparar, esta demasiado cerca de un enemigo.");
+		esperarConfirmacion(v_monitor);
+		v_monitor.dibujarElementos();
+		v_monitor.ventana->display();
+		return;
 	}
 	else
 	{
-		// Lógica para determinar el ganador si se acaba el número de rondas
-		msgBox->setText("Fin de partida. Empate o definir por puntos.");
+		for (auto& m : unidad.miembros)
+		{
+			int indice = 0;
+			while (true)
+			{
+				vector<bool> l_armas;
+				for (auto& a : m.rango)
+					l_armas.push_back(a.usado);
+				if (allTrue(l_armas))
+					break;
+
+
+			}
+		}
 	}
-
-	esperarConfirmacion(v_monitor); // Mantener la ventana abierta hasta confirmación
-
-	// Limpiar la memoria
-	delete msgBox;
-
-	return 0;
 }
