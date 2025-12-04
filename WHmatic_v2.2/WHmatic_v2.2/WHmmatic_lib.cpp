@@ -877,10 +877,11 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 							vector<int> seises;
 							copy_if(impact.begin(), impact.end(), back_inserter(seises),[](int val) { return val == 6; });
 							copy_if(impact.begin(), impact.end(), back_inserter(impact), [](int val) { return val != 6; });
-							int m_ = m.rango[indice].claves["Impactos Letales"].get<int>();
+							string m_ = m.rango[indice].claves["Impactos Letales"].get<string>();
 							int dano = 0;
+							bool m_IsStr = (m_.find("D") == string::npos);
 							for (auto& d : seises)
-								dano += m_ ? Dados(1, 6);
+								dano += m_IsStr ? stoi(m_) : AtkDmg_Rand(m_, true);
 							v_monitor.ventana->clear(sf::Color::Black);
 							mensaje->setText(to_string(seises.size())+" impactos fueron letales");
 							v_monitor.dibujarElementos();
@@ -897,8 +898,10 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 int main()
 {
 	// Inicialización de ventanas
-	Ventana v_tablero(800, 600, "WHmmatic: Tablero");
-	Ventana v_monitor(400, 600, "WHmmatic: Monitor");
+	unsigned int Vx = sf::VideoMode::getDesktopMode().size.x;
+	unsigned int Vy = sf::VideoMode::getDesktopMode().size.y;
+	Ventana v_tablero(Vx*(2.f/3.f), Vy, "WHmmatic: Tablero");
+	Ventana v_monitor(Vx*(1.f/3.f), 600, "WHmmatic: Monitor");
 
 	// Agregar un TextBox a la ventana de monitor para mensajes
 	TextBox* msgBox = new TextBox(
@@ -947,19 +950,28 @@ int main()
 	while (v_tablero.ventana->isOpen() && !juego_terminado)
 	{
 		// 1. Fase de Comando
-		msgBox->setText("Ronda " + to_string(ronda) + " - Jugador " + to_string(turno_jugador + 1) + ": Fase de Comando");
-		esperarConfirmacion(v_monitor);
 		Aumentar_PC(ejercitos);
+		v_monitor.ventana->clear(sf::Color::Black);
+		msgBox->setText("Ronda " + to_string(ronda) + " - Jugador " + to_string(turno_jugador + 1) + ": Fase de Comando");
+		v_monitor.ventana->display();
+		esperarConfirmacion(v_monitor);
 
 		// 2. Fase de Movimiento
-		msgBox->setText("Fase de Movimiento. Seleccione unidad para mover/activar.");
+		Aumentar_Mov_Atk(ejercitos[turno_jugador]);
+		v_monitor.ventana->clear(sf::Color::Black);
+		msgBox->setText("Fase de Movimiento. Seleccione unidad para mover.");
+		v_monitor.ventana->display();
 		esperarConfirmacion(v_monitor);
 		// Lógica de Movimiento y activación
-		Aumentar_Mov_Atk(ejercitos[turno_jugador]);
+		
 
 		// 3. Fase de Disparo
-		msgBox->setText("Fase de Disparo. Seleccione unidad para disparar.");
+		v_monitor.ventana->clear(sf::Color::Black);
+		msgBox->setText("Fase de Movimiento. Seleccione unidad para mover.");
+		v_monitor.ventana->display();
 		esperarConfirmacion(v_monitor);
+		for (auto& unidad : ejercitos[turno_jugador].unidades)
+			Disparo(v_monitor, v_tablero, unidad, ejercitos[1 - turno_jugador]);
 
 		// Ejemplo de lógica de disparo
 		Unidad* unidad_atacante = &ejercitos[turno_jugador].unidades.front();
