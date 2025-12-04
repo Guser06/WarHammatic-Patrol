@@ -20,10 +20,13 @@
 using namespace std;
 using json = nlohmann::json;
 
-//VARIABLES GLOBALES PARA EL ARRASTRE DE UNIDADES
+// --- VARIABLES GLOBALES PARA EL ARRASTRE DE UNIDADES ---
 // Necesarias para mantener el estado entre frames
 sf::CircleShape* g_circuloArrastrado = nullptr;
 sf::Vector2f g_offsetArrastre;
+// --- NUEVO: Variables para restringir el movimiento ---
+sf::Vector2f g_posicionInicial; 
+float g_distanciaMaxima = 0.0f; 
 
 //FUNCIONES AUXILIARES
 
@@ -39,6 +42,7 @@ bool puntoEnCirculo(const sf::Vector2f& punto, const sf::CircleShape& c)
 }
 
 // Funcion centralizada para manejar la logica de mover fichas (DRAG & DROP)
+// --- NUEVO: Lógica actualizada con restricción de distancia ---
 void ProcesarArrastre(const sf::Event& event, Ventana& v_tablero, vector<Ejercito>& ejercitos)
 {
     // 1. Iniciar Arrastre
@@ -59,6 +63,12 @@ void ProcesarArrastre(const sf::Event& event, Ventana& v_tablero, vector<Ejercit
                         {
                             g_circuloArrastrado = &miniatura.circle;
                             g_offsetArrastre = clickPos - g_circuloArrastrado->getPosition();
+                            
+                            // --- NUEVO: Guardar estado inicial ---
+                            g_posicionInicial = g_circuloArrastrado->getPosition();
+                            // Convertir movimiento (pulgadas) a unidades de pantalla (25.4 pixeles = 1 pulgada)
+                            g_distanciaMaxima = unidad.mov * 25.4f; 
+                            
                             return; // Salir en cuanto encontremos uno
                         }
                     }
@@ -82,15 +92,39 @@ void ProcesarArrastre(const sf::Event& event, Ventana& v_tablero, vector<Ejercit
         if (g_circuloArrastrado)
         {
             sf::Vector2f mousePos = v_tablero.ventana->mapPixelToCoords(mouseMove->position);
-            g_circuloArrastrado->setPosition(mousePos - g_offsetArrastre);
+            sf::Vector2f nuevaPos = mousePos - g_offsetArrastre;
+
+            // --- NUEVO: Cálculo de restricción de distancia ---
+            float dx = nuevaPos.x - g_posicionInicial.x;
+            float dy = nuevaPos.y - g_posicionInicial.y;
+            float distanciaActual = std::sqrt(dx*dx + dy*dy);
+
+            // Si intenta ir más lejos de lo que su movimiento permite...
+            if (distanciaActual > g_distanciaMaxima)
+            {
+                // Calcular el ángulo y fijar la posición al límite del radio permitido
+                float angulo = std::atan2(dy, dx);
+                nuevaPos.x = g_posicionInicial.x + std::cos(angulo) * g_distanciaMaxima;
+                nuevaPos.y = g_posicionInicial.y + std::sin(angulo) * g_distanciaMaxima;
+            }
+
+            g_circuloArrastrado->setPosition(nuevaPos);
         }
     }
 }
 
 // Funcion especial para la fase de movimiento: Permite mover fichas mientras espera confirmacion
+// --- NUEVO: Añadida ayuda visual (círculo de rango) ---
 void EsperarYMover(Ventana& v_monitor, Ventana& v_tablero, vector<Ejercito>& ejercitos)
 {
     bool confirmado = false;
+
+    // Objeto visual para mostrar hasta dónde puede moverse la unidad
+    sf::CircleShape rangoMovimiento;
+    rangoMovimiento.setFillColor(sf::Color(0, 255, 0, 50)); // Verde semitransparente
+    rangoMovimiento.setOutlineColor(sf::Color::Green);
+    rangoMovimiento.setOutlineThickness(1.0f);
+
     while (v_monitor.ventana->isOpen() && v_tablero.ventana->isOpen() && !confirmado)
     {
         // Eventos del Monitor (Confirmacion para terminar fase)
@@ -125,6 +159,17 @@ void EsperarYMover(Ventana& v_monitor, Ventana& v_tablero, vector<Ejercito>& eje
         // Dibujar Tablero
         v_tablero.ventana->clear(sf::Color::White); 
         v_tablero.dibujarElementos(); // Dibuja obstaculos fijos
+
+        // --- NUEVO: Dibujar ayuda visual si se está arrastrando algo ---
+        if (g_circuloArrastrado != nullptr)
+        {
+            float radio = g_distanciaMaxima;
+            rangoMovimiento.setRadius(radio);
+            rangoMovimiento.setOrigin(radio, radio);
+            // El círculo se dibuja centrado en la posición inicial donde estaba la miniatura
+            rangoMovimiento.setPosition(g_posicionInicial + g_circuloArrastrado->getOrigin());
+            v_tablero.ventana->draw(rangoMovimiento);
+        }
 
         // Dibujar las unidades manualmente
         for (auto& ej : ejercitos) {
