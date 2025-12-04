@@ -38,7 +38,7 @@ bool puntoEnCirculo(const sf::Vector2f& punto, const sf::CircleShape& c)
     return distancia2 <= (r * r);
 }
 
-// Función centralizada para manejar la lógica de mover fichas (DRAG & DROP)
+// Funcion centralizada para manejar la logica de mover fichas (DRAG & DROP)
 void ProcesarArrastre(const sf::Event& event, Ventana& v_tablero, vector<Ejercito>& ejercitos)
 {
     // 1. Iniciar Arrastre
@@ -48,7 +48,7 @@ void ProcesarArrastre(const sf::Event& event, Ventana& v_tablero, vector<Ejercit
         {
             sf::Vector2f clickPos = v_tablero.ventana->mapPixelToCoords(mouseBtn->position);
 
-            // Buscar si se hizo clic en alguna miniatura de cualquier ejército
+            // Buscar si se hizo clic en alguna miniatura de cualquier ejercito
             for (auto& ejercito : ejercitos)
             {
                 for (auto& unidad : ejercito.unidades)
@@ -87,20 +87,20 @@ void ProcesarArrastre(const sf::Event& event, Ventana& v_tablero, vector<Ejercit
     }
 }
 
-// Función especial para la fase de movimiento: Permite mover fichas mientras espera confirmación
+// Funcion especial para la fase de movimiento: Permite mover fichas mientras espera confirmacion
 void EsperarYMover(Ventana& v_monitor, Ventana& v_tablero, vector<Ejercito>& ejercitos)
 {
     bool confirmado = false;
     while (v_monitor.ventana->isOpen() && v_tablero.ventana->isOpen() && !confirmado)
     {
-        // Eventos del Monitor (Confirmación para terminar fase)
+        // Eventos del Monitor (Confirmacion para terminar fase)
         while (const auto event = v_monitor.ventana->pollEvent())
         {
             if (event->is<sf::Event::Closed>()) {
                 v_monitor.ventana->close();
                 return;
             }
-            // Confirmar con clic o tecla en el monitor para salir de la función
+            // Confirmar con clic o tecla en el monitor para salir de la funcion
             if (event->is<sf::Event::KeyPressed>() || event->is<sf::Event::MouseButtonPressed>()) {
                 confirmado = true;
             }
@@ -113,7 +113,7 @@ void EsperarYMover(Ventana& v_monitor, Ventana& v_tablero, vector<Ejercito>& eje
                 v_tablero.ventana->close();
                 return;
             }
-            // Llamar a la lógica de arrastre
+            // Llamar a la logica de arrastre
             ProcesarArrastre(*event, v_tablero, ejercitos);
         }
 
@@ -124,7 +124,7 @@ void EsperarYMover(Ventana& v_monitor, Ventana& v_tablero, vector<Ejercito>& eje
 
         // Dibujar Tablero
         v_tablero.ventana->clear(sf::Color::White); 
-        v_tablero.dibujarElementos(); // Dibuja obstáculos fijos
+        v_tablero.dibujarElementos(); // Dibuja obstaculos fijos
 
         // Dibujar las unidades manualmente
         for (auto& ej : ejercitos) {
@@ -138,65 +138,124 @@ void EsperarYMover(Ventana& v_monitor, Ventana& v_tablero, vector<Ejercito>& eje
     }
 }
 
-// --- RESTO DE FUNCIONES LÓGICAS ORIGINALES ---
+// --- RESTO DE FUNCIONES LoGICAS ORIGINALES ---
+vector<Ejercito> ElegirEjercitos(Ventana& v)
+{
+    map<string, string> opts = {
+        { "Tyranidos Pesados", "Ty_Tyrannofex.json" },
+        { "Marines Pesados",   "UM_Lancer.json" },
+        { "Tyranidos",         "Ty_patrol.json" },
+        { "Marines",           "UM_patrol.json" }
+    };
 
-vector< Ejercito > ElegirEjercitos(Ventana& v) {
-    map<string, string> opts;
-    opts.insert({ "Tyranidos Pesados", "Ty_Tyrannofex.json" });
-    opts.insert({ "Marines Pesados", "UM_Lancer.json" });
-    opts.insert({ "Tyranidos", "Ty_patrol.json" });
-    opts.insert({ "Marines", "UM_patrol.json" });
-    int indice = 0;
-    vector < Ejercito > ejercitos;
+    vector<Ejercito> ejercitos;
+    ejercitos.reserve(2);
 
-    v.ventana->clear(sf::Color::Black);
-    for (auto i : opts)
+    // Crear botones solo una vez
+    if (v.Botones.empty())
     {
-        Boton* B = new Boton(sf::Vector2f({ 0.f, indice * 60.f }), sf::Vector2f({ 200.f, 50.f }), i.first);
-        v.Botones.push_back(B);
-        indice++;
-        v.ventana->draw(B->rect);
+        int idx = 0;
+        for (auto& i : opts)
+        {
+            Boton* B = new Boton(
+                sf::Vector2f({ 0.f, idx * 60.f }),
+                sf::Vector2f({ 200.f, 50.f }),
+                i.first
+            );
+            v.Botones.push_back(B);
+            idx++;
+        }
     }
 
-    while (const std::optional ev = v.ventana->pollEvent())
+    // ---------------------------
+    // BUCLE PRINCIPAL DEL MENÚ
+    // ---------------------------
+    while (v.ventana->isOpen())
     {
-        if (ejercitos.size() >= 2) break;
-        if (ev->is<sf::Event::Closed>()) v.ventana->close();
-        else if (const auto* tecla = ev->getIf<sf::Event::KeyPressed>()) {
-            if (tecla->scancode == sf::Keyboard::Scancode::Escape) v.ventana->close();
-        }
-        else if (const auto* click = ev->getIf<sf::Event::MouseButtonPressed>())
+        // Procesar todos los eventos
+        while (const auto ev = v.ventana->pollEvent())
         {
-            if (click->button == sf::Mouse::Button::Left)
+            if (ev->is<sf::Event::Closed>())
+                v.ventana->close();
+
+            else if (auto* tecla = ev->getIf<sf::Event::KeyPressed>())
             {
-                v.PosMouse = sf::Mouse::getPosition(*(v.ventana));
-                // Detección simple por altura
-                int PosY = v.PosMouse.y / 60;
-                if (PosY >= 0 && PosY < v.Botones.size()) {
-                    Boton* B = dynamic_cast<Boton*>(v.Botones[PosY]);
-                    if(B) B->presionado = true;
+                if (tecla->scancode == sf::Keyboard::Scancode::Escape)
+                    v.ventana->close();
+            }
+
+            else if (auto* click = ev->getIf<sf::Event::MouseButtonPressed>())
+            {
+                if (click->button == sf::Mouse::Button::Left)
+                {
+                    v.PosMouse = sf::Mouse::getPosition(*(v.ventana));
+                    int PosY = v.PosMouse.y / 60;
+
+                    if (PosY >= 0 && PosY < v.Botones.size())
+                    {
+                        Boton* B = dynamic_cast<Boton*>(v.Botones[PosY]);
+                        if (B)
+                        {
+                            B->presionado = true;
+
+                            // Cargar ejército correspondiente
+                            std::string ruta = "sprites/" + opts[B->Texto];
+                            std::ifstream file(ruta);
+
+                            if (!file.is_open())
+                            {
+                                cout << "Error: no se pudo abrir " << ruta << endl;
+                                continue;
+                            }
+
+                            std::string contenido(
+                                (std::istreambuf_iterator<char>(file)),
+                                std::istreambuf_iterator<char>()
+                            );
+
+                            try
+                            {
+                                json j = json::parse(contenido);
+                                Ejercito nuevo;
+                                from_json(j, nuevo);
+                                ejercitos.push_back(std::move(nuevo));
+                                cout << "Ejercito cargado correctamente.\n";
+                            }
+                            catch (...)
+                            {
+                                cout << "Error al cargar JSON.\n";
+                            }
+
+                            B->presionado = false;
+
+                            if (ejercitos.size() == 2)
+                            {
+                                // Limpieza
+                                v.Botones.clear();
+                                return ejercitos;
+                            }
+                        }
+                    }
                 }
             }
         }
+
+        // -------------------------
+        // Render
+        // -------------------------
+        v.ventana->clear(sf::Color::Black);
+        v.dibujarElementos();
+
+        // Dibujar botones
         for (auto& B : v.Botones)
         {
-            if (B->presionado)
-            {
-                Ejercito nE;
-                std::ifstream archivo("sprites/" + opts[B->Texto]);
-                if(archivo.is_open()) {
-                    json j;
-                    archivo >> j;
-                    from_json(j, nE);
-                    ejercitos.push_back(nE);
-                } else {
-                    cout << "Error cargando JSON: " << opts[B->Texto] << endl;
-                }
-                B->presionado = false;
-            }
+            v.ventana->draw(B->rect);
+            v.ventana->draw(*(B->textoBoton));
         }
+
+        v.ventana->display();
     }
-    v.Botones.clear();
+
     return ejercitos;
 }
 
@@ -442,9 +501,9 @@ Unidad* Selec_Blanco(Ventana& v_monitor, Unidad& u, const string& accion, Ejerci
     TextBox* mensaje = v_monitor.TextBoxes.back();
     mensaje->setText("Seleccione un objetivo para: " + accion);
 
-    // NOTA: Esta función espera clic en el MONITOR en este diseño simple, 
-    // pero idealmente deberías pasar v_tablero y detectar clic allá. 
-    // Por compatibilidad con tu código, solo esperamos confirmación general.
+    // NOTA: Esta funcion espera clic en el MONITOR en este diseño simple, 
+    // pero idealmente deberias pasar v_tablero y detectar clic alla. 
+    // Por compatibilidad con tu codigo, solo esperamos confirmacion general.
     esperarConfirmacion(v_monitor);
     if (!Ejer_Enem.unidades.empty()) return &Ejer_Enem.unidades.front(); 
     return nullptr;
@@ -710,8 +769,8 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
                         continue;
                     }
 
-                    // Resto de la lógica de disparo (simplificada para compilación pero manteniendo estructura)
-                    // ... (implementación completa de dados, repetida, etc.)
+                    // Resto de la logica de disparo (simplificada para compilacion pero manteniendo estructura)
+                    // ... (implementacion completa de dados, repetida, etc.)
                     // Por completitud, marcamos el arma como usada para avanzar
                     m.rango[indice].usado = true;
                     
@@ -789,7 +848,7 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
                         if (nAI > 1)
                         {
                             string t = "Multiples miniaturas en " + unidad.nombre + " usan " +
-                                m.rango[indice].nombre + "\nDesea hacer una tirada rápida para dispararlas todas contra "
+                                m.rango[indice].nombre + "\nDesea hacer una tirada rapida para dispararlas todas contra "
                                 + blanco->nombre + "?";
                             bool resp = Selec_SN(v_monitor, t);
                             if (resp)
@@ -866,7 +925,7 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
     }
 }
 	
-// Función para posicionar las unidades al inicio
+// Funcion para posicionar las unidades al inicio
 void InicializarTablero(vector<Ejercito>& ejercitos, Ventana& v_tablero)
 {
     float margen_x = 50.0f;
@@ -885,14 +944,14 @@ void InicializarTablero(vector<Ejercito>& ejercitos, Ventana& v_tablero)
             // Limpiar referencias
             unidad.circulos.clear();
 
-            // Configuración de la formación (Grid de 5 columnas)
+            // Configuracion de la formacion (Grid de 5 columnas)
             int minis_por_fila = 5;
             float espaciado = unidad.Tamano_base + 5.0f;
 
             // Crear las miniaturas individuales
             for (int j = 0; j < unidad.miembros.size(); j++)
             {
-                // Matemáticas para fila y columna
+                // Matematicas para fila y columna
                 int col = j % minis_por_fila;
                 int fila = j / minis_por_fila;
 
@@ -900,7 +959,7 @@ void InicializarTablero(vector<Ejercito>& ejercitos, Ventana& v_tablero)
                 float offsetX = col * espaciado;
                 float offsetY = fila * espaciado;
 
-                // Posición final
+                // Posicion final
                 // Si es el jugador 1, las filas bajan
                 // Si es el jugador 2, las filas subem
                 float finalY = (i == 0) ? (y_base + offsetY) : (y_base - offsetY);
@@ -915,14 +974,14 @@ void InicializarTablero(vector<Ejercito>& ejercitos, Ventana& v_tablero)
                 v_tablero.Circulos.push_back(nuevo_circulo);
             }
 
-            // Calcular cuánto espacio ocupoó la unidad
+            // Calcular cuanto espacio ocupoo la unidad
             int columnas_reales = std::min((int)unidad.miembros.size(), minis_por_fila);
             float ancho_unidad = columnas_reales * espaciado;
 
-            // +30px de separación entre escuadras
+            // +30px de separacion entre escuadras
             x_actual += ancho_unidad + 30.0f;
 
-            // Si se acaba el tablero a lo ancho, se hace un "salto de línea"
+            // Si se acaba el tablero a lo ancho, se hace un "salto de linea"
             if (x_actual > 700.0f) {
                 x_actual = margen_x;
 
@@ -941,27 +1000,27 @@ int main()
 {
 	srand((unsigned)time(NULL));
 
-	// Inicialización de ventanas
+	// Inicializacion de ventanas
 	unsigned int Vx = sf::VideoMode::getDesktopMode().size.x;
 	unsigned int Vy = sf::VideoMode::getDesktopMode().size.y;
 	Ventana v_tablero(Vx*(2.f/3.f), Vy, "WHmmatic: Tablero");
-	Ventana v_monitor(Vx*(1.f/3.f), 600, "WHmmatic: Monitor");
+	Ventana v_monitor(Vx*(1.f/3.f), Vy, "WHmmatic: Monitor");
 
 	// Agregar un TextBox a la ventana de monitor para mensajes
 	TextBox* msgBox = new TextBox(
-		{ 400.f, 50.f },
+		{ (Vx * (1.f / 3.f)), 50.f},
 		{ 0.f, 0.f },
 		"Seleccione un ejercito..."
 	);
 	v_monitor.TextBoxes.push_back(msgBox);
 
-	// --- Selección de Ejércitos ---
-	vector<Ejercito> ejercitos;
+	// --- Seleccion de Ejercitos ---
+    auto ejercitos = ElegirEjercitos(v_monitor);
+    if (ejercitos.size() != 2) return 0;
+
 
 	while (ejercitos.size() < 2 && v_monitor.ventana->isOpen())
-	{
-		ejercitos = ElegirEjercitos(v_monitor);
-		
+	{		
 		if(v_monitor.TextBoxes.empty()) v_monitor.TextBoxes.push_back(msgBox);
 
 		v_monitor.ventana->clear(sf::Color::Black);
@@ -970,14 +1029,14 @@ int main()
 	}
 
 	if (ejercitos.size() != 2) {
-		cout << "Se necesita seleccionar 2 ejércitos para iniciar." << endl;
+		std::cout << "Se necesita seleccionar 2 ejercitos para iniciar." << endl;
 		return 0;
 	}
 
-	// Llamar a la función de despliegue
+	// Llamar a la funcion de despliegue
 	InicializarTablero(ejercitos, v_tablero);
 
-	// Inicialización de Unidades
+	// Inicializacion de Unidades
 	float startX = 50.f;
 	for (auto& ejercito : ejercitos)
 	{
@@ -1011,7 +1070,7 @@ int main()
 		Aumentar_Mov_Atk(ejercitos[turno_jugador]);
 		msgBox->setText("Fase de Movimiento. Arrastre las unidades para moverlas. Click en monitor para terminar.");
 		
-		// Llamamos a la nueva función que permite mover mientras espera
+		// Llamamos a la nueva funcion que permite mover mientras espera
 		EsperarYMover(v_monitor, v_tablero, ejercitos);
 
 		// 3. Fase de Disparo
@@ -1058,13 +1117,13 @@ int main()
 		}
 
 		// --- BUCLE DE EVENTOS PRINCIPAL ---
-		// Permite mover unidades libremente entre fases si el usuario interactúa
+		// Permite mover unidades libremente entre fases si el usuario interactua
 		while (const optional event = v_tablero.ventana->pollEvent())
 		{
 			if (event->is<sf::Event::Closed>())
 				v_tablero.ventana->close();
 			
-            // Permitir arrastre también fuera de la fase de movimiento específica
+            // Permitir arrastre tambien fuera de la fase de movimiento especifica
             ProcesarArrastre(*event, v_tablero, ejercitos);
 		}
 		while (const std::optional ev = v_monitor.ventana->pollEvent())
@@ -1076,7 +1135,7 @@ int main()
 		// Dibujar todo
 		v_tablero.ventana->clear(sf::Color::White);
 		v_tablero.dibujarElementos();
-		// DIBUJAR UNIDADES MANUALMENTE (porque no están en v.elementos)
+		// DIBUJAR UNIDADES MANUALMENTE (porque no estan en v.elementos)
 		for (auto& ej : ejercitos) {
 			for (auto& u : ej.unidades) {
 				for (auto& m : u.circulos) {

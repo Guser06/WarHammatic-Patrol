@@ -48,7 +48,7 @@ public:
     virtual string Type() { return "Elemento"; }
 };
 
-//Clase botón para la interfaz
+//Clase boton para la interfaz
 class Boton : public Elemento
 {
 public:
@@ -66,10 +66,11 @@ public:
         this->Texto = texto;
         this->rect.setSize(this->tamano);
         this->rect.setPosition(this->posicion);
+		this->rect.setFillColor(sf::Color::Black);
 
         this->font = new sf::Font("sprites/ARIAL.TTF");
-        this->textoBoton = new sf::Text(*this->font, texto, 12);
-        this->textoBoton->setFillColor(sf::Color::White);
+        this->textoBoton = new sf::Text(*this->font, texto, 18);
+        this->textoBoton->setFillColor(sf::Color(0, 255, 127));
         this->textoBoton->setPosition(pos);
     }
 
@@ -113,10 +114,10 @@ public:
     )
     {
         this->font = new sf::Font("sprites/ARIAL.TTF");
-        this->text = new sf::Text(*font, contenido, 12);
+        this->text = new sf::Text(*font, contenido, 18);
         (*(this->text)).setFillColor(sf::Color(0, 255, 127)); // Spring Green
 
-        // Configurar rectángulo
+        // Configurar rectangulo
         this->box.setSize(size);
         this->box.setPosition(position);
         this->box.setFillColor(sf::Color::Black);
@@ -134,7 +135,7 @@ public:
         centerText();
     }
 
-    // Setter de posición
+    // Setter de posicion
     void setPosition(const sf::Vector2f& pos)
     {
         this->box.setPosition(pos);
@@ -155,7 +156,7 @@ public:
 	string Type() override { return "TextBox"; }
 
 private:
-    // Centrar texto dentro del rectángulo
+    // Centrar texto dentro del rectangulo
     void centerText()
     {
         sf::FloatRect boxBounds = this->box.getGlobalBounds();
@@ -257,7 +258,7 @@ public:
     std::string nombre;
 
     std::vector<std::string> tx = { "Alcance", "No. de Ataques",
-          "Habilidad", "Fuerza", "Perforación", "Daño" };
+          "Habilidad", "Fuerza", "Perforacion", "Daño" };
 
     std::vector<json> stats_raw;
 
@@ -271,8 +272,6 @@ public:
     Arma()
     {
         this -> usado = false;
-        for (size_t i = 0; i < tx.size(); i++)
-            this->stats_map[tx[i]] = stats_raw[i]; //Llena el diccionario de stats
     }
     virtual ~Arma() = default;
 
@@ -295,17 +294,17 @@ public:
 // Clase Individuo : Arma
 class Individuo : public Arma {
 public:
-    // TX propia para Individuo (StatsTx). También la dejas vacía.
-    vector<string> tx = { "Movimiento", "Resistencia", "Salvación",
+    // TX propia para Individuo (StatsTx). Tambien la dejas vacia.
+    vector<string> tx = { "Movimiento", "Resistencia", "Salvacion",
            "Heridas", "Liderazgo", "Control de objetivo" };
 
-    // Armas de rango y cuerpo a cuerpo (composición real)
+    // Armas de rango y cuerpo a cuerpo (composicion real)
     vector<Arma> rango;
     vector<Arma> mele;
 
     int dmg = 0;
 
-    // En la semántica original, usado = true significa "vivo".
+    // En la semantica original, usado = true significa "vivo".
     Individuo():
         Arma()
     {
@@ -340,11 +339,11 @@ public:
 struct Unidad {
     string nombre;
     bool posLid = false;           // "Lider" en JSON (si viene)
-    optional<std::string> lider; // nombre del líder (opcional)
+    optional<std::string> lider; // nombre del lider (opcional)
     map<std::string, json> habilidades;
     vector<std::string> claves;
     int nm = 0; // Numero Miniaturas
-	int Tamano_base; //Tamaño de la base de las miniaturas
+	int Tamano_base = 0; //Tamaño de la base de las miniaturas
 
 
     // Estados de juego
@@ -364,7 +363,7 @@ struct Unidad {
     }
 
 
-    // Método para eliminar minis muertas (usado == false)
+    // Metodo para eliminar minis muertas (usado == false)
     void eliminar_muertos() {
         miembros.erase(std::remove_if(miembros.begin(), miembros.end(),
             [](const Individuo& m) { return m.usado == false; }),
@@ -406,17 +405,17 @@ public:
 // Funciones from_json
 // -------------------------
 // Se definen fuera de las clases como funciones libres para que nlohmann::json
-// las detecte automáticamente al usar get<T>() o get_to().
-// A continuación se implementan para Arma, Individuo, Unidad y Ejercito.
+// las detecte automaticamente al usar get<T>() o get_to().
+// A continuacion se implementan para Arma, Individuo, Unidad y Ejercito.
 // Comentario detallado incluido para from_json(const json&, Arma&)
 // -------------------------
 // 
 // from_json para Arma
 inline void from_json(const json& j, Arma& a) {
     //
-    // Comentario detallado (explicación paso a paso)
+    // Comentario detallado (explicacion paso a paso)
     //
-    // Propósito:
+    // Proposito:
     //   - Cargar desde `j` los campos que pertenecen a una Arma
     //   - Guardar el vector original "Stats" en `stats_raw`.
     //   - Guardar "Claves" directamente en `claves`.
@@ -424,8 +423,8 @@ inline void from_json(const json& j, Arma& a) {
     // Pasos:
     // 1) Nombre: si existe, asignarlo a a.nombre.
     // 2) Stats: si existe y es un array, copiar sus elementos en stats_raw.
-    //    NO intentamos convertir a stats_map aquí porque `a.tx` está vacío
-    //    por diseño; más adelante el usuario podrá combinar tx + stats_raw.
+    //    NO intentamos convertir a stats_map aqui porque `a.tx` esta vacio
+    //    por diseño; mas adelante el usuario podra combinar tx + stats_raw.
     // 3) Claves: si existe, iterar las entradas del objeto y volcarlas en
     //    el map<string,json> a.claves para mantener cualquier estructura.
     // 4) Usado: si existe un booleano "usado" en el JSON lo tomamos,
@@ -458,7 +457,7 @@ inline void from_json(const json& j, Arma& a) {
     }
 
     else if (j.contains("Usado")) {
-        // Manejo de variantes de capitalización (por si el JSON usa 'Usado')
+        // Manejo de variantes de capitalizacion (por si el JSON usa 'Usado')
         if (j["Usado"].is_boolean()) a.usado = j["Usado"].get<bool>();
     }
 
@@ -553,7 +552,7 @@ inline void from_json(const json& j, Ejercito& e) {
         }
     }
 
-    // También puede haber casos en que el JSON tenga "Unidades" u otra capitalización.
+    // Tambien puede haber casos en que el JSON tenga "Unidades" u otra capitalizacion.
     if (e.unidades.empty() && j.contains("Unidades") && j["Unidades"].is_array()) {
         for (const auto& u : j["Unidades"]) {
             if (u.is_null()) continue;
