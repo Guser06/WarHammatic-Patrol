@@ -865,7 +865,74 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
         }
     }
 }
-						
+	
+// Función para posicionar las unidades al inicio
+void InicializarTablero(vector<Ejercito>& ejercitos, Ventana& v_tablero)
+{
+    float margen_x = 50.0f;
+    float margen_y_p1 = 50.0f; // Jugador 1, zona superior
+    float margen_y_p2 = 550.f; // Jugador 2, zona inferior
+
+    for (size_t i = 0; i < ejercitos.size(); i++)
+    {
+        float y_base = (i == 0) ? margen_y_p1 : margen_y_p2;
+        sf::Color color_equipo = (i == 0) ? sf::Color::Cyan : sf::Color::Magenta;
+
+        float x_actual = margen_x;
+
+        for (auto& unidad : ejercitos[i].unidades)
+        {
+            // Limpiar referencias
+            unidad.circulos.clear();
+
+            // Configuración de la formación (Grid de 5 columnas)
+            int minis_por_fila = 5;
+            float espaciado = unidad.Tamano_base + 5.0f;
+
+            // Crear las miniaturas individuales
+            for (int j = 0; j < unidad.miembros.size(); j++)
+            {
+                // Matemáticas para fila y columna
+                int col = j % minis_por_fila;
+                int fila = j / minis_por_fila;
+
+                // Coordenadas relativas
+                float offsetX = col * espaciado;
+                float offsetY = fila * espaciado;
+
+                // Posición final
+                // Si es el jugador 1, las filas bajan
+                // Si es el jugador 2, las filas subem
+                float finalY = (i == 0) ? (y_base + offsetY) : (y_base - offsetY);
+                float finalX = x_actual + offsetX;
+
+                Circulo* nuevo_circulo = new Circulo(unidad.Tamano_base / 2.0f, { finalX, finalY }, color_equipo);
+
+                // Guardar en la unidad
+                unidad.circulos.push_back(*nuevo_circulo);
+
+                // Guardar en la ventana
+                v_tablero.Circulos.push_back(nuevo_circulo);
+            }
+
+            // Calcular cuánto espacio ocupoó la unidad
+            int columnas_reales = std::min((int)unidad.miembros.size(), minis_por_fila);
+            float ancho_unidad = columnas_reales * espaciado;
+
+            // +30px de separación entre escuadras
+            x_actual += ancho_unidad + 30.0f;
+
+            // Si se acaba el tablero a lo ancho, se hace un "salto de línea"
+            if (x_actual > 700.0f) {
+                x_actual = margen_x;
+
+                // Bajar o subir el cursor Y para la siguiente tanda de unidades
+                y_base += (i == 0) ? 100.0f : -100.0f;
+            }
+        }
+    }
+}
+
 // =========================================================
 // MAIN FUNCTION
 // =========================================================
@@ -906,6 +973,9 @@ int main()
 		cout << "Se necesita seleccionar 2 ejércitos para iniciar." << endl;
 		return 0;
 	}
+
+	// Llamar a la función de despliegue
+	InicializarTablero(ejercitos, v_tablero);
 
 	// Inicialización de Unidades
 	float startX = 50.f;
