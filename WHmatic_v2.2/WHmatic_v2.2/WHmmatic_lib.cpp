@@ -20,12 +20,12 @@
 using namespace std;
 using json = nlohmann::json;
 
-// --- VARIABLES GLOBALES PARA EL ARRASTRE DE UNIDADES ---
+//VARIABLES GLOBALES PARA EL ARRASTRE DE UNIDADES
 // Necesarias para mantener el estado entre frames
 sf::CircleShape* g_circuloArrastrado = nullptr;
 sf::Vector2f g_offsetArrastre;
 
-// --- FUNCIONES AUXILIARES ---
+//FUNCIONES AUXILIARES
 
 bool puntoEnCirculo(const sf::Vector2f& punto, const sf::CircleShape& c)
 {
@@ -138,7 +138,7 @@ void EsperarYMover(Ventana& v_monitor, Ventana& v_tablero, vector<Ejercito>& eje
     }
 }
 
-// --- RESTO DE FUNCIONES LoGICAS ORIGINALES ---
+//RESTO DE FUNCIONES LOGICAS ORIGINALES
 vector<Ejercito> ElegirEjercitos(Ventana& v)
 {
     map<string, string> opts = {
@@ -167,9 +167,7 @@ vector<Ejercito> ElegirEjercitos(Ventana& v)
         }
     }
 
-    // ---------------------------
     // BUCLE PRINCIPAL DEL MENÚ
-    // ---------------------------
     while (v.ventana->isOpen())
     {
         // Procesar todos los eventos
@@ -240,9 +238,7 @@ vector<Ejercito> ElegirEjercitos(Ventana& v)
             }
         }
 
-        // -------------------------
         // Render
-        // -------------------------
         v.ventana->clear(sf::Color::Black);
         v.dibujarElementos();
 
@@ -928,9 +924,11 @@ void Disparo(Ventana& v_monitor, Ventana& v_tablero, Unidad& unidad, Ejercito& E
 // Funcion para posicionar las unidades al inicio
 void InicializarTablero(vector<Ejercito>& ejercitos, Ventana& v_tablero)
 {
+    unsigned int tY = v_tablero.ventana->getSize().y;
+    unsigned int tX = v_tablero.ventana->getSize().x;
     float margen_x = 50.0f;
     float margen_y_p1 = 50.0f; // Jugador 1, zona superior
-    float margen_y_p2 = 550.f; // Jugador 2, zona inferior
+    float margen_y_p2 = tY - 50.f; // Jugador 2, zona inferior
 
     for (size_t i = 0; i < ejercitos.size(); i++)
     {
@@ -974,7 +972,7 @@ void InicializarTablero(vector<Ejercito>& ejercitos, Ventana& v_tablero)
                 v_tablero.Circulos.push_back(nuevo_circulo);
             }
 
-            // Calcular cuanto espacio ocupoo la unidad
+            // Calcular cuanto espacio ocupo la unidad
             int columnas_reales = std::min((int)unidad.miembros.size(), minis_por_fila);
             float ancho_unidad = columnas_reales * espaciado;
 
@@ -982,7 +980,7 @@ void InicializarTablero(vector<Ejercito>& ejercitos, Ventana& v_tablero)
             x_actual += ancho_unidad + 30.0f;
 
             // Si se acaba el tablero a lo ancho, se hace un "salto de linea"
-            if (x_actual > 700.0f) {
+            if (x_actual > tX-2*margen_x) {
                 x_actual = margen_x;
 
                 // Bajar o subir el cursor Y para la siguiente tanda de unidades
@@ -992,17 +990,13 @@ void InicializarTablero(vector<Ejercito>& ejercitos, Ventana& v_tablero)
     }
 }
 
-// =========================================================
-// MAIN FUNCTION
-// =========================================================
-
 int main()
 {
 	srand((unsigned)time(NULL));
 
 	// Inicializacion de ventanas
-	unsigned int Vx = sf::VideoMode::getDesktopMode().size.x;
-	unsigned int Vy = sf::VideoMode::getDesktopMode().size.y;
+	unsigned int Vx = sf::VideoMode::getDesktopMode().size.x-100;
+	unsigned int Vy = sf::VideoMode::getDesktopMode().size.y-100;
 	Ventana v_tablero(Vx*(2.f/3.f), Vy, "WHmmatic: Tablero");
 	Ventana v_monitor(Vx*(1.f/3.f), Vy, "WHmmatic: Monitor");
 
@@ -1014,7 +1008,7 @@ int main()
 	);
 	v_monitor.TextBoxes.push_back(msgBox);
 
-	// --- Seleccion de Ejercitos ---
+	//Seleccion de Ejercitos
     auto ejercitos = ElegirEjercitos(v_monitor);
     if (ejercitos.size() != 2) return 0;
 
@@ -1037,21 +1031,6 @@ int main()
 	InicializarTablero(ejercitos, v_tablero);
 
 	// Inicializacion de Unidades
-	float startX = 50.f;
-	for (auto& ejercito : ejercitos)
-	{
-		float startY = 50.f;
-		for (auto& unidad : ejercito.unidades)
-		{
-			unidad.crear_circulos();
-			// Posicionar inicialmente
-			for (auto& c : unidad.circulos) {
-                c.circle.setPosition({ startX, startY });
-				startY += 40.f;
-			}
-		}
-		startX += 600.f; 
-	}
 
 	int ronda = 1;
 	int turno_jugador = 0;
@@ -1068,7 +1047,7 @@ int main()
 
 		// 2. Fase de Movimiento (CON DRAG AND DROP ACTIVO)
 		Aumentar_Mov_Atk(ejercitos[turno_jugador]);
-		msgBox->setText("Fase de Movimiento. Arrastre las unidades para moverlas. Click en monitor para terminar.");
+		msgBox->setText("Fase de Movimiento. Arrastre las unidades para moverlas.\nClick en monitor para terminar.");
 		
 		// Llamamos a la nueva funcion que permite mover mientras espera
 		EsperarYMover(v_monitor, v_tablero, ejercitos);
@@ -1116,7 +1095,7 @@ int main()
 			turno_jugador = 1;
 		}
 
-		// --- BUCLE DE EVENTOS PRINCIPAL ---
+		//BUCLE DE EVENTOS PRINCIPAL
 		// Permite mover unidades libremente entre fases si el usuario interactua
 		while (const optional event = v_tablero.ventana->pollEvent())
 		{

@@ -380,9 +380,9 @@ struct Unidad {
     }
 };
 
-// -------------------------
+
 // Clase Ejercito
-// -------------------------
+
 class Ejercito {
 public:
     std::string faccion;
@@ -401,14 +401,14 @@ public:
     }
 };
 
-// -------------------------
+
 // Funciones from_json
-// -------------------------
+
 // Se definen fuera de las clases como funciones libres para que nlohmann::json
 // las detecte automaticamente al usar get<T>() o get_to().
 // A continuacion se implementan para Arma, Individuo, Unidad y Ejercito.
 // Comentario detallado incluido para from_json(const json&, Arma&)
-// -------------------------
+
 // 
 // from_json para Arma
 inline void from_json(const json& j, Arma& a) {
