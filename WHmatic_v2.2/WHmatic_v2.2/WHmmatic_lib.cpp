@@ -22,159 +22,82 @@ using json = nlohmann::json;
 
 // --- VARIABLES GLOBALES PARA EL ARRASTRE DE UNIDADES ---
 // Necesarias para mantener el estado entre frames
-sf::CircleShape* g_circuloArrastrado = nullptr;
-sf::Vector2f g_offsetArrastre;
 // --- NUEVO: Variables para restringir el movimiento ---
 sf::Vector2f g_posicionInicial; 
 float g_distanciaMaxima = 0.0f; 
 
 //FUNCIONES AUXILIARES
 
+// Función matemática corregida para el centro
 bool puntoEnCirculo(const sf::Vector2f& punto, const sf::CircleShape& c)
 {
-    sf::Vector2f centro = c.getPosition() + c.getOrigin();
+    // Calculamos el centro asumiendo que el origen puede ser (0,0) o cualquier otro
+    sf::Vector2f centro = c.getPosition() - c.getOrigin() + sf::Vector2f(c.getRadius(), c.getRadius());
+
     float dx = punto.x - centro.x;
     float dy = punto.y - centro.y;
-    float distancia2 = dx * dx + dy * dy;
-    float r = c.getRadius();
+    // Usamos sqrt para comparar distancia real, ayuda a depurar mejor aunque sea más lento
+    float distancia = std::sqrt(dx * dx + dy * dy);
 
-    return distancia2 <= (r * r);
+    return distancia <= c.getRadius();
 }
 
-// Funcion centralizada para manejar la logica de mover fichas (DRAG & DROP)
-// --- NUEVO: Lógica actualizada con restricción de distancia ---
-void ProcesarArrastre(const sf::Event& event, Ventana& v_tablero, vector<Ejercito>& ejercitos)
-{
-    // 1. Iniciar Arrastre
-    if (const auto* mouseBtn = event.getIf<sf::Event::MouseButtonPressed>())
-    {
-        if (mouseBtn->button == sf::Mouse::Button::Left)
-        {
-            sf::Vector2f clickPos = v_tablero.ventana->mapPixelToCoords(mouseBtn->position);
-
-            // Buscar si se hizo clic en alguna miniatura de cualquier ejercito
-            for (auto& ejercito : ejercitos)
-            {
-                for (auto& unidad : ejercito.unidades)
-                {
-                    for (auto& miniatura : unidad.circulos)
-                    {
-                        if (puntoEnCirculo(clickPos, miniatura.circle))
-                        {
-                            g_circuloArrastrado = &miniatura.circle;
-                            g_offsetArrastre = clickPos - g_circuloArrastrado->getPosition();
-                            
-                            // --- NUEVO: Guardar estado inicial ---
-                            g_posicionInicial = g_circuloArrastrado->getPosition();
-                            // Convertir movimiento (pulgadas) a unidades de pantalla (25.4 pixeles = 1 pulgada)
-                            g_distanciaMaxima = unidad.mov * 25.4f; 
-                            
-                            return; // Salir en cuanto encontremos uno
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // 2. Soltar Arrastre
-    if (const auto* mouseBtn = event.getIf<sf::Event::MouseButtonReleased>())
-    {
-        if (mouseBtn->button == sf::Mouse::Button::Left)
-        {
-            g_circuloArrastrado = nullptr;
-        }
-    }
-
-    // 3. Mover Arrastre
-    if (const auto* mouseMove = event.getIf<sf::Event::MouseMoved>())
-    {
-        if (g_circuloArrastrado)
-        {
-            sf::Vector2f mousePos = v_tablero.ventana->mapPixelToCoords(mouseMove->position);
-            sf::Vector2f nuevaPos = mousePos - g_offsetArrastre;
-
-            // --- NUEVO: Cálculo de restricción de distancia ---
-            float dx = nuevaPos.x - g_posicionInicial.x;
-            float dy = nuevaPos.y - g_posicionInicial.y;
-            float distanciaActual = std::sqrt(dx*dx + dy*dy);
-
-            // Si intenta ir más lejos de lo que su movimiento permite...
-            if (distanciaActual > g_distanciaMaxima)
-            {
-                // Calcular el ángulo y fijar la posición al límite del radio permitido
-                float angulo = std::atan2(dy, dx);
-                nuevaPos.x = g_posicionInicial.x + std::cos(angulo) * g_distanciaMaxima;
-                nuevaPos.y = g_posicionInicial.y + std::sin(angulo) * g_distanciaMaxima;
-            }
-
-            g_circuloArrastrado->setPosition(nuevaPos);
-        }
-    }
-}
-
-// Funcion especial para la fase de movimiento: Permite mover fichas mientras espera confirmacion
-// --- NUEVO: Añadida ayuda visual (círculo de rango) ---
+// Funcion limpia basada en el ejemplo que diste
 void EsperarYMover(Ventana& v_monitor, Ventana& v_tablero, vector<Ejercito>& ejercitos)
 {
+    // Crear el controlador del mouse
+    Mouse mouseHandler;
     bool confirmado = false;
-
-    // Objeto visual para mostrar hasta dónde puede moverse la unidad
-    sf::CircleShape rangoMovimiento;
-    rangoMovimiento.setFillColor(sf::Color(0, 255, 0, 50)); // Verde semitransparente
-    rangoMovimiento.setOutlineColor(sf::Color::Green);
-    rangoMovimiento.setOutlineThickness(1.0f);
 
     while (v_monitor.ventana->isOpen() && v_tablero.ventana->isOpen() && !confirmado)
     {
-        // Eventos del Monitor (Confirmacion para terminar fase)
+        // 1. INPUT - MONITOR (Solo confirmar)
         while (const auto event = v_monitor.ventana->pollEvent())
         {
-            if (event->is<sf::Event::Closed>()) {
-                v_monitor.ventana->close();
-                return;
-            }
-            // Confirmar con clic o tecla en el monitor para salir de la funcion
-            if (event->is<sf::Event::KeyPressed>() || event->is<sf::Event::MouseButtonPressed>()) {
-                confirmado = true;
-            }
+            if (event->is<sf::Event::Closed>()) { v_monitor.ventana->close(); return; }
+            if (event->is<sf::Event::KeyPressed>() || event->is<sf::Event::MouseButtonPressed>()) confirmado = true;
         }
 
-        // Eventos del Tablero (Movimiento de fichas)
+        // 2. INPUT - TABLERO (Solo cerrar ventana, el click lo maneja Mouse::Update)
         while (const auto event = v_tablero.ventana->pollEvent())
         {
-            if (event->is<sf::Event::Closed>()) {
-                v_tablero.ventana->close();
-                return;
-            }
-            // Llamar a la logica de arrastre
-            ProcesarArrastre(*event, v_tablero, ejercitos);
+            if (event->is<sf::Event::Closed>()) { v_tablero.ventana->close(); return; }
         }
 
-        // Dibujar Monitor
+        // 3. UPDATE (Aqui ocurre la magia)
+
+        // Actualizar estado del mouse una vez por frame
+        mouseHandler.Update(*v_tablero.ventana);
+
+        // Actualizar logica de cada circulo
+        for (auto& ej : ejercitos) {
+            for (auto& u : ej.unidades) {
+                // Obtenemos su movimiento maximo
+                float mov = (float)u.mov;
+
+                for (auto& miniatura : u.circulos) {
+                    // Cada miniatura verifica si el mouse la toco
+                    miniatura.UpdateDrag(mouseHandler, mov);
+                }
+            }
+        }
+
+        // 4. DRAW
         v_monitor.ventana->clear(sf::Color::Black);
         v_monitor.dibujarElementos();
         v_monitor.ventana->display();
 
-        // Dibujar Tablero
-        v_tablero.ventana->clear(sf::Color::White); 
-        v_tablero.dibujarElementos(); // Dibuja obstaculos fijos
+        v_tablero.ventana->clear(sf::Color::White);
+        v_tablero.dibujarElementos(); // Obstaculos
 
-        // --- NUEVO: Dibujar ayuda visual si se está arrastrando algo ---
-        if (g_circuloArrastrado != nullptr)
-        {
-            float radio = g_distanciaMaxima;
-            rangoMovimiento.setRadius(radio);
-            rangoMovimiento.setOrigin(radio, radio);
-            // El círculo se dibuja centrado en la posición inicial donde estaba la miniatura
-            rangoMovimiento.setPosition(g_posicionInicial + g_circuloArrastrado->getOrigin());
-            v_tablero.ventana->draw(rangoMovimiento);
-        }
-
-        // Dibujar las unidades manualmente
+        // Dibujar circulos y sus rangos
         for (auto& ej : ejercitos) {
             for (auto& u : ej.unidades) {
+                float mov = (float)u.mov;
                 for (auto& m : u.circulos) {
+                    // Primero dibujamos el rango si se esta arrastrando (para que quede detras)
+                    m.DrawRango(v_tablero.ventana, mov);
+                    // Luego la miniatura
                     v_tablero.ventana->draw(m.circle);
                 }
             }
@@ -183,7 +106,6 @@ void EsperarYMover(Ventana& v_monitor, Ventana& v_tablero, vector<Ejercito>& eje
     }
 }
 
-//RESTO DE FUNCIONES LOGICAS ORIGINALES
 vector<Ejercito> ElegirEjercitos(Ventana& v)
 {
     map<string, string> opts = {
@@ -1009,12 +931,9 @@ void InicializarTablero(vector<Ejercito>& ejercitos, Ventana& v_tablero)
                 float finalX = x_actual + offsetX;
 
                 Circulo* nuevo_circulo = new Circulo(unidad.Tamano_base / 2.0f, { finalX, finalY }, color_equipo);
+                nuevo_circulo->startPos = { finalX, finalY };
 
-                // Guardar en la unidad
                 unidad.circulos.push_back(*nuevo_circulo);
-
-                // Guardar en la ventana
-                v_tablero.Circulos.push_back(nuevo_circulo);
             }
 
             // Calcular cuanto espacio ocupo la unidad
@@ -1083,21 +1002,17 @@ int main()
 
 	while (v_tablero.ventana->isOpen() && !juego_terminado)
 	{
-		// 1. Fase de Comando
 		Aumentar_PC(ejercitos);
 		v_monitor.ventana->clear(sf::Color::Black);
 		msgBox->setText("Ronda " + to_string(ronda) + " - Jugador " + to_string(turno_jugador + 1) + ": Fase de Comando");
 		v_monitor.ventana->display();
 		esperarConfirmacion(v_monitor);
 
-		// 2. Fase de Movimiento (CON DRAG AND DROP ACTIVO)
 		Aumentar_Mov_Atk(ejercitos[turno_jugador]);
 		msgBox->setText("Fase de Movimiento. Arrastre las unidades para moverlas.\nClick en monitor para terminar.");
 		
-		// Llamamos a la nueva funcion que permite mover mientras espera
 		EsperarYMover(v_monitor, v_tablero, ejercitos);
 
-		// 3. Fase de Disparo
 		v_monitor.ventana->clear(sf::Color::Black);
 		msgBox->setText("Fase de Movimiento. Seleccione unidad para mover.");
 		v_monitor.ventana->display();
@@ -1110,19 +1025,15 @@ int main()
 			Disparo(v_monitor, v_tablero, *unidad_atacante, ejercitos[1 - turno_jugador]);
 		}
 
-		// 4. Fase de Carga 
 		msgBox->setText("Fase de Carga.");
 		esperarConfirmacion(v_monitor);
 
-		// 5. Fase de Combate
 		msgBox->setText("Fase de Combate.");
 		esperarConfirmacion(v_monitor);
 
-		// 6. Prueba de Choque
 		msgBox->setText("Prueba de Shock.");
 		esperarConfirmacion(v_monitor);
 		
-		// 7. Limpieza
 		ejercitos[0].eliminar_unidades();
 		ejercitos[1].eliminar_unidades();
 
@@ -1141,14 +1052,10 @@ int main()
 		}
 
 		//BUCLE DE EVENTOS PRINCIPAL
-		// Permite mover unidades libremente entre fases si el usuario interactua
 		while (const optional event = v_tablero.ventana->pollEvent())
 		{
 			if (event->is<sf::Event::Closed>())
-				v_tablero.ventana->close();
-			
-            // Permitir arrastre tambien fuera de la fase de movimiento especifica
-            ProcesarArrastre(*event, v_tablero, ejercitos);
+				v_tablero.ventana->close();			
 		}
 		while (const std::optional ev = v_monitor.ventana->pollEvent())
 		{
@@ -1159,7 +1066,7 @@ int main()
 		// Dibujar todo
 		v_tablero.ventana->clear(sf::Color::White);
 		v_tablero.dibujarElementos();
-		// DIBUJAR UNIDADES MANUALMENTE (porque no estan en v.elementos)
+		// DIBUJAR UNIDADES MANUALMENTE
 		for (auto& ej : ejercitos) {
 			for (auto& u : ej.unidades) {
 				for (auto& m : u.circulos) {

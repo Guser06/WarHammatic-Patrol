@@ -187,17 +187,137 @@ public:
 	sf::FloatRect getRect() { return this->rect.getGlobalBounds(); }
 };
 
+// --- NUEVA CLASE MOUSE (Basada en tu ejemplo) ---
+class Mouse
+{
+public:
+    sf::Vector2f pos; // Posicion en el mundo
+    bool isPressed = false;
+    bool onPress = false;
+    bool onRelease = false;
+    bool isDragging = false; // "Candado" global
+
+    void Update(sf::RenderWindow& window)
+    {
+        // Obtener posicion del mouse relativa a la ventana (pixeles)
+        sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+
+        // Convertir a coordenadas del mundo (importante para que coincida con los dibujos)
+        pos = window.mapPixelToCoords(pixelPos);
+
+        // Resetear estados de un solo frame
+        onPress = false;
+        onRelease = false;
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+        {
+            if (!isPressed) onPress = true;
+            isPressed = true;
+        }
+        else
+        {
+            if (isPressed) onRelease = true;
+            isPressed = false;
+            isDragging = false; // Soltar el candado si se suelta el boton
+        }
+    }
+};
+
+// --- MODIFICACIÓN DE LA CLASE CIRCULO ---
 class Circulo : public Elemento
 {
-    public:
+public:
     sf::CircleShape circle;
+
+    // Variables para la logica de arrastre
+    bool isDragged = false;
+    sf::Vector2f offset;
+    sf::Vector2f startPos; // Posicion al iniciar el arrastre (para el limite de movimiento)
+
+    // Visual del rango
+    sf::CircleShape rangoVisual;
+
     Circulo(float radio, sf::Vector2f pos, sf::Color color)
     {
         this->circle.setRadius(radio);
+        // Ajustamos el origen al centro para facilitar calculos de distancia
+        this->circle.setOrigin({ radio, radio });
         this->circle.setPosition(pos);
         this->circle.setFillColor(color);
+
+        // Configurar visual del rango (oculto por defecto)
+        this->rangoVisual.setFillColor(sf::Color(0, 255, 0, 50));
+        this->rangoVisual.setOutlineColor(sf::Color::Green);
+        this->rangoVisual.setOutlineThickness(1.f);
     }
-	string Type() override { return "Circulo"; }
+
+    string Type() override { return "Circulo"; }
+
+    // Funcion matematica correcta para detectar el mouse sobre el circulo
+    bool CheckInside(sf::Vector2f mousePos)
+    {
+        sf::Vector2f centro = this->circle.getPosition(); // Como ya centramos el origen, esto es el centro
+        float dx = mousePos.x - centro.x;
+        float dy = mousePos.y - centro.y;
+        return (dx * dx + dy * dy) <= (this->circle.getRadius() * this->circle.getRadius());
+    }
+
+    // Lógica de actualización (Igual a tu ejemplo Shape::UpdateDrag pero con limite de distancia)
+    void UpdateDrag(Mouse& mouse, float maxDistPulgadas)
+    {
+        // 1. Al presionar click sobre este circulo (y si nadie mas esta siendo arrastrado)
+        if (!mouse.isDragging && mouse.onPress && CheckInside(mouse.pos))
+        {
+            this->isDragged = true;
+            mouse.isDragging = true; // Bloqueamos el mouse para otros objetos
+
+            // Calculamos el offset para que no "salte" al centro del mouse
+            this->offset = mouse.pos - this->circle.getPosition();
+
+            // Guardamos donde empezo este movimiento especifico
+            this->startPos = this->circle.getPosition();
+        }
+
+        // 2. Al soltar el click
+        else if (mouse.onRelease && this->isDragged)
+        {
+            this->isDragged = false;
+            // mouse.isDragging se resetea en Mouse::Update
+        }
+
+        // 3. Mientras se arrastra
+        else if (this->isDragged)
+        {
+            sf::Vector2f nuevaPos = mouse.pos - this->offset;
+            float maxDistPx = (maxDistPulgadas > 0) ? maxDistPulgadas * 25.4f : 1.0f; // Conversion a pixeles
+
+            // Restriccion de distancia (Matematica vectorial)
+            float dx = nuevaPos.x - this->startPos.x;
+            float dy = nuevaPos.y - this->startPos.y;
+            float distActual = std::sqrt(dx * dx + dy * dy);
+
+            if (distActual > maxDistPx)
+            {
+                float angulo = std::atan2(dy, dx);
+                nuevaPos.x = this->startPos.x + std::cos(angulo) * maxDistPx;
+                nuevaPos.y = this->startPos.y + std::sin(angulo) * maxDistPx;
+            }
+
+            this->circle.setPosition(nuevaPos);
+        }
+    }
+
+    void DrawRango(sf::RenderWindow* w, float maxDist)
+    {
+        if (this->isDragged && maxDist > 0)
+        {
+            float r = maxDist * 25.4f;
+            rangoVisual.setRadius(r);
+            rangoVisual.setOrigin({ r, r });
+            rangoVisual.setPosition(this->startPos);
+            w->draw(rangoVisual);
+        }
+    }
 };
 
 class Ventana
