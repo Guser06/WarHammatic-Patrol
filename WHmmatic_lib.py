@@ -24,7 +24,6 @@ DISPONIBLE = [
     'Tyrannofex',
     'Space Marines v1',
     'Gladiator Lancer',
-    'Debug',
     'salir'
 ]
 
@@ -1474,14 +1473,6 @@ def Elegir_Ejs(term):
                     
                         case 3:
                             filepath = Path(__file__).parent / "Ejercitos/UM_Lancer.json"
-                            with open(filepath, 'r') as file:
-                                Ejercitos_diccionarios.append(json.load(file))
-                            if len(Ejercitos_diccionarios) == 2:
-                                break
-                            else: term.inkey()
-                        
-                        case 4:
-                            filepath = Path(__file__).parent / "Ejercitos/Debug_army.json"
                             with open(filepath, 'r') as file:
                                 Ejercitos_diccionarios.append(json.load(file))
                             if len(Ejercitos_diccionarios) == 2:
