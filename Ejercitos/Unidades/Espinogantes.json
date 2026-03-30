@@ -1,0 +1,167 @@
+{
+"Nombre": "Espinogantes",
+"Lider": null,
+"Numero Miniaturas": 5,
+"Habilidades": {
+    "Bombardeo disruptor": null
+    },
+"Claves": [
+    "Espinogantes",
+    "Infanteria",
+    "Gran devorador"
+    ],
+"m1": {
+    "Nombre": "Espinogante",
+    "Stats": [
+        6, 4, 4, 2, 8, 1
+        ],
+    "Rango1": {
+        "Nombre": "Lanzaespinas",
+        "Stats": [
+            24,	"D6", 4, 5, 0, 1
+            ],
+        "Claves": {
+            "Area": null,
+            "Pesado": null                
+            }
+        },
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Garras y dientes quintinosos",
+        "Stats": [
+            0, 1, 4, 4, 0, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m2": {
+    "Nombre": "Espinogante",
+    "Stats": [
+        6, 4, 4, 2, 8, 1
+        ],
+    "Rango1": {
+        "Nombre": "Lanzaespinas",
+        "Stats": [
+            24,	"D6", 4, 5, 0, 1
+            ],
+        "Claves": {
+            "Area": null,
+            "Pesado": null                
+            }
+        },
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Garras y dientes quintinosos",
+        "Stats": [
+            0, 1, 4, 4, 0, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m3": {
+    "Nombre": "Espinogante",
+    "Stats": [
+        6, 4, 4, 2, 8, 1
+        ],
+    "Rango1": {
+        "Nombre": "Lanzaespinas",
+        "Stats": [
+            24,	"D6", 4, 5, 0, 1
+            ],
+        "Claves": {
+            "Area": null,
+            "Pesado": null                
+            }
+        },
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Garras y dientes quintinosos",
+        "Stats": [
+            0, 1, 4, 4, 0, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m4": {
+    "Nombre": "Espinogante",
+    "Stats": [
+        6, 4, 4, 2, 8, 1
+        ],
+    "Rango1": {
+        "Nombre": "Lanzaespinas",
+        "Stats": [
+            24,	"D6", 4, 5, 0, 1
+            ],
+        "Claves": {
+            "Area": null,
+            "Pesado": null                
+            }
+        },
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Garras y dientes quintinosos",
+        "Stats": [
+            0, 1, 4, 4, 0, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m5": {
+    "Nombre": "Espinogante",
+    "Stats": [
+        6, 4, 4, 2, 8, 1
+        ],
+    "Rango1": {
+        "Nombre": "Lanzaespinas",
+        "Stats": [
+            24,	"D6", 4, 5, 0, 1
+            ],
+        "Claves": {
+            "Area": null,
+            "Pesado": null                
+            }
+        },
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Garras y dientes quintinosos",
+        "Stats": [
+            0, 1, 4, 4, 0, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    }
+}
