@@ -1,0 +1,49 @@
+{
+    "Nombre": "Psicofago",
+    "Lider": null,
+    "Numero Miniaturas": 1,
+    "Habilidades": {
+        "Bio-estimulo": null,
+    "Frenesi Alimenticio": null,
+        "No hay dolor": 5,
+        "Final Violento": 1
+        },
+    "Claves": [
+        "Monstruo",
+        "Gran devorador",
+        "Psicofago",
+        "Cosechador",
+        "Humo"
+        ],
+    "m1": {
+        "Nombre": "Psicofago",
+        "Stats": [
+            12, 9, 3, 10, 8, 3
+            ],
+        "Rango1": {
+            "Nombre": "Torrente psicoclastico",
+            "Stats": [
+                12, "D6", 0, 6,	1, 1
+                ],
+            "Claves": {
+                "Ignora cobertura": null,
+                "Torrente": null               
+                }
+            },
+        "Rango2": null,
+        "Rango3": null,
+        "Rango4": null,
+
+        "Mele1": {
+            "Nombre": "Garras y mandibula tentacular",
+            "Stats": [
+                0, 6, 3, 6, 2, 2
+                ],
+            "Claves": {
+                "Anti": ["Psiquico", 4],
+                "Heridas devastadoras": null 
+                }
+            },
+        "Mele2": null
+        }
+}

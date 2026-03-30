@@ -1,0 +1,80 @@
+{
+"Nombre": "Saltadores de Von Ryan",
+"Lider": null,
+"Numero Miniaturas": 3,
+"Habilidades": {
+    "Salto de ataque": null,
+    "Invulnerable": 6
+    },
+"Claves": [
+    "Infanteria",
+    "Gran devorador",
+    "Saltadores de Von Ryan",
+    "Invasor de vanguardia"
+    ],
+"m1": {
+    "Nombre": "Saltador de Von Ryan",
+    "Stats": [
+        10, 5, 4, 3, 8, 1
+        ],
+    "Rango1": null,
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Espolones de saltador",
+        "Stats": [
+            0, 6, 3, 5, 1, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m2": {
+    "Nombre": "Saltador de Von Ryan",
+    "Stats": [
+        10, 5, 4, 3, 8, 1
+        ],
+    "Rango1": null,
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Espolones de saltador",
+        "Stats": [
+            0, 6, 3, 5, 1, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m3": {
+    "Nombre": "Saltador de Von Ryan",
+    "Stats": [
+        10, 5, 4, 3, 8, 1
+        ],
+    "Rango1": null,
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Espolones de saltador",
+        "Stats": [
+            0, 6, 3, 5, 1, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    }
+}

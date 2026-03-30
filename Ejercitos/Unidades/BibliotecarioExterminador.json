@@ -1,0 +1,74 @@
+{
+"Nombre": "Bibliotecario en armadura de exterminador",
+"Lider": true,
+"Numero Miniaturas": 1,
+"Habilidades": {
+    "Velo de tiempo": null,
+    "Capucha psiquica": null,
+    "Invulnerable": 4
+    },
+"Claves": [
+    "Personaje",
+    "Infanteria",
+    "Imperio",
+    "Psiquico",
+    "Exterminador",
+    "Bibliotecario"
+    ],
+"minis": [
+    {
+        "Nombre": "Bibliotecario en armadura de exterminador",
+        "Stats": [
+            5, 5, 2, 5, 6, 1
+            ],
+        "rangos": [
+            {
+            "Nombre": "Castigo-Fuego brujo",
+            "Stats": [
+                24, "D6", 3, 5, 1, "D3"
+                ],
+            "Claves": {
+                "Psiquico": null,
+                "Perfil": null                
+                }
+            },
+            {
+            "Nombre": "Castigo-Fuego brujo enfocado",
+            "Stats": [
+                24, "D6", 3, 6, 2, "D3"
+                ],
+            "Claves": {
+                "Perfil": null,
+                "Heridas devastadoras": null,
+                "Riesgoso": null,
+                "Psiquico": null
+                }
+            },
+            {
+            "Nombre": "Combi-Arma",
+            "Stats": [
+                24, 1, 4, 4, 0, 1
+                ],
+            "Claves": {
+                "Anti": ["Infanteria", 4],
+                "Heridas devastadoras": null,
+                "Fuego Rapido": 2
+                }
+            },
+            null
+            ],
+        "meles": [
+            {
+            "Nombre": "Arma de psicofuerza",
+            "Stats": [
+                0, 4, 3, 6, -1, "D3"
+                ],
+            "Claves": {
+                "Psiquico": null 
+                }
+            },
+            null
+            ]
+        }
+    ]
+}
