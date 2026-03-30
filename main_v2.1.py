@@ -24,14 +24,14 @@ while turno/2 <= limite:
 
     for u in Ejercitos_objetos[turno%2].unidades:
         if u.mov >= 0:
-            Menu(unidad=u, TXT=MOVIMIENTO_T, FUN=MOVIMIENTO_F)
+            Menu_func(unidad=u, TXT=MOVIMIENTO_T, FUN=MOVIMIENTO_F)
         else: continue
     
     for u in Ejercitos_objetos[turno%2].unidades:
         Disparo(unidad = u, Ejer_Enem=Ejercitos_objetos[(turno%2)-1])
     
     for u in Ejercitos_objetos[turno%2].unidades:
-        Menu(unidad=u, TXT=CARGA_T, FUN=CARGA_F, par=Selec_Blanco(term=Term, unidad=u, accion='Cargar', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]))
+        Menu_func(unidad=u, TXT=CARGA_T, FUN=CARGA_F, par=Selec_Blanco(unidad=u, accion='Cargar', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]))
     
     unidades = Pelea_Primero(Ejercitos_objetos[turno%2])
     for u in unidades:
