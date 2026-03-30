@@ -18,24 +18,24 @@ while turno/2 <= limite:
     Aumentar_PC(Ejercitos_objetos)
 
     for u in Ejercitos_objetos[turno%2].unidades:
-        Shock_Test(unidad=u, term=Term)
+        Shock_Test(unidad=u)
 
     Aumentar_Mov_Atk(Ejercitos_objetos[turno%2])
 
     for u in Ejercitos_objetos[turno%2].unidades:
         if u.mov >= 0:
-            Menu(term=Term, unidad=u, TXT=MOVIMIENTO_T, FUN=MOVIMIENTO_F)
+            Menu(unidad=u, TXT=MOVIMIENTO_T, FUN=MOVIMIENTO_F)
         else: continue
     
     for u in Ejercitos_objetos[turno%2].unidades:
-        Disparo(unidad= u, term= Term, Ejer_Enem=Ejercitos_objetos[(turno%2)-1])
+        Disparo(unidad = u, Ejer_Enem=Ejercitos_objetos[(turno%2)-1])
     
     for u in Ejercitos_objetos[turno%2].unidades:
-        Menu(term=Term, unidad=u, TXT=CARGA_T, FUN=CARGA_F, par=Selec_Blanco(term=Term, unidad=u, accion='Cargar', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]))
+        Menu(unidad=u, TXT=CARGA_T, FUN=CARGA_F, par=Selec_Blanco(term=Term, unidad=u, accion='Cargar', Ejer_Enem=Ejercitos_objetos[(turno%2)-1]))
     
     unidades = Pelea_Primero(Ejercitos_objetos[turno%2])
     for u in unidades:
-        Combate(term=Term, unidad= u, Ejer_Enem=Ejercitos_objetos[(turno%2)-1])        
+        Combate(unidad= u, Ejer_Enem=Ejercitos_objetos[(turno%2)-1])        
         if "Tem Pelea Primero" in u.habilidades.keys():
             del u.habilidades["Tem Pelea Primero"]
     

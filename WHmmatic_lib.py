@@ -11,6 +11,20 @@ from pathlib import Path
 import sys
 import blessed
 
+import blessed.win_terminal as _wt
+import time
+_original_kbhit = _wt.Terminal.kbhit  # guarda el original
+
+##Arreglar bug con blessed
+def _safe_kbhit(s, timeout=0.000000000001):
+    try:
+        return _original_kbhit(s, timeout)
+    except KeyboardInterrupt:
+        return False
+_wt.Terminal.kbhit = _safe_kbhit
+
+term = blessed.Terminal()
+
 ##Listas formadoras de diccionarios
 ##Usar como claves para obtener datos en interacciones
 StatsTx = ["Movimiento", "Resistencia", "Salvación",
@@ -1485,7 +1499,6 @@ def Limite_Rondas():
 
 ##Elegir ejercitos
 def Elegir_Ejs():
-    ##Función menu
     Ejercitos_diccionarios = [] #Diccionarios provenientes de los JSON
     Indice_ejercito = 0
     with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
