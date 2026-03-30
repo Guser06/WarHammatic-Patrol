@@ -1164,342 +1164,260 @@ def Disparo(unidad, Ejer_Enem):
 
 ##Funcion de combate cuerpo a cuerpo (/Aun falta refactorizar a partir de aqui/)
 def Combate(unidad, Ejer_Enem):
-    with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
-        print(Term.home + Term.clear)
-        
-        ##Todas las unidades deben combatir 
-        
-        ##Verificar que la unidad esté en zona de amenaza
-        if not unidad.engaged:
-            print(Term.springgreen4_on_black(f"{unidad.nombre} no puede combatir, está demasiado lejos de un enemigo"))
-            print(Term.springgreen4_on_black("Presiona cualquier tecla para continuar"))
-            Term.inkey()
-            print(Term.home + Term.clear)
-            return
-        else:
-            ##Seleccionar un arma
-            for miembro in unidad.miembros:
-                indice = 0
-                while True:
-                    ##Romper ciclo en caso de que se halla usado un arma
-                    l_armas = [x.usado for x in miembro.mele if not 'Ataques Adicionales' in x.claves.keys()]
-                    l_adicionales = [x.usado for x in miembro.mele if 'Ataques Adicionales' in x.claves.keys()]
-                    
-                    if any(l_armas) and all(l_adicionales):
-                        break
-
-                    print(Term.home + Term.clear)
-                    print(Term.springgreen4_on_black(f"Elija un arma para combatir con {miembro.nombre}:"))
-
-                    ##Construir menú
-
-                    for i, arma in enumerate(miembro.mele):
-                        if i == indice:
-                            print(Term.black_on_springgreen4(f"{i+1}. {arma.nombre}"))
-                        else:
-                            print(Term.springgreen4_on_black(f"{i+1}. {arma.nombre}"))
-
-                    tecla = Term.inkey()
-
-                    if tecla.name in ("KEY_UP", "KEY_LEFT"):
-                        indice = (indice - 1 + len(miembro.mele)) % len(miembro.mele)
-                        continue
-        
-                    elif tecla.name in ("KEY_DOWN", "KEY_RIGHT"):
-                        indice = (indice + 1 + len(miembro.mele)) % len(miembro.mele)
-                        continue
+    ##Todas las unidades deben combatir 
+    
+    ##Verificar que la unidad esté en zona de amenaza
+    if not unidad.engaged:
+        Mostrar_Mensaje(f"{unidad.nombre} no puede combatir, está demasiado lejos de un enemigo")
+        return
+    else:
+        ##Seleccionar un arma
+        for miembro in unidad.miembros:
             
-                    elif tecla.name == "KEY_ENTER" or tecla == '\n':
-                        if not miembro.mele[indice].usado:
+            while True:
+                ##Romper ciclo en caso de que se halla usado un arma
+                l_armas = [x.usado for x in miembro.mele if not 'Ataques Adicionales' in x.claves.keys()]
+                l_adicionales = [x.usado for x in miembro.mele if 'Ataques Adicionales' in x.claves.keys()]
+            
+                if any(l_armas) and all(l_adicionales):
+                    break
+                indice = Menu_Seleccion(f"Elija un arma para combatir con {miembro.nombre}:", miembro.mele, 0)
 
-                            ##Si no se ha usado el arma elegida, seguir proceso
-                            print(Term.springgreen4_on_black(f"\nElegiste: {miembro.mele[indice].nombre}"))                            
-                            print(Term.home + Term.clear)
+                if not miembro.mele[indice].usado:
 
-                            ##Elegir un blanco y recuperar sus claves si es valido
-                            blanco = Selec_Blanco(unidad=unidad, accion='Combatir', Ejer_Enem=Ejer_Enem)
-                            if blanco is None:
-                                print(Term.springgreen4_on_black(f"\nCombatir no es una opción, ¡Lanzate a la batalla!"))
-                                Term.inkey()                            
-                                continue
+                    ##Si no se ha usado el arma elegida, seguir proceso
+                    Mostrar_Mensaje(f"\nElegiste: {miembro.mele[indice].nombre}")
+
+                    ##Elegir un blanco y recuperar sus claves si es valido
+                    blanco = Selec_Blanco(unidad=unidad, accion='Combatir', Ejer_Enem=Ejer_Enem)
+                    if blanco is None:
+                        Mostrar_Mensaje(f"\nCombatir no es una opción, ¡Lanzate a la batalla!")
+                        continue
+                    else:
+                        ##Tirada para impactar
+                        n = miembro.mele[indice].stats.get("No. de Ataques")
+                        
+                        ##Si se repite el arma usar Tirada rapida
+                        impact = []
+                        nAI = Repetida(miembro.mele[indice], unidad)
+                        if nAI > 1:
+                            t = f"\nMultiples miniaturas en {unidad.nombre} usan {miembro.mele[indice].nombre}\nDesea hacer una tirada rápida para combatirlas todas contra {blanco.nombre}?"
+                            r, c = Term.get_location()
+                            if Selec_SN(r, c, t):
+                                for m in unidad.miembros:
+                                    for a in m.mele:
+                                        if miembro.mele[indice].nombre == a.nombre and not a.usado:
+                                            impact += Dados(n, 6, False) if isinstance(miembro.mele[indice].stats.get("No. de Ataques"), int) else AtkDmg_Rand(n)
+                                            a.usado = True
+                                            if isinstance(miembro.mele[indice].claves, dict) and 'Perfil' in miembro.mele[indice].claves.keys():
+                                                for arma in miembro.mele:
+                                                    if 'Perfil' in arma.claves.keys():
+                                                        arma.usado = True
+                                        else: continue
                             else:
-                                ##Tirada para impactar
-                                print(Term.home + Term.clear)
+                                miembro.mele[indice].nombre
+                                impact = Dados(n, 6, False) if isinstance(miembro.mele[indice].stats.get("No. de Ataques"), int) else AtkDmg_Rand(n)
 
-                                n = miembro.mele[indice].stats.get("No. de Ataques")
+                        else:
+                            ##Una vez pasado cualquier filtro se considera usada el arma
+                            miembro.mele[indice].usado = True
+                            
+                            ##Colocar como usadas las armas de perfiles opcionales
+                            if isinstance(miembro.mele[indice].claves, dict) and 'Perfil' in miembro.mele[indice].claves.keys():
+                                for arma in miembro.mele:
+                                    if 'Perfil' in arma.claves.keys():
+                                        arma.usado = True
+                                    
+                            impact = Dados(n, 6, False) if isinstance(miembro.mele[indice].stats.get("No. de Ataques"), int) else AtkDmg_Rand(n)
                                 
-                                ##Si se repite el arma usar Tirada rapida
-                                impact = []
-                                nAI = Repetida(miembro.mele[indice], unidad)
-                                if nAI > 1:
-                                    t = f"\nMultiples miniaturas en {unidad.nombre} usan {miembro.mele[indice].nombre}\nDesea hacer una tirada rápida para combatirlas todas contra {blanco.nombre}?"
-                                    r, c = Term.get_location()
-                                    if Selec_SN(r, c, t):
-                                        for m in unidad.miembros:
-                                            for a in m.mele:
-                                                if miembro.mele[indice].nombre == a.nombre and not a.usado:
-                                                    impact += Dados(n, 6, False) if isinstance(miembro.mele[indice].stats.get("No. de Ataques"), int) else AtkDmg_Rand(n)
-                                                    a.usado = True
-                                                    if isinstance(miembro.mele[indice].claves, dict) and 'Perfil' in miembro.mele[indice].claves.keys():
-                                                        for arma in miembro.mele:
-                                                            if 'Perfil' in arma.claves.keys():
-                                                                arma.usado = True
-                                                else: continue
+                        Mostrar_Mensaje(f"Se han lanzado {len(impact)} ataques")
+                        impact = [dado for dado in impact if dado >= miembro.mele[indice].stats.get("Habilidad")]
+                        Mostrar_Mensaje(f"Las tiradas para impactar exitosas: {impact}", False)
+                        if len(impact) == 0:
+                            break
+                        else:
+                            
+                            if isinstance(miembro.mele[indice].claves, dict):
+                                
+                                ##Golpes sostenidos
+                                if 'Golpes Sostenidos' in miembro.mele[indice].claves.keys():
+                                    nGS = miembro.mele[indice].claves.get('Golpes Sostenidos')
+                                    nAd = 0
+                                    Mostrar_Mensaje(f"El arma {miembro.mele[indice].nombre} hace golpes sostenidos", False)
+                                    for dado in impact:
+                                        if dado == 6:
+                                            nAd += nGS if isinstance(nGS, int) else AtkDmg_Rand(nGS, False)
+                                    Mostrar_Mensaje(f"Se produjeron {nAd} impactos adicionales", False)
+                                    impact += [6] * nAd
+
+                                ##Impactos letales
+                                elif 'Impactos Letales' in miembro.mele[indice].claves.keys():
+                                    Mostrar_Mensaje(f"El arma {miembro.mele[indice].nombre} causa impactos letales", False)
+                                    seis = [dado for dado in impact if dado == 6]
+                                    impact = [dado for dado in impact if dado != 6]
+                                    Mostrar_Mensaje(f"{len(seis)} impactos fueron letales", False)
+                                    m = miembro.mele[indice].stats.get("Daño")
+                                    for d in seis:
+                                        dano += m if isinstance(m, int) else AtkDmg_Rand(m, True)
+                                    RepDmg(blanco, dano)
+                            
+                                ##Regla Pesada
+                                elif 'Pesado' in miembro.rango[indice].claves.keys() and unidad.mov == 3:
+                                    Mostrar_Mensaje(f"{unidad.nombre} no se movió en este turno y se beneficia de ello", False)
+                                    impact = [dado+1 for dado in impact]
+
+                            ##Tirada para herir
+                            herir = Dados(len(impact), 6, ret_num=False)
+                            obj = 0
+
+                            if miembro.mele[indice].stats.get("Fuerza") >= 2*blanco.miembros[0].stats.get("Resistencia"):
+                                obj = 2
+                            
+                            elif miembro.mele[indice].stats.get("Fuerza") > blanco.miembros[0].stats.get("Resistencia"):
+                                obj = 3
+                            
+                            elif miembro.mele[indice].stats.get("Fuerza") == blanco.miembros[0].stats.get("Resistencia"):
+                                obj = 4
+                            
+                            elif miembro.mele[indice].stats.get("Fuerza") < blanco.miembros[0].stats.get("Resistencia"):
+                                obj = 5
+                            
+                            elif miembro.mele[indice].stats.get("Fuerza")*2 <= blanco.miembros[0].stats.get("Resistencia"):
+                                obj = 6
+                                
+                            herir = [dado for dado in herir if dado >= obj]
+                            
+                            ##Regla Lanza
+                            if isinstance(miembro.mele[indice].claves, dict) and 'Lanza' in miembro.mele[indice].claves.keys() and 'Tem Pelea Primero' in unidad.habilidades.keys():
+                                herir = [dado+1 for dado in herir]
+                            
+                            ##Regla Heridas devastadoras
+                            elif isinstance(miembro.mele[indice].claves, dict) and 'Heridas devastadoras' in miembro.mele[indice].claves.keys():
+                                dev = [dado for dado in herir if dado == 6]
+                                herir = [dado for dado in herir if dado != 6]
+                                
+                                if len(dev) != 0:
+                                    Mostrar_Mensaje(f"{blanco.nombre} ha sufrido heridas devastadoras")
+                                    salvar = len(dev)
+                                    m = miembro.mele[indice].stats.get("Daño")
+                                    if isinstance(m, str):
+                                        dano_azar = []
+                                        for x in range(0, len(dev)):
+                                            dano_azar.append(AtkDmg_Rand(m, True) )
+                                        salvar = sum(dano_azar)
                                     else:
-                                        miembro.mele[indice].nombre
-                                        impact = Dados(n, 6, False) if isinstance(miembro.mele[indice].stats.get("No. de Ataques"), int) else AtkDmg_Rand(n)
-        
-                                else:
-                                    ##Una vez pasado cualquier filtro se considera usada el arma
-                                    miembro.mele[indice].usado = True
+                                        dano = int(m)
+                                        salvar*=dano
+
+                                    Mostrar_Mensaje(f"A que miniatura se le asignarán {salvar} heridas?")
+
+                                    RepDmg(blanco, salvar)
+                            
+                            Mostrar_Mensaje(f"Las tiradas que han herido: {herir}\n", False)
                                     
-                                    ##Colocar como usadas las armas de perfiles opcionales
-                                    if isinstance(miembro.mele[indice].claves, dict) and 'Perfil' in miembro.mele[indice].claves.keys():
-                                        for arma in miembro.mele:
-                                            if 'Perfil' in arma.claves.keys():
-                                                arma.usado = True
-                                            
-                                    impact = Dados(n, 6, False) if isinstance(miembro.mele[indice].stats.get("No. de Ataques"), int) else AtkDmg_Rand(n)
-                                        
-                                print(Term.springgreen4_on_black(f"Se han lanzado {len(impact)} ataques"))
-                                impact = [dado for dado in impact if dado >= miembro.mele[indice].stats.get("Habilidad")]
-                                print(Term.springgreen4_on_black("Las tiradas para impactar exitosas:"))
-                                print(Term.springgreen4_on_black(f"{impact}"))
-                                print(Term.springgreen4_on_black("Presione cualquier tecla para continuar"))
-                                Term.inkey()
-                                if len(impact) == 0:
-                                    break
-                                else:
-                                    
-                                    if isinstance(miembro.mele[indice].claves, dict):
-                                        
-                                        ##Golpes sostenidos
-                                        if 'Golpes Sostenidos' in miembro.mele[indice].claves.keys():
-                                            nGS = miembro.mele[indice].claves.get('Golpes Sostenidos')
-                                            nAd = 0
-                                            print(Term.springgreen4_on_black(f"El arma {miembro.mele[indice].nombre} hace golpes sostenidos"))
-                                            for dado in impact:
-                                                if dado == 6:
-                                                    nAd += nGS if isinstance(nGS, int) else AtkDmg_Rand(nGS, False)
-                                            print(Term.springgreen4_on_black(f"Se produjeron {nAd} impactos adicionales")) 
-                                            impact += [6] * nAd
-  
-                                        ##Impactos letales
-                                        elif 'Impactos Letales' in miembro.mele[indice].claves.keys():
-                                            print(Term.springgreen4_on_black(f"El arma {miembro.mele[indice].nombre} causa impactos letales"))
-                                            seis = [dado for dado in impact if dado == 6]
-                                            impact = [dado for dado in impact if dado != 6]
-                                            print(Term.springgreen4_on_black(f"{len(seis)} impactos fueron letales"))
-                                            m = miembro.mele[indice].stats.get("Daño")
-                                            for d in seis:
-                                                dano += m if isinstance(m, int) else AtkDmg_Rand(m, True)
-                                            RepDmg(blanco, dano)
-                                    
-                                        ##Regla Pesada
-                                        elif 'Pesado' in miembro.rango[indice].claves.keys() and unidad.mov == 3:
-                                            print(Term.springgreen4_on_black(f"{unidad.nombre} no se movió en este turno y se beneficia de ello"))
-                                            impact = [dado+1 for dado in impact]
+                            if len(herir) == 0:
+                                Mostrar_Mensaje()
+                                break
 
-                                    ##Tirada para herir
-                                    herir = Dados(len(impact), 6, ret_num=False)
-                                    obj = 0
-
-                                    if miembro.mele[indice].stats.get("Fuerza") >= 2*blanco.miembros[0].stats.get("Resistencia"):
-                                        obj = 2
-                                    
-                                    elif miembro.mele[indice].stats.get("Fuerza") > blanco.miembros[0].stats.get("Resistencia"):
-                                        obj = 3
-                                    
-                                    elif miembro.mele[indice].stats.get("Fuerza") == blanco.miembros[0].stats.get("Resistencia"):
-                                        obj = 4
-                                    
-                                    elif miembro.mele[indice].stats.get("Fuerza") < blanco.miembros[0].stats.get("Resistencia"):
-                                        obj = 5
-                                    
-                                    elif miembro.mele[indice].stats.get("Fuerza")*2 <= blanco.miembros[0].stats.get("Resistencia"):
-                                        obj = 6
-                                        
-                                    herir = [dado for dado in herir if dado >= obj]
-                                    
-                                    ##Regla Lanza
-                                    if isinstance(miembro.mele[indice].claves, dict) and 'Lanza' in miembro.mele[indice].claves.keys() and 'Tem Pelea Primero' in unidad.habilidades.keys():
-                                        herir = [dado+1 for dado in herir]
-                                    
-                                    ##Regla Heridas devastadoras
-                                    elif isinstance(miembro.mele[indice].claves, dict) and 'Heridas devastadoras' in miembro.mele[indice].claves.keys():
-                                        dev = [dado for dado in herir if dado == 6]
-                                        herir = [dado for dado in herir if dado != 6]
-                                        
-                                        if len(dev) != 0:
-                                            print(Term.black_on_springgreen4(f"{blanco.nombre} ha sufrido heridas devastadoras"))
-                                            salvar = len(dev)
-                                            m = miembro.mele[indice].stats.get("Daño")
-                                            if isinstance(m, str):
-                                                dano_azar = []
-                                                for x in range(0, len(dev)):
-                                                    dano_azar.append(AtkDmg_Rand(m, True) )
-                                                salvar = sum(dano_azar)
-                                            else:
-                                                dano = int(m)
-                                                salvar*=dano
-
-                                            print(Term.black_on_springgreen4(f"A que miniatura se le asignarán {salvar} heridas?"))
-                                            print(Term.springgreen4_on_black("Presione cualquier tecla para continuar"))
-                                            Term.inkey()
-
-                                            RepDmg(blanco, salvar)
-                                    
-                                    print(Term.springgreen4_on_black("Las tiradas que han herido:"))
-                                    print(Term.springgreen4_on_black(f"{herir}\n"))
-                                            
-                                    if len(herir) == 0:
-                                        print(Term.springgreen4_on_black("Presione cualquier tecla para continuar"))
-                                        Term.inkey()
-                                        break
-
-                                    ##Regla anti
-                                    if isinstance(miembro.mele[indice].claves, dict) and 'Anti' in miembro.mele[indice].claves.keys():
-                                        if miembro.mele[indice].claves.get('Anti')[0] in blanco.claves:
-                                            a = 0
-                                            for i in herir:
-                                                if i >= miembro.mele[indice].claves.get('Anti')[1]:
-                                                    a += 1
-                                            if a:
-                                                print(Term.black_on_springgreen4(f"{blanco.nombre} ha sufrido heridas mortales!"))
-                                                print(Term.black_on_springgreen4(f"A que miniatura se le asignarán las heridas?"))
-                                                m = miembro.mele[indice].stats.get("Daño")
-                                                if isinstance(m, str):
-                                                    dano_azar = []
-                                                    for x in range(0, a):
-                                                        dano_azar.append(AtkDmg_Rand(m, True) )
-                                                    dano = sum(dano_azar)
-                                                else:
-                                                    dano = int(m)
-                                                    dano*=a
-
-                                                print(Term.springgreen4_on_black("Presione cualquier tecla para continuar"))
-                                                Term.inkey()
-
-                                                RepDmg(blanco, dano)
-                                                    
-
-
-                                    print(Term.springgreen4_on_black(f"A continuación, permita al oponente usar la Terminal"))
-                                    print(Term.springgreen4_on_black("Presione cualquier tecla para continuar"))
-                                    Term.inkey()
-
-                                    if len(blanco.miembros)==0:
-                                        continue
-
-                                    index = 0
-                                    while True:
-                                        print(Term.home + Term.clear)
-                                        print(Term.springgreen4_on_black(f"Es momento de las tiradas de salvación de {blanco.nombre}"))
-                                        print(Term.springgreen4_on_black(f"El factor de perforación del arma atacante es -{miembro.mele[indice].stats.get("Perforación")}"))
-                                        
-                                        salvacion = blanco.miembros[0].stats.get("Salvación")
-                                        if miembro.mele[indice].stats.get("Perforación") > 0:
-                                            print(Term.springgreen4_on_black(f"La salvación requerida sube a {blanco.miembros[0].stats.get("Salvación") + miembro.mele[indice].stats.get("Perforación")}"))
-                                            salvacion += miembro.mele[indice].stats.get("Perforación")
-
-                                        if 'Invulnerable' in blanco.habilidades.keys():
-                                            print(Term.springgreen4_on_black(f"\nLa unidad atacada tiene una salvación invulnerable de {blanco.habilidades.get('Invulnerable')}"))
-                                            print(Term.springgreen4_on_black(f"¿Que perfil desea usar?\n"))
-
-                                            S = [f"Salvación regular: {blanco.miembros[0].stats.get('Salvación') + miembro.mele[indice].stats.get('Perforación')}+",
-                                                f"Salvación invulnerable: {blanco.habilidades.get('Invulnerable')}+"]
-
-                                            for i, opcion in enumerate(S):    #Crear lista de opciones
-                                                if i == index:
-                                                    print(Term.black_on_springgreen4(f"{i+1}. {opcion}"))
-                                                else:
-                                                    print(Term.springgreen4_on_black(f"{i+1}. {opcion}"))
-
-                                            boton = Term.inkey()
-
-                                            if boton.name in ("KEY_UP", "KEY_LEFT"):
-                                                index = (index - 1 + len(S)) % len(S)
-        
-                                            elif boton.name in ("KEY_DOWN", "KEY_RIGHT"):
-                                                index = (index + 1 + len(S)) % len(S)
-            
-                                            elif boton.name == "KEY_ENTER" or boton == '\n':
-                                                if index == 0:
-                                                    salvacion = blanco.miembros[0].stats.get("Salvación") + miembro.mele[indice].stats.get("Perforación")
-                                                    break
-                                                elif index == 1:
-                                                    salvacion = blanco.habilidades.get('Invulnerable')
-                                                    break
-                                        
-                                        if not 'Invulnerable' in blanco.habilidades.keys():
-                                            print(Term.springgreen4_on_black("Presione cualquier tecla para continuar"))
-                                            Term.inkey()
-                                            break
-                                        
-                                    salvar = Dados(len(herir), 6, False)
-                                    salvar = [dado for dado in salvar if dado >= salvacion]
-                                    print(Term.home + Term.clear)
-                                    print(Term.black_on_springgreen4(f"Se han salvado {len(salvar)} de {len(herir)} ataques"))
-
-                                    if len(herir) > len(salvar):
-                                        salvar = len(herir) - len(salvar)
+                            ##Regla anti
+                            if isinstance(miembro.mele[indice].claves, dict) and 'Anti' in miembro.mele[indice].claves.keys():
+                                if miembro.mele[indice].claves.get('Anti')[0] in blanco.claves:
+                                    a = 0
+                                    for i in herir:
+                                        if i >= miembro.mele[indice].claves.get('Anti')[1]:
+                                            a += 1
+                                    if a:
+                                        Mostrar_Mensaje(f"{blanco.nombre} ha sufrido heridas mortales!\nA que miniatura se le asignarán las heridas?", False)
                                         m = miembro.mele[indice].stats.get("Daño")
                                         if isinstance(m, str):
                                             dano_azar = []
-                                            for x in range(0, salvar):
-                                                dano_azar.append(AtkDmg_Rand(m, True))
-                                            salvar = sum(dano_azar)
+                                            for x in range(0, a):
+                                                dano_azar.append(AtkDmg_Rand(m, True) )
+                                            dano = sum(dano_azar)
                                         else:
                                             dano = int(m)
-                                            salvar*=dano
+                                            dano*=a
 
-                                        print(Term.black_on_springgreen4(f"A que miniatura se le asignarán {salvar} heridas?"))
-                                        print(Term.springgreen4_on_black("Presione cualquier tecla para elegir"))
-                                        Term.inkey()
+                                        Mostrar_Mensaje("", False)
 
-                                        RepDmg(blanco, salvar)
+                                        RepDmg(blanco, dano)
+                                            
 
-                                    else:
-                                        print(Term.springgreen4_on_black("Presione cualquier tecla para continuar"))
-                                        Term.inkey()
-                                        continue
 
-                                ##Prueba de riesgo
-                                if isinstance(miembro.mele[indice].claves, dict) and 'Riesgoso' in miembro.mele[indice].claves.keys():
-                                    print(Term.home + Term.clear)
-                                    print(Term.black_on_springgreen(f"Es hora de tomar una prueba de riesgo"))
-                                    d = Dados(1, 6, True)
-                                    print(Term.black_on_springgreen(f"1D6: {d}"))
-                                    lista_blanca = ['Personaje', 'Vehiculo', 'Monstruo']
+                            Mostrar_Mensaje(f"A continuación, permita al oponente usar la Terminal")
 
-                                    dano = 0
+                            if len(blanco.miembros)==0:
+                                continue
 
-                                    if any(set(unidad.claves)&set(lista_blanca)) and d == 1:
-                                        dano = 3
-                                    elif not any(set(unidad.claves)&set(lista_blanca)) and d == 1:
-                                        dano = miembro.stats.get("Heridas") - miembro.dmg
-                                    elif d != 1:
-                                        print(Term.black_on_springgreen(f"{miembro.nombre} ha pasado la prueba de riesgo"))
-                                        print(Term.black_on_springgreen(f"Presione cualquier tecla para continuar"))
-                                        Term.inkey()
-                                        continue
-                                    print(Term.springgreen4_on_black(miembro.recibir_dano(dano, unidad.habilidades)))
-                                    print(Term.black_on_springgreen(f"Presione cualquier tecla para continuar"))
-                                    Term.inkey()
-                                    continue
-            
-                        else:
-                            print("El arma ya fue usada")
-                            print(Term.home + Term.clear)
-                            continue      
-            
-                    else:
-                        print(Term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
-                        Term.inkey()
-                        continue
+                            index = 0
+                            Mostrar_Mensaje(f"Es momento de las tiradas de salvación de {blanco.nombre}\nEl factor de perforación del arma atacante es -{miembro.mele[indice].stats.get("Perforación")}")
+                            
+                            salvacion = blanco.miembros[0].stats.get("Salvación")
+                            if miembro.mele[indice].stats.get("Perforación") > 0:
+                                Mostrar_Mensaje(f"La salvación requerida sube a {blanco.miembros[0].stats.get("Salvación") + miembro.mele[indice].stats.get("Perforación")}", False)
+                                salvacion += miembro.mele[indice].stats.get("Perforación")
 
-        unidad.atk -= 1
-        return
+                            if 'Invulnerable' in blanco.habilidades.keys():
+                                S = [f"Salvación regular: {blanco.miembros[0].stats.get('Salvación') + miembro.mele[indice].stats.get('Perforación')}+",
+                                    f"Salvación invulnerable: {blanco.habilidades.get('Invulnerable')}+"]
+                                index = Menu_Seleccion(f"\nLa unidad atacada tiene una salvación invulnerable de {blanco.habilidades.get('Invulnerable')}\n¿Que perfil desea usar?\n", S, 0)
+                                
+
+                                if index == 0:
+                                    salvacion = blanco.miembros[0].stats.get("Salvación") + miembro.mele[indice].stats.get("Perforación")
+                                elif index == 1:
+                                    salvacion = blanco.habilidades.get('Invulnerable')
+                            
+                            if not 'Invulnerable' in blanco.habilidades.keys():
+                                Mostrar_Mensaje("")
+                                
+                            salvar = Dados(len(herir), 6, False)
+                            salvar = [dado for dado in salvar if dado >= salvacion]
+                            Mostrar_Mensaje(f"Se han salvado {len(salvar)} de {len(herir)} ataques")
+                            
+                            if len(herir) > len(salvar):
+                                salvar = len(herir) - len(salvar)
+                                m = miembro.mele[indice].stats.get("Daño")
+                                if isinstance(m, str):
+                                    dano_azar = []
+                                    for x in range(0, salvar):
+                                        dano_azar.append(AtkDmg_Rand(m, True))
+                                    salvar = sum(dano_azar)
+                                else:
+                                    dano = int(m)
+                                    salvar*=dano
+
+                                Mostrar_Mensaje(f"A que miniatura se le asignarán {salvar} heridas?", False)
+
+                                RepDmg(blanco, salvar)
+
+                            else:
+                                Mostrar_Mensaje("")
+                                continue
+
+                        ##Prueba de riesgo
+                        if isinstance(miembro.mele[indice].claves, dict) and 'Riesgoso' in miembro.mele[indice].claves.keys():
+                            Mostrar_Mensaje(f"Es hora de tomar una prueba de riesgo")
+                            d = Dados(1, 6, True)
+                            print(Term.black_on_springgreen(f"1D6: {d}"))
+                            lista_blanca = ['Personaje', 'Vehiculo', 'Monstruo']
+
+                            dano = 0
+
+                            if any(set(unidad.claves)&set(lista_blanca)) and d == 1:
+                                dano = 3
+                            elif not any(set(unidad.claves)&set(lista_blanca)) and d == 1:
+                                dano = miembro.stats.get("Heridas") - miembro.dmg
+                            elif d != 1:
+                                Mostrar_Mensaje(f"{miembro.nombre} ha pasado la prueba de riesgo", False)
+                            Mostrar_Mensaje(miembro.recibir_dano(dano, unidad.habilidades))
+    
+                else:
+                    Mostrar_Mensaje("El arma ya fue usada")
+                    continue      
+
+    unidad.atk -= 1
+    return
 
 
 ##Reglas de movimiento
@@ -1507,9 +1425,7 @@ def Combate(unidad, Ejer_Enem):
 def Estatico(unidad, p3 = None):
     while True:
         with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
-            print(Term.springgreen4_on_black(f"La unidad {unidad.nombre} se quedara estatica"))
-            print(Term.springgreen4_on_black("Presiona cualquier tecla para continuar"))
-            Term.inkey()
+            Mostrar_Mensaje(f"La unidad {unidad.nombre} se quedara estatica")
             break
     return
     
@@ -1517,130 +1433,79 @@ def Estatico(unidad, p3 = None):
 def Normal(unidad, p3 = None):
     with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
         if unidad.mov == 3:
-            print(Term.springgreen4_on_black(f"La unidad se moverá hasta {unidad.miembros[0].stats["Movimiento"]} pulgadas"))
+            Mostrar_Mensaje(f"La unidad se moverá hasta {unidad.miembros[0].stats["Movimiento"]} pulgadas")
             unidad.mov -= 1
-            print(Term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
-            Term.inkey()
             return
         else:
-            print(Term.springgreen4_on_black(f"Esta unidad no se puede mover mas"))
-            print(Term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
-            Term.inkey()
+            Mostrar_Mensaje(f"Esta unidad no se puede mover mas")
             return
         
 ##Movimiento de avance
 def Avance(unidad, p3 = None):
-    with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
-        if unidad.mov == 3:
-            temp = Dados(1, 6)
-            print(Term.springgreen4_on_black(f"1D6: {temp}"))
-            print(Term.springgreen4_on_black(f"La unidad avanzará hasta {unidad.miembros[0].stats["Movimiento"]}'' + {temp}'' "))
-            unidad.mov -= 2
-            unidad.atk -= 2
-            print(Term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
-            Term.inkey()
-            return
-        else:
-            print(Term.springgreen4_on_black(f"Esta unidad no se puede mover mas"))
-            print(Term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
-            Term.inkey()
-            return      
+    if unidad.mov == 3:
+        temp = Dados(1, 6)
+        Mostrar_Mensaje(f"1D6: {temp}\nLa unidad avanzará hasta {unidad.miembros[0].stats["Movimiento"]}'' + {temp}'' ")
+        unidad.mov -= 2
+        unidad.atk -= 2
+        return
+    else:
+        Mostrar_Mensaje(f"Esta unidad no se puede mover mas")
+        return      
 
 ##Movimiento de retroceder/Huida
 def Retroceder(unidad, p3 = None):
-    with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
-        whitelist = ["Volador", "Titanico"]
-        if unidad.shock == True or not any(unidad.claves & whitelist):
-            print(Term.springreen4_on_black("La unidad realizara una huida desesperada!"))
-            for mini in unidad.miembros:
-                d = Dados(1, 3)
-                if d < 2:
-                    print("Una miniatura no ha pasado la prueba!")
-                    print("Elije cual será eliminada: ")
-                    indice = Selec_mini(unidad)
-                    if indice == None:
-                        break
-                    print(Term.springgreen4_on_black(unidad.miembros[indice].recibir_dano(unidad.miembros.stats["Heridas"], unidad.habilidades)))
-                    unidad.eliminar_muertos()
-            print("La huida desesperada ha Terminado")
-            print("Presione cualquier tecla para continuar")
-            Term.inkey()
-            unidad.mov -= 3
-            unidad.atk -= 3
-            unidad.engaged = False
-            return
-        
-        else:
-            print(Term.springreen4_on_black(f"La unidad retrocederá hasta {unidad.miembros[0].stats.get("Movimiento")}'' "))
-            print(Term.springreen4_on_black("Recuerde que las miniaturas no pueden Terminar este movimiento en zona de amenaza de una unidad enemiga"))
-            print(Term.springreen4_on_black("\nPresione cualquier tecla para continuar"))
-            Term.inkey()
-            unidad.mov -= 3
-            unidad.atk -= 3
-            unidad.engaged = False
-            return
+    whitelist = ["Volador", "Titanico"]
+    if unidad.shock == True or not any(unidad.claves & whitelist):
+        Mostrar_Mensaje("La unidad realizara una huida desesperada!")
+        for mini in unidad.miembros:
+            d = Dados(1, 3)
+            if d < 2:
+                Mostrar_Mensaje("Una miniatura no ha pasado la prueba!\nElije cual será eliminada: ", False)
+                indice = Selec_mini(unidad)
+                if indice == None:
+                    break
+                Mostrar_Mensaje(unidad.miembros[indice].recibir_dano(unidad.miembros.stats["Heridas"], unidad.habilidades))
+                unidad.eliminar_muertos()
+        Mostrar_Mensaje("La huida desesperada ha Terminado")
+        unidad.mov -= 3
+        unidad.atk -= 3
+        unidad.engaged = False
+        return
+    
+    else:
+        Mostrar_Mensaje(f"La unidad retrocederá hasta {unidad.miembros[0].stats.get("Movimiento")}''\nRecuerde que las miniaturas no pueden Terminar este movimiento en zona de amenaza de una unidad enemiga")
+        unidad.mov -= 3
+        unidad.atk -= 3
+        unidad.engaged = False
+        return
 
 ##Cargar
 def Carga(unidad, blanco):
-    CadenaIngreso = ''
     if unidad.atk <= 2 and unidad.mov <= 2:
-        print(Term.springgreen4_on_black(f"{unidad.nombre} ya no puede cargar"))
-        Term.inkey()
+        Mostrar_Mensaje(f"{unidad.nombre} ya no puede cargar")
         return
-    while True:
-        with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
-            if blanco is not None:
-                print(Term.home + Term.clear)
-                print(Term.on_black)
-                print(Term.springgreen4_on_black(f"Ingrese la distancia entre {unidad.nombre} y {blanco.nombre}"))
-                print(Term.springgreen4_on_black(CadenaIngreso))
-        
-                tecla = Term.inkey()
+    dis = Leer_Numero(f"Ingrese la distancia entre {unidad.nombre} y {blanco.nombre}")
 
-                if tecla and (tecla.is_sequence == False):
-                    CadenaIngreso += tecla
-                    print(Term.move_x(0), end='')
-                    print(Term.springgreen4_on_black(f"{CadenaIngreso}"), end='', flush=True)
-                    continue
-            
-                elif tecla.name == "KEY_ENTER":
-                    print(Term.springgreen4_on_black(f"\nIngresaste: {CadenaIngreso}''"))
-                    print(Term.springgreen4_on_black("\nPresiona ENTER para continuar"))
-                    print(Term.springgreen4_on_black("\nPresiona cualquier tecla para reintentar"))
-            
-                    tecla = Term.inkey()
-            
-                    if tecla.name == "KEY_ENTER" or tecla == '\n':
-                        dis = int(CadenaIngreso)
-                        d = Dados(2, 6)
-                        print(Term.springgreen4_on_black(f"2D6: {d}"))
-                        if d < dis:
-                            print(Term.springgreen4_on_black(f"La unidad {unidad.nombre} ha fallado la carga!"))
-                            unidad.mov -= 2
-                            unidad.atk -= 2
-                            print(Term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
-                            Term.inkey()
-                            return
+    if blanco is not None:
 
-                        else:
-                            print(Term.springgreen4_on_black(f"La unidad ha cargado con exito!"))
-                            unidad.mov -= 2
-                            unidad.atk -= 2
-                            unidad.habilidades.update({"Tem Pelea Primero": None})
-                            unidad.engaged = True
-                            print(Term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
-                            Term.inkey()
-                            return
-                
-                    else:
-                        CadenaIngreso = ''
-                        print(Term.home + Term.clear)
-                        print(Term.on_black)
-                        print(Term.springgreen4_on_black(f"Ingrese la distancia entre {unidad.nombre} y {blanco.nombre}"))
-                        continue
-            
-            else:
-                break
+        d = Dados(2, 6)
+        print(Term.springgreen4_on_black(f"2D6: {d}"))
+        if d < dis:
+            Mostrar_Mensaje(f"La unidad {unidad.nombre} ha fallado la carga!")
+            unidad.mov -= 2
+            unidad.atk -= 2
+            return
+
+        else:
+            Mostrar_Mensaje(f"La unidad ha cargado con exito!")
+            unidad.mov -= 2
+            unidad.atk -= 2
+            unidad.habilidades.update({"Tem Pelea Primero": None})
+            unidad.engaged = True
+            return
+
+    else:
+        return
 
 
 ##Estratagemas
@@ -1655,7 +1520,7 @@ def ReRoll(Ej, Lista_D, val, DX):
 
 def Overwatch(unidad, blanco):
     if (unidad.atk)>=1:
-        print(Term.springgreen4_on_black(f"{unidad.nombre} va a disparar a {blanco.nombre} usando el estratagema 'overwatch'"))
+        Mostrar_Mensaje(f"{unidad.nombre} va a disparar a {blanco.nombre} usando el estratagema 'overwatch'")
         Disparo(unidad, blanco)
         return
         
@@ -1696,51 +1561,21 @@ def Repetida(arma, unidad):   ##Devuelve el número de veces que un arma está r
 ##Regla final violento
 def FinViol(dic_habs, nombre, Ejers):
     indice = 0
+    All_u = []
+    for e in Ejers:
+        All_u += e.unidades
+    All_u + [""]
+    n_heridas = dic_habs.get('Final Violento') if isinstance(dic_habs.get('Final Violento'), int) else AtkDmg_Rand(dic_habs.get('Final Violento'), True)
     while True:
-        with Term.fullscreen(), Term.cbreak(), Term.hidden_cursor():
-            
-            n_heridas = dic_habs.get('Final Violento') if isinstance(dic_habs.get('Final Violento'), int) else AtkDmg_Rand(dic_habs.get('Final Violento'), True)
-            
-            print(Term.home + Term.clear)
-            print(Term.on_black)
-            print(Term.springgreen4_on_black(f"{nombre} ha muerto con un final violento"))
-            print(Term.springgreen4_on_black(f"Todas las unidades a 6'' o menos sufrirán {n_heridas}\n"))
-            print(Term.springgreen4_on_black("Seleccionelas a continuación:"))
-
-            All_u = []
-            for e in Ejers:
-                All_u += e.unidades
-    
-            for i, opcion in enumerate(All_u + ["Terminar"]):    #Crear lista de opciones
-                if i == indice:
-                    print(Term.black_on_springgreen4(f"{i+1}. {opcion.nombre if isinstance(opcion, Unidad) else opcion}"))
-                else:
-                    print(Term.springgreen4_on_black(f"{i+1}. {opcion.nombre if isinstance(opcion, Unidad) else opcion}"))
-    
-            tecla = Term.inkey()
-    
-            if tecla.name in ("KEY_UP", "KEY_LEFT"):
-                indice = (indice - 1 + len(All_u + ["Terminar"])) % len(All_u + ["Terminar"])
-        
-            elif tecla.name in ("KEY_DOWN", "KEY_RIGHT"):
-                indice = (indice + 1 + len(All_u + ["Terminar"])) % len(All_u + ["Terminar"])
-            
-            elif tecla.name == "KEY_ENTER" or tecla == '\n':
-                if indice > len(All_u)-1:
-                    print(Term.springgreen4_on_black(f"\nElegiste: Terminar"))
-                    return
-                else:
-                    print(Term.springgreen4_on_black(f"\nElegiste: {All_u[indice].nombre}"))
-                    print(Term.springgreen4_on_black(f"Presione cualquier tecla para continuar"))
-
-                    Term.inkey()
-                    
-                    RepDmg(All_u[indice], n_heridas)
-                    continue 
-                    
-            else:
-                print(Term.springgreen4_on_black(f"\nLa tecla presionada '{tecla}' es invalida"))
-                Term.inkey()
+        Menu_Seleccion(f"{nombre} ha muerto con un final violento\nTodas las unidades a 6'' o menos sufrirán {n_heridas}\nSeleccionelas a continuación:",
+                    All_u, indice)
+        if indice > len(All_u)-1:
+            Mostrar_Mensaje(f"\nElegiste: Terminar")
+            return
+        else:
+            Mostrar_Mensaje(f"\nElegiste: {All_u[indice].nombre}")
+            RepDmg(All_u[indice], n_heridas)
+            continue 
 
 ##Regla empeorar stats si hay daños
 def Danado(unidad):
