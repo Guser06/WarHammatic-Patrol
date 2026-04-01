@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://dx56itrg54oyq"]
+
+[ext_resource type="Texture2D" uid="uid://d0esrc0ep5rds" path="res://Dados.png" id="1_b0flu"]
+[ext_resource type="Script" uid="uid://b8ksqe4e1cnkn" path="res://dado.gd" id="2_1eu0g"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d878g"]
+atlas = ExtResource("1_b0flu")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gncss"]
+atlas = ExtResource("1_b0flu")
+region = Rect2(17, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cib6f"]
+atlas = ExtResource("1_b0flu")
+region = Rect2(34, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rad6f"]
+atlas = ExtResource("1_b0flu")
+region = Rect2(68, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kdc0u"]
+atlas = ExtResource("1_b0flu")
+region = Rect2(51, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qbkbv"]
+atlas = ExtResource("1_b0flu")
+region = Rect2(85, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fa4b8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d878g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gncss")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cib6f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rad6f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kdc0u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qbkbv")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[node name="Dado" type="AnimatedSprite2D" unique_id=954600189]
+sprite_frames = SubResource("SpriteFrames_fa4b8")
+script = ExtResource("2_1eu0g")
