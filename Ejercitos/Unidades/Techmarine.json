@@ -1,0 +1,60 @@
+{
+"Nombre": "Techmarine Primaris",
+"Lider": true,
+"Numero Miniaturas": 1,
+"Habilidades": {
+    "Operativo Solitario": null,
+    "Bendición del Omnissiah": null,
+    "Venganza del Omnissiah": null
+    },
+"Claves": [
+    "Personaje",
+    "Infanteria",
+    "Granadas",
+    "Imperio",
+    "Tacticus",
+    "Techmarine"
+    ],
+"m1": {
+    "Nombre": "Techmarine",
+    "Stats": [
+        6, 4, 2, 4, 6, 1
+        ],
+    "Rango1": {
+        "Nombre": "Bolter Forjado",
+        "Stats": [
+            24, 3, 2, 5, 1, 2
+            ],
+        "Claves": null
+        },
+    "Rango2": {
+        "Nombre": "Pistola Grav",
+        "Stats": [
+            12, 1, 2, 4, 1, 2
+            ],
+        "Claves": {
+            "Pistola": null,
+            "Anti": ["Vehiculo", 2]
+            }
+        },
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Hacha de poder Omnissiah",
+        "Stats": [
+            0, 4, 3, 6, -2, 2
+            ],
+        "Claves": null 
+        },
+    "Mele2": {
+        "Nombre": "Servo-Brazo",
+        "Stats": [
+            0, 1, 3, 8, -2, 3
+            ],
+        "Claves": {
+            "Ataques Adicionales": null
+            }
+        }
+    }
+}

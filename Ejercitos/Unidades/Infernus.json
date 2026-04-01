@@ -1,0 +1,213 @@
+{
+"Nombre": "Escuadra infernus",
+"Lider": [
+    "Anciano",
+    "Apotecario",
+    "Capitan",
+    "Capellan",
+    "Judiciar",
+    "Bibliotecario",
+    "Teniente"
+    ],
+"Numero Miniaturas": 5,
+"Habilidades": {
+    "Terror incendiario": null
+    },
+"Claves": [
+    "Infanteria",
+    "Granadas",
+    "Imperio",
+    "Tacticus",
+    "Escuadra infernus"
+    ],
+
+"m1": {
+    "Nombre": "Sargento infernus",
+    "Stats": [
+        6, 4, 3, 2, 6, 1
+        ],
+    "Rango1": {
+        "Nombre": "Pyroblaster",
+        "Stats": [
+            12, "D6", 0, 5, 1, 1
+            ],
+        "Claves": {
+            "Ignora cobertura": null                
+            }
+        },
+    "Rango2": {
+        "Nombre": "Pistola bolter",
+        "Stats": [
+            12, 1, 3, 4, 0, 1
+            ],
+        "Claves": {
+            "Pistola": null                
+            }
+        },
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Arma de combate cercano",
+        "Stats": [
+            0, 3, 3, 4, 0, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m2": {
+    "Nombre": "Marine infernus",
+    "Stats": [
+        6, 4, 3, 2, 6, 1
+        ],
+    "Rango1": {
+        "Nombre": "Pyroblaster",
+        "Stats": [
+            12, "D6", 0, 5, 1, 1
+            ],
+        "Claves": {
+            "Ignora cobertura": null                
+            }
+        },
+    "Rango2": {
+        "Nombre": "Pistola bolter",
+        "Stats": [
+            12, 1, 3, 4, 0, 1
+            ],
+        "Claves": {
+            "Pistola": null                
+            }
+        },
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Arma de combate cercano",
+        "Stats": [
+            0, 3, 3, 4, 0, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m3": {
+    "Nombre": "Marine infernus",
+    "Stats": [
+        6, 4, 3, 2, 6, 1
+        ],
+    "Rango1": {
+        "Nombre": "Pyroblaster",
+        "Stats": [
+            12, "D6", 0, 5, 1, 1
+            ],
+        "Claves": {
+            "Ignora cobertura": null                
+            }
+        },
+    "Rango2": {
+        "Nombre": "Pistola bolter",
+        "Stats": [
+            12, 1, 3, 4, 0, 1
+            ],
+        "Claves": {
+            "Pistola": null                
+            }
+        },
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Arma de combate cercano",
+        "Stats": [
+            0, 3, 3, 4, 0, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m4": {
+    "Nombre": "Marine infernus",
+    "Stats": [
+        6, 4, 3, 2, 6, 1
+        ],
+    "Rango1": {
+        "Nombre": "Pyroblaster",
+        "Stats": [
+            12, "D6", 0, 5, 1, 1
+            ],
+        "Claves": {
+            "Ignora cobertura": null                
+            }
+        },
+    "Rango2": {
+        "Nombre": "Pistola bolter",
+        "Stats": [
+            12, 1, 3, 4, 0, 1
+            ],
+        "Claves": {
+            "Pistola": null                
+            }
+        },
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Arma de combate cercano",
+        "Stats": [
+            0, 3, 3, 4, 0, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m5": {
+    "Nombre": "Marine infernus",
+    "Stats": [
+        6, 4, 3, 2, 6, 1
+        ],
+    "Rango1": {
+        "Nombre": "Pyroblaster",
+        "Stats": [
+            12, "D6", 0, 5, 1, 1
+            ],
+        "Claves": {
+            "Ignora cobertura": null                
+            }
+        },
+    "Rango2": {
+        "Nombre": "Pistola bolter",
+        "Stats": [
+            12, 1, 3, 4, 0, 1
+            ],
+        "Claves": {
+            "Pistola": null               
+            }
+        },
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Arma de combate cercano",
+        "Stats": [
+            0, 3, 3, 4, 0, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    }
+}

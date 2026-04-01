@@ -1,0 +1,170 @@
+{
+"Nombre": "Escuadra de exterminadores",
+"Lider": [
+    "Anciano en armadura de exterminador",
+    "Capitan en armadura de exterminador",
+    "Capellan en armadura de exterminador",
+    "Bibliotecario en armadura de exterminador"
+    ],
+"Numero Miniaturas": 5,
+"Habilidades": {
+    "Baliza de teletransporte": null,
+    "Furia de los primeros": null,
+    "Invulnerable": 4
+    },
+"Claves": [
+    "Infanteria",
+    "Imperio",
+    "Exterminador",
+    "Escuadra de exterminadores"
+    ],
+"m1": {
+    "Nombre": "Sargento en armadura exterminador",
+    "Stats": [
+        5, 5, 2, 3, 6, 1
+        ],
+    "Rango1": {
+        "Nombre": "Bolter tormenta",
+        "Stats": [
+            24, 2, 3, 4, 0, 1
+            ],
+        "Claves": {
+            "Fuego Rapido": 2             
+            }
+        },
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Arma de energia",
+        "Stats": [
+            0, 4, 3, 5, 2, 1
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m2": {
+    "Nombre": "Exterminador",
+    "Stats": [
+        5, 5, 2, 3, 6, 1
+        ],
+    "Rango1": {
+        "Nombre": "Cañon de asalto",
+        "Stats": [
+            24, 6, 3, 6, 0, 1
+            ],
+        "Claves": {
+            "Heridas devastadoras": null                
+            }
+        },
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Puño de energia",
+        "Stats": [
+            0, 3, 3, 8, 2, 2
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m3": {
+    "Nombre": "Exterminador",
+    "Stats": [
+        5, 5, 2, 3, 6, 1
+        ],
+    "Rango1": {
+        "Nombre": "Bolter tormenta",
+        "Stats": [
+            24, 2, 3, 4, 0, 1
+            ],
+        "Claves": {
+            "Fuego Rapido": 2                
+            }
+        },
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Puño de energia",
+        "Stats": [
+            0, 3, 3, 8, 2, 2
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m4": {
+    "Nombre": "Exterminador",
+    "Stats": [
+        5, 5, 2, 3, 6, 1
+        ],
+    "Rango1": {
+        "Nombre": "Bolter tormenta",
+        "Stats": [
+            24, 2, 3, 4, 0, 1
+            ],
+        "Claves": {
+            "Fuego Rapido": 2                
+            }
+        },
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Puño de energia",
+        "Stats": [
+            0, 3, 3, 8, 2, 2
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    },
+
+"m5": {
+    "Nombre": "Exterminador",
+    "Stats": [
+        5, 5, 2, 3, 6, 1
+        ],
+    "Rango1": {
+        "Nombre": "Bolter tormenta",
+        "Stats": [
+            24, 2, 3, 4, 0, 1
+            ],
+        "Claves": {
+            "Fuego Rapido": 2                
+            }
+        },
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Puño de energia",
+        "Stats": [
+            0, 3, 3, 8, 2, 2
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": null
+    }
+}
