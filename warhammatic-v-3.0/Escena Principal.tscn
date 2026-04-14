@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bwxte1thhnanc"]
+
+[ext_resource type="Script" uid="uid://b2vtrotadlxaq" path="res://escena_principal.gd" id="1_k282w"]
+[ext_resource type="PackedScene" uid="uid://dtsdjlq2afhhp" path="res://Jugador.tscn" id="1_kp1dj"]
+[ext_resource type="PackedScene" uid="uid://djmtgqm2hgprc" path="res://comunicacion.tscn" id="3_bbfqe"]
+
+[node name="EscenaPrincipal" type="Node2D" unique_id=514344058]
+script = ExtResource("1_k282w")
+
+[node name="Jugador_camara" parent="." unique_id=1441874800 instance=ExtResource("1_kp1dj")]
+
+[node name="Comunicacion" parent="." unique_id=1072665902 instance=ExtResource("3_bbfqe")]

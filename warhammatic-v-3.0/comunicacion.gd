@@ -5,7 +5,7 @@ var conectado = false
 
 func _ready():
 	socket.connect_to_host("127.0.0.1", 4242)
-
+	
 func _process(_delta):
 	socket.poll() # Actualiza el estado del socket
 	
@@ -17,6 +17,7 @@ func _process(_delta):
 
 # En tu script de Godot
 func _manejar_datos_de_python(texto):
+	print("info recibida")
 	var datos = JSON.parse_string(texto)
 	
 	if datos.tipo == "resultado_dados":
@@ -30,10 +31,10 @@ func _ejecutar_animaciones_dados(lista_valores):
 	for valor in lista_valores:
 		# Suponiendo que tienes una escena 'Dado.tscn' con una animación
 		var dado_instancia = load("res://Dado.tscn").instantiate()
-		add_child(dado_instancia)
+		get_parent().add_child(dado_instancia)
 		
 		# Le pasamos el valor al dado para que su animación termine en el número correcto
-		dado_instancia.lanzar(valor) 
+		dado_instancia.roll(valor)
 		
 		# Opcional: un pequeño retraso entre dados para que no salgan todos al mismo tiempo
-		await get_tree().create_timer(0.2).timeout
+		await get_tree().create_timer(5.0).timeout

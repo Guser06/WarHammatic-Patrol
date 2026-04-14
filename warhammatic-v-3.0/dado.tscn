@@ -1,35 +1,41 @@
 [gd_scene format=3 uid="uid://dx56itrg54oyq"]
 
 [ext_resource type="Texture2D" uid="uid://d0esrc0ep5rds" path="res://Dados.png" id="1_b0flu"]
-[ext_resource type="Script" uid="uid://b8ksqe4e1cnkn" path="res://dado.gd" id="2_1eu0g"]
+[ext_resource type="Script" uid="uid://0pjn48k6gr62" path="res://dado.gd" id="2_1eu0g"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_d878g"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0flu"]
 atlas = ExtResource("1_b0flu")
 region = Rect2(0, 0, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_1eu0g"]
+atlas = ExtResource("1_b0flu")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d878g"]
+atlas = ExtResource("1_b0flu")
+region = Rect2(32, 0, 16, 16)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_gncss"]
 atlas = ExtResource("1_b0flu")
-region = Rect2(17, 0, 16, 16)
+region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cib6f"]
 atlas = ExtResource("1_b0flu")
-region = Rect2(34, 0, 16, 16)
+region = Rect2(64, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rad6f"]
 atlas = ExtResource("1_b0flu")
-region = Rect2(68, 0, 16, 16)
+region = Rect2(80, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_kdc0u"]
-atlas = ExtResource("1_b0flu")
-region = Rect2(51, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qbkbv"]
-atlas = ExtResource("1_b0flu")
-region = Rect2(85, 0, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_fa4b8"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_kdc0u"]
 animations = [{
 "frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0flu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1eu0g")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_d878g")
 }, {
@@ -41,18 +47,16 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_rad6f")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_kdc0u")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qbkbv")
 }],
 "loop": true,
 "name": &"default",
 "speed": 6.0
 }]
 
-[node name="Dado" type="AnimatedSprite2D" unique_id=954600189]
-sprite_frames = SubResource("SpriteFrames_fa4b8")
+[node name="Node2D" type="Node2D" unique_id=445400987]
 script = ExtResource("2_1eu0g")
+
+[node name="AnimacionDado" type="AnimatedSprite2D" parent="." unique_id=979927106]
+texture_filter = 1
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_kdc0u")

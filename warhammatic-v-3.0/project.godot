@@ -12,7 +12,6 @@ config_version=5
 
 config/name="Warhammatic v3.0"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
 
 [physics]
 

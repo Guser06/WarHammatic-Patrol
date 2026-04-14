@@ -16,6 +16,12 @@ def servidor_push():
     print(clientes)
     print(f"Godot conectado desde {addr}")
 
+socket.socket.
+
+def procesar_entrada():
+    for cliente in clientes:
+        if cliente.
+
 # Función que puedes llamar desde cualquier parte de tu lógica de 6k líneas
 def notificar_a_godot(mensaje):
     payload = json.dumps(mensaje).encode('utf-8')
@@ -24,6 +30,7 @@ def notificar_a_godot(mensaje):
             c.send(payload)
         except:
             clientes.remove(c)
+    print("Info enviada")
 
 def procesar_tiro_dados(n, caras, suma):
     resultado = Dados(n, caras, suma)
@@ -38,9 +45,6 @@ def procesar_tiro_dados(n, caras, suma):
     }
     return respuesta
 
-servidor_push()       
-m = {
-    "Tipo": "Mensaje",
-    "Contenido": "Hola mundo!"
-}
+thread = threading.Thread(target=servidor_push, args=())
+m = procesar_tiro_dados(1, 6, False)
 notificar_a_godot(m)
