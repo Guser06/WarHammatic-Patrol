@@ -1,0 +1,53 @@
+{
+"Nombre": "Tyranido Primus con latigo organico",
+"Lider": true,
+"Numero Miniaturas": 1,
+"Habilidades": {
+    "Guerrero Alpha": null,
+    "Lider-Bestia Agresivo": null
+    },
+"Claves": [
+    "Tyranido primus con latigo organico",
+    "Personaje",
+    "Infanteria",
+    "Gran devorador",
+    "Sinapsis"    ],
+"m1": {
+    "Nombre": "Tyranido Primus con latigo organico",
+    "Stats": [
+        10, 5, 3, 6, 7, 1
+        ],
+    "Rango1": null,
+    "Rango2": null,
+    "Rango3": null,
+    "Rango4": null,
+
+    "Mele1": {
+        "Nombre": "Garras segadoras",
+        "Stats": [
+            0, 6, 2, 6, -2, 2
+            ],
+        "Claves": [
+            null         
+            ]
+        },
+    "Mele2": {
+        "Nombre": "Latigo organico",
+        "Stats": [
+            0, 8, 2, 4, -2, 1
+            ],
+        "Claves": {
+            "Ataques Adicionales": null
+            }
+        },
+    "Mele3": {
+        "Nombre": "Garra desgarradora",
+        "Stats": [
+            0, 4, 2, 8, -2, 3
+            ],
+        "Claves": [
+            null         
+            ]
+        }
+    }
+}
