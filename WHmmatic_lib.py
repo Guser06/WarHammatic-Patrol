@@ -1218,7 +1218,7 @@ def Combate(unidad, Ejer_Enem):
                                             a.usado = True
                                             if isinstance(miembro.mele[indice].claves, dict) and 'Perfil' in miembro.mele[indice].claves.keys():
                                                 for arma in miembro.mele:
-                                                    if 'Perfil' in arma.claves.keys() kand arma.nombre.trim('-')[0] == a.nombre.trim('-')[0]:
+                                                    if 'Perfil' in arma.claves.keys() and arma.nombre.trim('-')[0] == a.nombre.trim('-')[0]:
                                                         arma.usado = True
                                         else: continue
                             else:
