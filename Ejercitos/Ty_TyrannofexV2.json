@@ -7,8 +7,8 @@
         "Habilidades": {
             "Bio-estimulo": null,
             "Frenesi Alimenticio": null,
-            "Final Violento": 1,
-            "No hay dolor": 5
+            "No hay dolor": 5,
+            "Final Violento": 1
             },
         "Claves": [
             "Monstruo",
@@ -51,9 +51,11 @@
         },
 
     "u3": {
-        "Nombre": "Termagantes 1",
-        "Lider": null,
-        "Numero Miniaturas": 10,
+        "Nombre": "Termagantes",
+        "Lider": [
+            "Tyrandio Primus con latigo organico"
+        ],
+        "Numero Miniaturas": 20,
         "Diametro Base": 28.5,
         "Habilidades": {
             "Horrores acechantes": null
@@ -364,26 +366,9 @@
                     ]
                 },
             "Mele2": null
-            }
-        },
-
-    "u4": {
-        "Nombre": "Termagantes 2",
-        "Lider": null,
-        "Numero Miniaturas": 10,
-        "Diametro Base": 28.5,
-        "Habilidades": {
-            "Horrores acechantes": null
             },
-        "Claves": [
-            "Linea de batalla",
-            "Infanteria",
-            "Gran devorador",
-            "Multitud interminable",
-            "Termagantes"
-            ],
-
-        "m1": {
+    
+        "m11": {
             "Nombre": "Termagante",
             "Stats": [
                 6, 3, 5, 1, 8, 2
@@ -413,7 +398,7 @@
             "Mele2": null
             },
 
-        "m2": {
+        "m12": {
             "Nombre": "Termagante",
             "Stats": [
                 6, 3, 5, 1, 8, 2
@@ -443,7 +428,7 @@
             "Mele2": null
             },
 
-        "m3": {
+        "m13": {
             "Nombre": "Termagante",
             "Stats": [
                 6, 3, 5, 1, 8, 2
@@ -473,7 +458,7 @@
             "Mele2": null
             },
 
-        "m4": {
+        "m14": {
             "Nombre": "Termagante",
             "Stats": [
                 6, 3, 5, 1, 8, 2
@@ -503,7 +488,7 @@
             "Mele2": null
             },
 
-        "m5": {
+        "m15": {
             "Nombre": "Termagante",
             "Stats": [
                 6, 3, 5, 1, 8, 2
@@ -533,37 +518,7 @@
             "Mele2": null
             },
 
-        "m6": {
-            "Nombre": "Termagante",
-            "Stats": [
-                6, 3, 5, 1, 8, 2
-                ],
-            "Rango1": {
-                "Nombre": "Perforacarne",
-                "Stats": [
-                    18,	1, 4, 5, 0, 1
-                    ],
-                "Claves": {
-                    "Asalto": null                
-                    }
-                },
-            "Rango2": null,
-            "Rango3": null,
-            "Rango4": null,
-
-            "Mele1": {
-                "Nombre": "Garras y dientes quintinosos",
-                "Stats": [
-                    0, 1, 4, 3,	0, 1
-                    ],
-                "Claves": [
-                    null         
-                    ]
-                },
-            "Mele2": null
-            },
-        
-        "m7": {
+        "m16": {
             "Nombre": "Termagante",
             "Stats": [
                 6, 3, 5, 1, 8, 2
@@ -593,7 +548,7 @@
             "Mele2": null
             },
         
-        "m8": {
+        "m17": {
             "Nombre": "Termagante",
             "Stats": [
                 6, 3, 5, 1, 8, 2
@@ -623,7 +578,7 @@
             "Mele2": null
             },
         
-        "m9": {
+        "m18": {
             "Nombre": "Termagante",
             "Stats": [
                 6, 3, 5, 1, 8, 2
@@ -653,7 +608,37 @@
             "Mele2": null
             },
         
-        "m10": {
+        "m19": {
+            "Nombre": "Termagante",
+            "Stats": [
+                6, 3, 5, 1, 8, 2
+                ],
+            "Rango1": {
+                "Nombre": "Perforacarne",
+                "Stats": [
+                    18,	1, 4, 5, 0, 1
+                    ],
+                "Claves": {
+                    "Asalto": null                
+                    }
+                },
+            "Rango2": null,
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Garras y dientes quintinosos",
+                "Stats": [
+                    0, 1, 4, 3,	0, 1
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                },
+            "Mele2": null
+            },
+        
+        "m20": {
             "Nombre": "Termagante",
             "Stats": [
                 6, 3, 5, 1, 8, 2
@@ -684,7 +669,7 @@
             }
         },
 
-    "u5": {
+    "u4": {
         "Nombre": "Espinogantes",
         "Lider": null,
         "Numero Miniaturas": 5,
@@ -852,7 +837,7 @@
             "Mele2": null
             }
         },
-    "u6": {
+    "u5": {
         "Nombre": "Saltadores de Von Ryan",
         "Lider": null,
         "Numero Miniaturas": 3,
@@ -934,11 +919,11 @@
             }
         },
     
-    "u7": {
+    "u6": {
         "Nombre": "Enjambres devoradores",
         "Lider": null,
         "Numero Miniaturas": 2,
-        "Diametro Bases": 40,
+        "Diametro Base": 40,
         "Habilidades": {
             "Horrores quintinosos": null
             },
@@ -959,7 +944,7 @@
                     6, 4, 5, 3, 0, 1
                     ],
                 "Claves": {
-                    "Pistola": null            
+                    "Pistola": null              
                     }
                 },
             "Rango2": null,
@@ -1008,29 +993,79 @@
             "Mele2": null
             }
         },
-    
+
+    "u7":{
+        "Nombre": "Tyrannofex",
+        "Lider": null,
+        "Numero Miniaturas": 1,
+        "Diametro Base":"120x92",
+        "Habilidades": {
+            "Organismo Resiliente": null,
+            "Final Violento": "D6"
+            },
+        "Claves": [
+            "Monstruo",
+            "Gran devorador",
+            "Tyrannofex"
+            ],
+        "m1": {
+            "Nombre": "Tyrannofex",
+            "Stats": [
+                9, 12, 2, 16, 8, 5
+                ],
+            "Rango1": {
+                "Nombre": "Cañon de ruptura",
+                "Stats": [
+                    48, 2, 3, 18, 4, "D6+6"
+                    ],
+                "Claves": {
+                    "Pesado": null         
+                    }
+                },
+            "Rango2": {
+                "Nombre": "Salvas de Aguijon",
+                "Stats": [
+                    24, 8, 3, 5, 0, 1
+                    ],
+                "Claves": {
+                    "Pesado": null         
+                    }
+                },
+            "Rango3": null,
+            "Rango4": null,
+
+            "Mele1": {
+                "Nombre": "Extremidades poderosas",
+                "Stats": [
+                    0, 4, 3, 8, 0, 2
+                    ],
+                "Claves": [
+                    null
+                    ]
+                },
+            "Mele2": null
+        }
+    },
+
     "u1": {
-        "Nombre": "Tyranido Alado Primus",
+        "Nombre": "Tyranido Primus con latigo organico",
         "Lider": true,
         "Numero Miniaturas": 1,
         "Diametro Base": 50,
         "Habilidades": {
             "Guerrero Alpha": null,
-            "Golpe mortal": null
+            "Lider-Bestia Agresivo": null
             },
         "Claves": [
-            "Tyranido alado primus",
+            "Tyranido primus con latigo organico",
             "Personaje",
             "Infanteria",
-            "Volador",
             "Gran devorador",
-            "Sinapsis",
-            "Invasor de vanguardia"
-            ],
+            "Sinapsis"    ],
         "m1": {
-            "Nombre": "Tyranido Alado Primus",
+            "Nombre": "Tyranido Primus con latigo organico",
             "Stats": [
-                12, 5, 4, 6, 7, 1
+                10, 5, 3, 6, 7, 1
                 ],
             "Rango1": null,
             "Rango2": null,
@@ -1038,18 +1073,34 @@
             "Rango4": null,
 
             "Mele1": {
-                "Nombre": "Garras y dientes primus",
+                "Nombre": "Garras segadoras",
                 "Stats": [
-                    0, 6, 2, 6, 1, 2
+                    0, 6, 2, 6, -2, 2
                     ],
                 "Claves": [
                     null         
                     ]
                 },
-            "Mele2": null
+            "Mele2": {
+                "Nombre": "Latigo organico",
+                "Stats": [
+                    0, 8, 2, 4, -2, 1
+                    ],
+                "Claves": {
+                    "Ataques Adicionales": null
+                    }
+                },
+            "Mele3": {
+                "Nombre": "Garra desgarradora",
+                "Stats": [
+                    0, 4, 2, 8, -2, 3
+                    ],
+                "Claves": [
+                    null         
+                    ]
+                }
             }
         },
-    
     "Faccion": "Tyranidos",
     "Numero Unidades": 7
 }
