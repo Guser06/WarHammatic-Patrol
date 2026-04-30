@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://yx1yy2bbeldx"]
+
+[ext_resource type="Script" uid="uid://cgybfanvhdhdh" path="res://Scripts/objeto_drag&drop.gd" id="1_s04cv"]
+[ext_resource type="Texture2D" uid="uid://b6v7liaum2qpu" path="res://icon.svg" id="2_ejyav"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q8hcu"]
+size = Vector2(124, 123)
+
+[node name="ObjetoDrag&drop" type="Area2D" unique_id=1401125080]
+script = ExtResource("1_s04cv")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1771731719]
+texture = ExtResource("2_ejyav")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1391532903]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_q8hcu")
