@@ -11,8 +11,15 @@ config_version=5
 [application]
 
 config/name="Warhammatic v3.0"
+run/main_scene="uid://b8qjiiakd6our"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=864
+window/size/viewport_height=486
+window/stretch/mode="canvas_items"
 
 [physics]
 
