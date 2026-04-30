@@ -11,7 +11,6 @@
             "Teniente"
             ],
         "Numero Miniaturas": 5,
-        "Diametro Base": 32,
         "Habilidades": {
             "Terror incendiario": null
             },
@@ -223,7 +222,6 @@
             "Bibliotecario en armadura de exterminador"
             ],
         "Numero Miniaturas": 5,
-        "Diametro Base": 40,
         "Habilidades": {
             "Baliza de teletransporte": null,
             "Furia de los primeros": null,
@@ -390,7 +388,6 @@
         "Nombre": "Capitan en armadura de exterminador",
         "Lider": true,
         "Numero Miniaturas": 1,
-        "Diametro Base": 50,
         "Habilidades": {
             "Valor imparable": null,
             "Ritos de batalla": null,
@@ -438,7 +435,6 @@
         "Nombre": "Bibliotecario en armadura de exterminador",
         "Lider": true,
         "Numero Miniaturas": 1,
-        "Diametro Base": 40,
         "Habilidades": {
             "Velo de tiempo": null,
             "Capucha psiquica": null,
@@ -458,7 +454,7 @@
                 5, 5, 2, 5, 6, 1
                 ],
             "Rango1": {
-                "Nombre": "Castigo-Fuego brujo - estandar",
+                "Nombre": "Castigo-Fuego brujo",
                 "Stats": [
                     24, "D6", 3, 5, 1, "D3"
                     ],
@@ -468,7 +464,7 @@
                     }
                 },
             "Rango2": {
-                "Nombre": "Castigo-Fuego brujo - enfocado",
+                "Nombre": "Castigo-Fuego brujo enfocado",
                 "Stats": [
                     24, "D6", 3, 6, 2, "D3"
                     ],

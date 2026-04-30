@@ -83,7 +83,6 @@ class Individuo(Arma):  ##Clase individuo usando ducktyping
         self.rango = []  #Armas de rango
         self.mele = []  #Armas cuerpo a cuerpo
         self.dmg = 0    #Daño recibido por la miniatura
-        self.glob_ID = 0
 
     def AddWeap(self, diccionario):
         rans = ["Rango1", "Rango2", "Rango3", "Rango4"]
@@ -120,7 +119,7 @@ class Individuo(Arma):  ##Clase individuo usando ducktyping
 
     def __repr__(self):
         estado = "Vivo" if self.usado else "Muerto"
-        return f"{self.nombre} ({estado}) ID: {self.glob_ID}"
+        return f"{self.nombre} ({estado})"
    
 class Unidad:
     def __init__(self, diccionario):
@@ -135,16 +134,14 @@ class Unidad:
         self.habilidades = dict(diccionario.get("Habilidades"))
         self.claves = diccionario.get("Claves")
         self.nm = diccionario.get("Numero Miniaturas")
-        self.glob_ID = 0
 
     def eliminar_muertos(self):
         self.miembros = [
             mini for mini in self.miembros if mini.usado == True]
     
     def __repr__(self):
-        return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros) + ("\nAcobardado" if self.shock else "") + f"ID: {self.glob_ID}"
+        return f"{self.nombre}:\n" + "\n".join(str(miembro) for miembro in self.miembros) + ("\nAcobardado" if self.shock else "")
 
-##Descartar lider, agregar lideres y habilidades en JSON
 class Lider(Unidad):
     def __init__(self, diccionario):
         Unidad.__init__(self, diccionario = diccionario)
@@ -188,7 +185,6 @@ class Ejercito:
         self.faccion = diccionario.get('Faccion')
         self.nu = diccionario.get('Numero Unidades')
         self.unidades = []
-        self.glob_ID = 0
 
     def eliminar_unidades(self):
         self.unidades = [uni for uni in self.unidades if len(uni.miembros) != 0]
@@ -672,9 +668,6 @@ def Build_Armies(Dics):
             i += 1
     return Ejercitos_objetos
 
-def Spawner(Ejs_objs):
-    pass
-
 ##Aumentar puntos de comando
 def Aumentar_PC(Ejer_Obj):
     for i in Ejer_Obj:
@@ -896,7 +889,7 @@ def Disparo(unidad, Ejer_Enem):
                                                 a.usado = True
                                                 if 'Perfil' in miembro.rango[indice].claves.keys():
                                                     for arma in miembro.rango:
-                                                        if 'Perfil' in arma.claves.keys() and arma.nombre.trim('-')[0] == a.nombre.trim('-')[0]:
+                                                        if 'Perfil' in arma.claves.keys():
                                                             arma.usado = True
                                             else: continue
                                 else:
@@ -910,7 +903,7 @@ def Disparo(unidad, Ejer_Enem):
                                 ##Colocar como usadas las armas de perfiles opcionales
                                 if 'Perfil' in miembro.rango[indice].claves.keys():
                                     for arma in miembro.rango:
-                                        if 'Perfil' in arma.claves.keys() and arma.nombre.trim('-')[0] == a.nombre.trim('-')[0]:
+                                        if 'Perfil' in arma.claves.keys():
                                             arma.usado = True
                                     
                                 impact = Dados(n, 6, False) if isinstance(miembro.rango[indice].stats.get("No. de Ataques"), int) else AtkDmg_Rand(n)
@@ -1232,7 +1225,7 @@ def Combate(unidad, Ejer_Enem):
                             ##Colocar como usadas las armas de perfiles opcionales
                             if isinstance(miembro.mele[indice].claves, dict) and 'Perfil' in miembro.mele[indice].claves.keys():
                                 for arma in miembro.mele:
-                                    if 'Perfil' in arma.claves.keys() and arma.nombre.trim('-')[0] == a.nombre.trim('-')[0]:
+                                    if 'Perfil' in arma.claves.keys():
                                         arma.usado = True
                                     
                             impact = Dados(n, 6, False) if isinstance(miembro.mele[indice].stats.get("No. de Ataques"), int) else AtkDmg_Rand(n)
