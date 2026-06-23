@@ -1,0 +1,11 @@
+Cosas ya hechas:
++Extraer ejércitos de JSON
++Logica de Disparo
++Logica de Combate
++Reglas básicas de movimiento
++Reglas básicas de carga
+
+Cosas por implementar:
+-Movimiento y carga en 2D
+-Sprites por miniatura
+-Terreno e interacciones

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dx56itrg54oyq"]
 
-[ext_resource type="Script" uid="uid://0pjn48k6gr62" path="res://Escenas/dado.gd" id="1_753o7"]
+[ext_resource type="Script" uid="uid://b8ksqe4e1cnkn" path="res://Escenas/dado.gd" id="1_753o7"]
 [ext_resource type="Texture2D" uid="uid://d0esrc0ep5rds" path="res://Sprites/Dados.png" id="2_nx5p0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b0flu"]

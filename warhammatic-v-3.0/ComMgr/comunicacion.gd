@@ -19,8 +19,8 @@ func _manejar_datos_de_python(texto):
 	print("info recibida")
 	var datos = JSON.parse_string(texto)
 	
-	if datos.tipo == "resultado_dados":
-		if datos.es_suma:
+	if datos["tipo"] == "resultado_dados":
+		if datos["es_suma"]:
 			print("El total es: ", datos.total)
 		else:
 			_ejecutar_animaciones_dados(datos.valores)
