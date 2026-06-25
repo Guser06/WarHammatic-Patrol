@@ -83,6 +83,7 @@ class Individuo(Arma):  ##Clase individuo usando ducktyping
         self.rango = []  #Armas de rango
         self.mele = []  #Armas cuerpo a cuerpo
         self.dmg = 0    #Daño recibido por la miniatura
+        self.AddWeap(diccionario)
 
     def AddWeap(self, diccionario):
         rans = ["Rango1", "Rango2", "Rango3", "Rango4"]
@@ -134,6 +135,13 @@ class Unidad:
         self.habilidades = dict(diccionario.get("Habilidades"))
         self.claves = diccionario.get("Claves")
         self.nm = diccionario.get("Numero Miniaturas")
+        self.buildIndivs(diccionario)
+
+    def buildIndivs(self, diccionario):
+        for cm, vm in diccionario.items():   #Iterar por el subdiccionario
+            if isinstance(vm, dict) and cm != 'Habilidades':
+                nuevaMiniatura = Individuo(vm)
+                self.miembros.append(nuevaMiniatura)
 
     def eliminar_muertos(self):
         self.miembros = [
@@ -185,13 +193,21 @@ class Ejercito:
         self.faccion = diccionario.get('Faccion')
         self.nu = diccionario.get('Numero Unidades')
         self.unidades = []
+        self.buildUnits(diccionario)
 
     def eliminar_unidades(self):
         self.unidades = [uni for uni in self.unidades if len(uni.miembros) != 0]
     
     def __repr__(self):
         return f"{self.faccion}:\n" + "\n".join(str(unidad) for unidad in self.unidades)
-
+    
+    def buildUnits(self, diccionario):
+        for cu, vu in diccionario.items():
+            if isinstance(vu, dict):
+                nuevaUnidad = Unidad(vu)
+                self.unidades.append(nuevaUnidad)
+                
+        
 ##-----Funciones de Servidor-----
 ##Empaquetado
 
@@ -637,35 +653,10 @@ def Victoria(lista_Ejs):
 #------Funciones estandar------
 ##Construir ejercitos
 def Build_Armies(Dics):
-    i = 0
     for d in Dics:    #iterar por lista de diccionarios
-        j = 0
         if isinstance(d, dict):     #DeTerminar si el objeto es un diccionario
             Ejercitos_objetos.append(Ejercito(d))   #Crear el objeto ejercito
-            lids = []
-            k = 0
-            for cu, vu in d.items():    #iterar por diccionario
-                if isinstance(vu, dict):    #DeTerminar si el objeto es un subdiccionario
-                    if vu["Lider"] is True:
-                        lids.append(Lider(vu))
-                        for cm, vm in vu.items():   #Iterar por el subdiccionario
-                            if isinstance(vm, dict) and cm != 'Habilidades':    #DeTerminar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
-                                lids[k].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad
-                                lids[k].miembros[-1].AddWeap(vm)   #Crear armas y añadirlas al individuo
-                        k += 1
 
-                    if vu["Lider"] is not True:
-                        Ejercitos_objetos[i].unidades.append(Unidad(vu))    #Crear el objeto unidad y añadirlo a un ejercito
-                        for cm, vm in vu.items():   #Iterar por el subdiccionario
-                            if isinstance(vm, dict) and cm != 'Habilidades':    #DeTerminar si el objeto es un subsubdiccionario y no es el diccionario de habilidades
-                                Ejercitos_objetos[i].unidades[j].miembros.append(Individuo(vm))     #Crear el objeto individuo y añadirlo a una unidad
-                                Ejercitos_objetos[i].unidades[j].miembros[-1].AddWeap(vm)   #Crear armas y añadirlas al individuo
-                        j += 1
-
-            for lid in lids:
-                lid.AddLider(Ejercitos_objetos[i])
-
-            i += 1
     return Ejercitos_objetos
 
 ##Aumentar puntos de comando

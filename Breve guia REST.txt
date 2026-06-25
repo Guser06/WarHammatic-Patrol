@@ -1,0 +1,5 @@
+POST: crear ejércitos
+GET: Leer estado de objetos
+DELETE y UPDATE: No se usan, sus homólogos se usan internamente
+
+Websocket: comunicacion constante
