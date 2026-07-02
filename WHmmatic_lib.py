@@ -77,12 +77,13 @@ class Arma:
         self.usado = False
 
 class Individuo(Arma):  ##Clase individuo usando ducktyping
-    def __init__(self, diccionario):
+    def __init__(self, diccionario, id_):
         super().__init__(diccionario, StatsTx)  ##Usar nombre y stats como tales, claves no se usa
         self.usado = True  #Usado indica si la miniatura esta viva
         self.rango = []  #Armas de rango
         self.mele = []  #Armas cuerpo a cuerpo
         self.dmg = 0    #Daño recibido por la miniatura
+        self.id = id_
         self.AddWeap(diccionario)
 
     def AddWeap(self, diccionario):
@@ -123,7 +124,7 @@ class Individuo(Arma):  ##Clase individuo usando ducktyping
         return f"{self.nombre} ({estado})"
    
 class Unidad:
-    def __init__(self, diccionario):
+    def __init__(self, diccionario, id_):
         self.mov = 0
         self.atk = 0
         self.engaged = False
@@ -135,13 +136,16 @@ class Unidad:
         self.habilidades = dict(diccionario.get("Habilidades"))
         self.claves = diccionario.get("Claves")
         self.nm = diccionario.get("Numero Miniaturas")
+        self.id = id_
         self.buildIndivs(diccionario)
 
     def buildIndivs(self, diccionario):
+        Nm = 1
         for cm, vm in diccionario.items():   #Iterar por el subdiccionario
             if isinstance(vm, dict) and cm != 'Habilidades':
-                nuevaMiniatura = Individuo(vm)
+                nuevaMiniatura = Individuo(vm, self.id+f"{Nm:02}")
                 self.miembros.append(nuevaMiniatura)
+                Nm += 1
 
     def eliminar_muertos(self):
         self.miembros = [
@@ -187,12 +191,13 @@ class Lider(Unidad):
             self.nm -= 1
 
 class Ejercito:
-    def __init__(self, diccionario):
+    def __init__(self, diccionario, id_factor: int):
         self.pc = 0
         self.pv = 0
         self.faccion = diccionario.get('Faccion')
         self.nu = diccionario.get('Numero Unidades')
         self.unidades = []
+        self.id = str(id_factor)
         self.buildUnits(diccionario)
 
     def eliminar_unidades(self):
@@ -202,9 +207,9 @@ class Ejercito:
         return f"{self.faccion}:\n" + "\n".join(str(unidad) for unidad in self.unidades)
     
     def buildUnits(self, diccionario):
-        for cu, vu in diccionario.items():
+        for vu, nu in zip(diccionario.values(), range(len(diccionario.values()))):
             if isinstance(vu, dict):
-                nuevaUnidad = Unidad(vu)
+                nuevaUnidad = Unidad(vu, self.id+f"{nu+1:02}")
                 self.unidades.append(nuevaUnidad)
                 
         
@@ -653,9 +658,9 @@ def Victoria(lista_Ejs):
 #------Funciones estandar------
 ##Construir ejercitos
 def Build_Armies(Dics):
-    for d in Dics:    #iterar por lista de diccionarios
+    for d, nd in zip(Dics, range(len(Dics))):    #iterar por lista de diccionarios
         if isinstance(d, dict):     #DeTerminar si el objeto es un diccionario
-            Ejercitos_objetos.append(Ejercito(d))   #Crear el objeto ejercito
+            Ejercitos_objetos.append(Ejercito(d, f"{nd+1:02}"))   #Crear el objeto ejercito
 
     return Ejercitos_objetos
 

@@ -9,3 +9,11 @@ Cosas por implementar:
 -Movimiento y carga en 2D
 -Sprites por miniatura
 -Terreno e interacciones
+
+
+Estratagemas y habilidades clasificados por caracteristica que modifican
+almacenados como diccionario "nombre": cantidad
+
+Uso API para crear ejercitos, websockets para el resto de tareas
+
+Uso de Path2D con particulas para simular proyectiles
