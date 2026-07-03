@@ -35,10 +35,13 @@ ArmaTx = ["Alcance", "No. de Ataques",
 
 #Menú de ejercitos disponibles
 DISPONIBLE = [
-    'Tyranidos v1',
+    'Tyranids patrol',
     'Tyrannofex',
-    'Space Marines v1',
-    'Gladiator Lancer',
+    'Tyrannofex v2',
+    'Space Marines Patrol',
+    'Ultramarines Lancer',
+    'Ultramarines Lancer v2',
+    'Ultramarines 1st & 9th',
     'Debug',
     'salir'
 ]
@@ -60,7 +63,7 @@ CARGA_T = [
 
 ##Lista donde se guardaran los ejercitos convertidos en objetos de Python
 ##Usada como global aqui por que me dió weba
-Ejercitos_objetos = []
+Ejercitos_objetos = {}
 #Inicializar ventana de manera global
 Term = blessed.Terminal()
 
@@ -384,8 +387,8 @@ def DeTerminar_turno():
                 print(Term.springgreen4_on_black("Determinando los turnos"))
             
                 comenzar = Dados(2, 6, ret_num=False)
-                print(Term.springgreen4_on_black(f"Dado Jugador 1 ({Ejercitos_objetos[0].faccion}): {comenzar[0]}"))
-                print(Term.springgreen4_on_black(f"Dado Jugador 2 ({Ejercitos_objetos[1].faccion}): {comenzar[1]}"))
+                print(Term.springgreen4_on_black(f"Dado Jugador 1 ({Ejercitos_objetos.values()[0].faccion}): {comenzar[0]}"))
+                print(Term.springgreen4_on_black(f"Dado Jugador 2 ({Ejercitos_objetos.values()[1].faccion}): {comenzar[1]}"))
                 if comenzar[0] > comenzar[1]:
                     print(Term.springgreen4_on_black("\nComienza el jugador 1"))
                     turno = 2
@@ -643,11 +646,11 @@ def Victoria(lista_Ejs):
             print(Term.springgreen4_on_black(f"El ejercito de {lista_Ejs[j-1].faccion} ha salido ganador"))
             print(Term.springgreen4_on_black(f"La partida ha Terminado"))
         
-        if (Ejercitos_objetos[0].nu - len(Ejercitos_objetos[0].unidades)) > (Ejercitos_objetos[1].nu - len(Ejercitos_objetos[1].unidades)):
-            print(Term.springgreen4_on_black(f"El ejercito de {Ejercitos_objetos[1].faccion} ha ganado tras destruir mas unidades enemigas!"))
-        elif (Ejercitos_objetos[0].nu - len(Ejercitos_objetos[0].unidades)) < (Ejercitos_objetos[1].nu - len(Ejercitos_objetos[1].unidades)):
-            print(Term.springgreen4_on_black(f"El ejercito de {Ejercitos_objetos[0].faccion} ha ganado tras destruir mas unidades enemigas!"))
-        elif (Ejercitos_objetos[0].nu - len(Ejercitos_objetos[0].unidades)) == (Ejercitos_objetos[1].nu - len(Ejercitos_objetos[1].unidades)):
+        if (Ejercitos_objetos.values()[0].nu - len(Ejercitos_objetos.values()[0].unidades)) > (Ejercitos_objetos.values()[1].nu - len(Ejercitos_objetos.values()[1].unidades)):
+            print(Term.springgreen4_on_black(f"El ejercito de {Ejercitos_objetos.values()[1].faccion} ha ganado tras destruir mas unidades enemigas!"))
+        elif (Ejercitos_objetos.values()[0].nu - len(Ejercitos_objetos.values()[0].unidades)) < (Ejercitos_objetos.values()[1].nu - len(Ejercitos_objetos.values()[1].unidades)):
+            print(Term.springgreen4_on_black(f"El ejercito de {Ejercitos_objetos.values()[0].faccion} ha ganado tras destruir mas unidades enemigas!"))
+        elif (Ejercitos_objetos.values()[0].nu - len(Ejercitos_objetos.values()[0].unidades)) == (Ejercitos_objetos.values()[1].nu - len(Ejercitos_objetos.values()[1].unidades)):
             print(Term.springgreen4_on_black(f"Ningun ejercito ha destruido mas unidades enemigas que el otro, la partida termina en empate!"))
                 
         print(Term.springgreen4_on_black("Presione cualquier tecla para terminar el programa"))
@@ -1558,7 +1561,7 @@ def Repetida(arma, unidad):   ##Devuelve el número de veces que un arma está r
 def FinViol(dic_habs, nombre, Ejers):
     indice = 0
     All_u = []
-    for e in Ejers:
+    for e in Ejers.values():
         All_u += e.unidades
     All_u + [""]
     n_heridas = dic_habs.get('Final Violento') if isinstance(dic_habs.get('Final Violento'), int) else AtkDmg_Rand(dic_habs.get('Final Violento'), True)
