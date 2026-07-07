@@ -1,7 +1,8 @@
-from fastapi import FastAPI, Websocket
+import uvicorn
+from fastapi import FastAPI, WebSocket
 from pydantic import BaseModel
 import WHmmatic_lib as whlib 
-import pathlib as Path
+from pathlib import Path
 import json
 
 conexiones = {}
@@ -12,13 +13,19 @@ class CreateArmyRequest(BaseModel):
     player_id: int
     army_name: str
 
+@app.get('/')
+async def root():
+    return {'message': 'test'}
+
+
 @app.get("/status")
 async def get_status():
-    return {"status": "API is running"}
+    return {"message": "API is running"}
 
 @app.post("/create_army")
 async def create_army(request: CreateArmyRequest):
     if request.army_name in whlib.DISPONIBLE:
+        filepath = None
         match request.army_name:
             case 'Tyranids patrol':
                 filepath = Path(__file__).parent / "Ejercitos/Ty_patrol.json"
@@ -32,19 +39,18 @@ async def create_army(request: CreateArmyRequest):
                 filepath = Path(__file__).parent / "Ejercitos/UM_Lancer.json"
             case 'Ultramarines Lancer v2':
                 filepath = Path(__file__).parent / "Ejercitos/UM_Lancer_V2.json"
-            case '1st & 9th':
+            case 'Ultramarines 1st & 9th':
                 filepath = Path(__file__).parent / "Ejercitos/UM_1st&9th.json"
             case 'Debug':
                 filepath = Path(__file__).parent / "Ejercitos/Debug_army.json"
-        with open(filepath, 'r') as file:
+        with open(filepath, 'r', encoding='utf-8') as file:
             dic = json.load(file)
             whlib.Ejercitos_objetos.update({request.player_id-1: whlib.Ejercito(dic, request.player_id)})
-            return {"messsage": f"Successfully created {whlib.Ejercitos_objetos[request.player_id-1].faccion} army for player {request.player_id}",
-                    "army": whlib.Ejercitos_objetos[request.player_id-1].faccion,
-                    "player_id": request.player_id}
+        data = {"message": f"Successfully created {whlib.Ejercitos_objetos[request.player_id-1].faccion} army for player {request.player_id}", "army": whlib.Ejercitos_objetos[request.player_id-1].faccion,"player_id": request.player_id}
+        return data
             
 @app.websocket("/ws")
-async def websocket_connection(ws: Websocket):
+async def websocket_connection(ws: WebSocket):
     await ws.accept()
     conexiones.update({f"{len(conexiones.items())}": ws})
     try:
@@ -88,3 +94,6 @@ def procesar_request(datos: dict):
             pass
         case "begin_action":
             pass
+        
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
