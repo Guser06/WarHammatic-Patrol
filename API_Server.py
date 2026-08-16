@@ -15,7 +15,7 @@ class CreateArmyRequest(BaseModel):
 
 @app.get('/')
 async def root():
-    return {'message': 'test'}
+    return {'message': 'test, hello from ipv6'}
 
 
 @app.get("/status")
@@ -52,27 +52,37 @@ async def create_army(request: CreateArmyRequest):
 @app.websocket("/ws")
 async def websocket_connection(ws: WebSocket):
     await ws.accept()
+    print("Nueva conexión WebSocket establecida")
     conexiones.update({f"{len(conexiones.items())}": ws})
     try:
+        print("Iniciando bucle de recepción de datos WebSocket")
         while True:
-            datos = await ws.receive_json()
+            datos = await ws.receive()
             respuesta = procesar_request(datos)
             if respuesta["privado"]:
-                await ws.send(respuesta)
+                await ws.send_json(respuesta)
             else:
                 for con in conexiones.values():
-                    await con.send(respuesta)
-    except:
-        conexiones.remove(ws)
+                    await con.send_json(respuesta)
+    except Exception as e:
+        print(f"Error en la conexión WebSocket: {e}")
+        for con in conexiones.keys():
+            if conexiones[con] == ws:
+                conexiones.pop(con)
+                break
         for con in conexiones.values():
             try:
-                await con.send(
+                await con.send_json(
                     {"message": "Un jugador se ha desconectado"}
                     )
             except:
-                conexiones.remove(con)
+                for con in conexiones.keys():
+                    if conexiones[con] == ws:
+                        conexiones.pop(con)
+                        break
             
 def procesar_request(datos: dict):
+    print(datos)
     match datos["type"]:
         case "datasheet":
             pass
@@ -94,6 +104,8 @@ def procesar_request(datos: dict):
             pass
         case "begin_action":
             pass
+        case _:
+            return {"message": "Tipo de request no reconocido", "privado": True}
         
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="::1", port=8000)

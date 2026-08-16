@@ -52,9 +52,8 @@ func _mandar_movimiento(pos_inicial: Vector2, pos_final: Vector2):
 		"pos_inicial": {"x": pos_inicial.x, "y": pos_inicial.y},
 		"pos_final": {"x": pos_final.x, "y": pos_final.y}
 	}
-	var json_str = JSON.stringify(datos) + "\n"
 	
 	# Buscar el nodo servidor en la escena
-	var servidor = get_node("/root/Mundo/Servidor")
+	var servidor = get_node("/root/EscenaPrincipal/Com_v2")
 	if servidor:
-		servidor.enviar(json_str)
+		servidor.enviar_datos_ws(datos)

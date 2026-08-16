@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://criayqedqnykj" path="res://Escena Principal.gd" id="1_k282w"]
 [ext_resource type="PackedScene" uid="uid://dtsdjlq2afhhp" path="res://Escenas/Jugador.tscn" id="1_kp1dj"]
-[ext_resource type="PackedScene" uid="uid://djmtgqm2hgprc" path="res://ComMgr/comunicacion.tscn" id="3_bbfqe"]
+[ext_resource type="PackedScene" uid="uid://b3b525tehi4q0" path="res://ComMgr/Com_v2.tscn" id="4_b1yw2"]
 [ext_resource type="PackedScene" uid="uid://yx1yy2bbeldx" path="res://Escenas/ObjetoDrag&Drop.tscn" id="4_bbfqe"]
 
 [node name="EscenaPrincipal" type="Node2D" unique_id=514344058]
@@ -11,7 +11,7 @@ script = ExtResource("1_k282w")
 [node name="Jugador_camara" parent="." unique_id=1441874800 instance=ExtResource("1_kp1dj")]
 motion_mode = 1
 
-[node name="Comunicacion" parent="." unique_id=1072665902 instance=ExtResource("3_bbfqe")]
-
 [node name="ObjetoDrag&drop" parent="." unique_id=1401125080 instance=ExtResource("4_bbfqe")]
 position = Vector2(0, -3)
+
+[node name="Com_v2" parent="." unique_id=1284781076 instance=ExtResource("4_b1yw2")]
