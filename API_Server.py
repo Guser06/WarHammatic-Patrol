@@ -59,11 +59,6 @@ async def websocket_connection(ws: WebSocket):
         while True:
             datos = await ws.receive()
             respuesta = procesar_request(datos)
-            if respuesta["privado"]:
-                await ws.send_json(respuesta)
-            else:
-                for con in conexiones.values():
-                    await con.send_json(respuesta)
     except Exception as e:
         print(f"Error en la conexión WebSocket: {e}")
         for con in conexiones.keys():
@@ -87,6 +82,7 @@ def procesar_request(datos: dict):
         case "datasheet":
             pass
         case "move":
+            
             pass
         case "advance":
             pass

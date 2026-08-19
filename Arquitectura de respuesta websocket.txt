@@ -1,0 +1,20 @@
+Arquitectura de respuesta websocket
+
+Entrada en endpoint ws 
+|
+v
+Función: Procesar solicitud
+|
+|__> Determinar función que debe ejecutarse mediante el tipo de solicitud
+    |
+    v
+    Generar respuesta(s)
+    |
+    v
+    |__> Caso 1: Una respuesta privada          \  
+    |__> Caso 2: Multiples respuestas privadas   \ Comunicar resultado directo
+    |__> Caso 3: Una respuesta publica           / con websocket(s) usando diccionario global
+    |__> Caso 4: Multiples respuestas publicas  /
+    |
+    |__> No se retorna nada
+    

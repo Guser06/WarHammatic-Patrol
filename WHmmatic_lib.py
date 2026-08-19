@@ -61,6 +61,11 @@ CARGA_T = [
     'Continuar'
 ]
 
+DESPLIEGUES_1k = {
+    1: [(0, 0), (30, 0), (6, 0), (6, 30)],
+    2: [(0, 38), (30, 38), (0, 44), (30, 44)]
+}
+
 ##Lista donde se guardaran los ejercitos convertidos en objetos de Python
 ##Usada como global aqui por que me dió weba
 Ejercitos_objetos = {}
@@ -225,6 +230,17 @@ class Ejercito:
 
 ##Request
 
+##Recuperar objeto a partir de ID global
+def id_retriever(id: str):
+    match len(id):
+        case 2:
+            return Ejercitos_objetos.get(id)
+        case 4:
+            return Ejercitos_objetos.get(id[0:2]).unidades[int(id[2:4])-1]
+        case 6:
+            return Ejercitos_objetos.get(id[0:2]).unidades[int(id[2:4])-1].miembros[int(id[4:6])-1]
+        case _:
+            return None
 
 ##-----Funciones de dados-----
 ##Tirar dados
@@ -666,6 +682,16 @@ def Build_Armies(Dics):
             Ejercitos_objetos.append(Ejercito(d, f"{nd+1:02}"))   #Crear el objeto ejercito
 
     return Ejercitos_objetos
+
+##Intercalar unidades para despliegue
+def Intercalar():
+    all_U = []
+    lengths = [len(e.unidades) for e in Ejercitos_objetos.values()]
+    for i in range(max(lengths)):
+        for e in Ejercitos_objetos.values():
+            if i < len(e.unidades):
+                all_U.append(e.unidades[i])
+    return all_U
 
 ##Aumentar puntos de comando
 def Aumentar_PC(Ejer_Obj):
@@ -1419,7 +1445,7 @@ def Combate(unidad, Ejer_Enem):
     return
 
 
-##Reglas de movimiento
+##Reglas de movimiento para interfaz de terminal
 ##Permanecer estatico
 def Estatico(unidad, p3 = None):
     while True:
@@ -1507,6 +1533,13 @@ def Carga(unidad, blanco):
         return
 
 
+##----------------
+## Reglas de movimiento para interfaz grafica
+##----------------
+
+def uiMovNormal(id_mini, id_jugador):
+    pass
+
 ##Estratagemas
 def ReRoll(Ej, Lista_D, val, DX):
     if Ej.pc:
@@ -1583,6 +1616,13 @@ def Danado(unidad):
     
     return
 
+##Verificar si una unidad está dentro de la zona de despliegue
+def within_deployment(coord:tuple, id):
+    zona = DESPLIEGUES_1k.get(int(id[0:2]))
+    if coord[0] >= zona[0][0] and coord[0] <= zona[1][0] and coord[1] >= zona[2][1] and coord[1] <= zona[3][1]:
+        return True
+    ##Buscar reglas que permitan desplegar fuera del area
+    ## elif id_retriever(id):
 
 ##Listas de funciones
 MOVIMIENTO_F = [
