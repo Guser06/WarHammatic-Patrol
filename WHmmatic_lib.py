@@ -738,9 +738,33 @@ def Shock_Test(unidad):
 
 ##Repartir heridas
 def RepDmg(blanco, dano, Precision = False):
+    if isinstance(dano, list):
+        for impacto in dano:
+            if impacto <= 0:
+                continue
+
+            danada = Selec_mini(blanco, Precision)
+            if danada is None:
+                return
+
+            mini = blanco.miembros[danada]
+            Qt_dmg = mini.stats.get("Heridas") - mini.dmg
+            aplicado = min(impacto, Qt_dmg)
+            resultado = mini.recibir_dano(aplicado, blanco.habilidades)
+
+            if resultado:
+                Mostrar_Mensaje(f"{resultado}")
+            else:
+                Mostrar_Mensaje(f"{mini.__repr__()}\\nHeridas recibidas: {mini.dmg}")
+
+            # El excedente de este ataque se descarta: no pasa a otra miniatura.
+            if aplicado >= Qt_dmg:
+                blanco.eliminar_muertos()
+        return
+
     while dano >= 1:
         danada = Selec_mini(blanco, Precision)
-        if danada == None:
+        if danada is None:
             dano = 0
             return
         Qt_dmg = blanco.miembros[danada].stats.get("Heridas")-blanco.miembros[danada].dmg
@@ -750,7 +774,7 @@ def RepDmg(blanco, dano, Precision = False):
             blanco.eliminar_muertos()
         else:
             blanco.miembros[danada].recibir_dano(dano, blanco.habilidades)
-            Mostrar_Mensaje(f"{blanco.miembros[danada].__repr__()}\nHeridas recibidas: {blanco.miembros[danada].dmg}")
+            Mostrar_Mensaje(f"{blanco.miembros[danada].__repr__()}\\nHeridas recibidas: {blanco.miembros[danada].dmg}")
             dano = 0
     return
 
@@ -1145,17 +1169,13 @@ def Disparo(unidad, Ejer_Enem):
 
                                     
                                     if isinstance(m, str):
-                                        dano_azar = []
-                                        for x in range(0, salvar):
-                                            dano_azar.append(AtkDmg_Rand(m, True)+Dmg_Melta)
-                                        salvar = sum(dano_azar)
+                                        dano_azar = [AtkDmg_Rand(m, True) + Dmg_Melta for _ in range(salvar)]
                                     else:
-                                        dano = int(m) + Dmg_Melta
-                                        salvar*=dano
+                                        dano_azar = [int(m) + Dmg_Melta for _ in range(salvar)]
 
-                                    Mostrar_Mensaje(f"A que miniatura se le asignarán {salvar} heridas?")
+                                    Mostrar_Mensaje(f"A que miniatura se le asignarán {sum(dano_azar)} heridas?")
 
-                                    RepDmg(blanco, salvar)
+                                    RepDmg(blanco, dano_azar)
 
                                 else:
                                     Mostrar_Mensaje("")
@@ -1404,17 +1424,13 @@ def Combate(unidad, Ejer_Enem):
                                 salvar = len(herir) - len(salvar)
                                 m = miembro.mele[indice].stats.get("Daño")
                                 if isinstance(m, str):
-                                    dano_azar = []
-                                    for x in range(0, salvar):
-                                        dano_azar.append(AtkDmg_Rand(m, True))
-                                    salvar = sum(dano_azar)
+                                    dano_azar = [AtkDmg_Rand(m, True) for _ in range(salvar)]
                                 else:
-                                    dano = int(m)
-                                    salvar*=dano
+                                    dano_azar = [int(m) for _ in range(salvar)]
 
-                                Mostrar_Mensaje(f"A que miniatura se le asignarán {salvar} heridas?", False)
+                                Mostrar_Mensaje(f"A que miniatura se le asignarán {sum(dano_azar)} heridas?", False)
 
-                                RepDmg(blanco, salvar)
+                                RepDmg(blanco, dano_azar)
 
                             else:
                                 Mostrar_Mensaje("")
