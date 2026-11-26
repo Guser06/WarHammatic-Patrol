@@ -755,7 +755,7 @@ def RepDmg(blanco, dano, Precision = False):
             if resultado:
                 Mostrar_Mensaje(f"{resultado}")
             else:
-                Mostrar_Mensaje(f"{mini.__repr__()}\\nHeridas recibidas: {mini.dmg}")
+                Mostrar_Mensaje(f"{mini.__repr__()}\nHeridas recibidas: {mini.dmg}")
 
             # El excedente de este ataque se descarta: no pasa a otra miniatura.
             if aplicado >= Qt_dmg:
@@ -774,7 +774,7 @@ def RepDmg(blanco, dano, Precision = False):
             blanco.eliminar_muertos()
         else:
             blanco.miembros[danada].recibir_dano(dano, blanco.habilidades)
-            Mostrar_Mensaje(f"{blanco.miembros[danada].__repr__()}\\nHeridas recibidas: {blanco.miembros[danada].dmg}")
+            Mostrar_Mensaje(f"{blanco.miembros[danada].__repr__()}\nHeridas recibidas: {blanco.miembros[danada].dmg}")
             dano = 0
     return
 
